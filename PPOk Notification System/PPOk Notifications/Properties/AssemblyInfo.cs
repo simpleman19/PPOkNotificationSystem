@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PPOk_Notification_System")]
+[assembly: AssemblyTitle("PPOk_Notifications")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PPOk_Notification_System")]
+[assembly: AssemblyProduct("PPOk_Notifications")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2533324e-2b62-4398-a684-a18a9df2a52d")]
+[assembly: Guid("088fb406-90e2-47e2-bdd7-984d4d54d7e2")]
 
 // Version information for an assembly consists of the following four values:
 //
