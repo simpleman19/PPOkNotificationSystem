@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using PPOk_Notifications.NotificationSending;
 
 namespace PPOk_Notifications
 {
@@ -13,6 +14,7 @@ namespace PPOk_Notifications
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AspNetTimer.Start();
         }
     }
 }
