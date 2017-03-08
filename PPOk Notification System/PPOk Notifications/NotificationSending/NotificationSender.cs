@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.IO;
+using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.NotificationSending
 {
     public class NotificationSender : IRegisteredObject
     {
         string path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        int minsBetweenSending = 1;
+        int minsBetweenSending = 15;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -43,8 +44,43 @@ namespace PPOk_Notifications.NotificationSending
 
         private void sendNotifications()
         {
+            saveDate();
+            List<Notification> notifications = getNotifications();
+            foreach (Notification n in notifications)
+            {
+                //Call Database for patient using n.patientID
+                if (n.notificationType == Notification.NotificationType.Birthday || n.notificationType == Notification.NotificationType.Refill)
+                {
+                    // Get template from pharmacy
+                    // Call Twilio api using patient prefered contact method
+                    // Mark as sent
+                }
+                else if (n.notificationType == Notification.NotificationType.Recall)
+                {
+                    // Call twillio api using phone call and message saved in notification
+                }
+            }
+        }
+
+        private List<Notification> getNotifications()
+        {
+            //Make database call
+            Notification test = new Notification();
+            test.notificationID = 1111111;
+            test.notificationType = Notification.NotificationType.Refill;
+            test.patientID = 1;
+            test.scheduledTime = DateTime.Now;
+
+            List<Notification> list = new List<Notification>();
+            list.Add(test);
+            return list;
+        }
+
+        private Boolean saveDate()
+        {
             DateTime? lastDTwhenSent = null;
-            if (File.Exists(path)) {
+            if (File.Exists(path))
+            {
                 lastDTwhenSent = readDateFromFile();
             }
             if (lastDTwhenSent != null)
@@ -56,7 +92,7 @@ namespace PPOk_Notifications.NotificationSending
                     System.Diagnostics.Debug.WriteLine("Sending");
                 }
             }
-
+            return true;
         }
 
         private Boolean writeDateToFile()

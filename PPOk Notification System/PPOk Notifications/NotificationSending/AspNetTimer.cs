@@ -10,7 +10,7 @@ public static class AspNetTimer
 
     public static void Start()
     {
-        _timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(10000));
+        _timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(30000));
     }
 
     private static void OnTimerElapsed(object sender)
