@@ -180,6 +180,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\Pharmacy.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="NotificationSending\AspNetTimer.cs" />
     <Content Include="App_Data\lastNoficiationSent.bin" />
