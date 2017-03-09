@@ -38,27 +38,40 @@ namespace PPOk_Notifications.NotificationSending
                 {
                     return;
                 }
-                sendNotifications();
+                prepareForSending();
             }
         }
 
-        private void sendNotifications()
+        public bool sendFilledNotification(Refill refill)
+        {
+            Notification n = new Notification(refill);
+            // Save notification to database
+            sendNotification(n);
+            return true;
+        }
+
+        private void prepareForSending()
         {
             saveDate();
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
-                //Call Database for patient using n.patientID
-                if (n.notificationType == Notification.NotificationType.Birthday || n.notificationType == Notification.NotificationType.Refill)
-                {
-                    // Get template from pharmacy
-                    // Call Twilio api using patient prefered contact method
-                    // Mark as sent
-                }
-                else if (n.notificationType == Notification.NotificationType.Recall)
-                {
-                    // Call twillio api using phone call and message saved in notification
-                }
+                sendNotification(n);
+            }
+        }
+
+        private void sendNotification(Notification n)
+        {
+            //Call Database for patient using n.patientID
+            if (n.notificationType == Notification.NotificationType.Recall)
+            {
+                // Call twillio api using phone call and message saved in notification
+            }
+            else
+            {
+                // Get template from pharmacy
+                // Call Twilio api using patient prefered contact method
+                // Mark as sent
             }
         }
 
