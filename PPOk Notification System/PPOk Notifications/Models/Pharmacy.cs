@@ -16,5 +16,6 @@ namespace PPOk_Notifications.Models
         public Template templateRecall { get; set; }
         public Template templateBirthday { get; set; }
 
+
     }
 }
