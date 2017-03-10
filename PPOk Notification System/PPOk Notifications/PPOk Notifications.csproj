@@ -134,7 +134,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Prescription.cs" />
+    <Compile Include="Models\Refill.cs" />
     <Compile Include="Service\ScriptService.cs" />
     <Compile Include="Service\SQLService.cs" />
     <Content Include="browser_components\bootstrap\css\bootstrap-theme.css" />
@@ -269,6 +273,7 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Notification\NotificationList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

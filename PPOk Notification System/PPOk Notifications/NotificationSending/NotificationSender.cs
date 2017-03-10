@@ -11,7 +11,7 @@ namespace PPOk_Notifications.NotificationSending
     public class NotificationSender : IRegisteredObject
     {
         string path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        int minsBetweenSending = 15;
+        int minsBetweenSending = 1;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -38,64 +38,91 @@ namespace PPOk_Notifications.NotificationSending
                 {
                     return;
                 }
-                sendNotifications();
+                checkIfSend();
             }
         }
 
-        private void sendNotifications()
+        public static bool sendFilledNotification(Refill refill)
         {
-            saveDate();
+            Notification n = new Notification(refill, Notification.NotificationType.Refilled);
+            // Save notification to database
+            sendNotification(n);
+            return true;
+        }
+
+        private void prepareForSending()
+        {
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
-                //Call Database for patient using n.patientID
-                if (n.notificationType == Notification.NotificationType.Birthday || n.notificationType == Notification.NotificationType.Refill)
-                {
-                    // Get template from pharmacy
-                    // Call Twilio api using patient prefered contact method
-                    // Mark as sent
-                }
-                else if (n.notificationType == Notification.NotificationType.Recall)
-                {
-                    // Call twillio api using phone call and message saved in notification
-                }
+                sendNotification(n);
             }
+        }
+
+        private static void sendNotification(Notification n)
+        {
+            System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.notificationID);
+
+            //Call Database for patient using n.patientID
+            if (n.notificationType == Notification.NotificationType.Recall)
+            {
+                // TODO Call twillio api using phone call and use message saved in notification
+            }
+            else
+            {
+                // TODO Get template from pharmacy
+                // TODO Call Twilio api using patient prefered contact method
+                // Mark as sent
+            }
+            Notification.markSent(n);
         }
 
         private List<Notification> getNotifications()
         {
-            //Make database call
-            Notification test = new Notification();
-            test.notificationID = 1111111;
-            test.notificationType = Notification.NotificationType.Refill;
-            test.patientID = 1;
-            test.scheduledTime = DateTime.Now;
-
             List<Notification> list = new List<Notification>();
-            list.Add(test);
+            // TODO Make database call
+            // TODO Get patient preferences and filter notifications to be sent based on preferences
+            // TODO Get patients whose birthday is today and  narrow down based on preferences
+            Random rand = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                Notification test = Notification.getTestNotification(rand);
+                list.Add(test);
+            }
+
             return list;
         }
 
-        private Boolean saveDate()
+        private bool checkIfSend()
         {
             DateTime? lastDTwhenSent = null;
             if (File.Exists(path))
             {
                 lastDTwhenSent = readDateFromFile();
-            }
-            if (lastDTwhenSent != null)
-            {
-                TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
-                if (span.Minutes >= minsBetweenSending)
+                if (lastDTwhenSent == null)
                 {
                     writeDateToFile();
-                    System.Diagnostics.Debug.WriteLine("Sending");
+                    prepareForSending();
                 }
+                else
+                {
+                    TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
+                    if (span.Minutes >= minsBetweenSending)
+                    {
+                        writeDateToFile();
+                        prepareForSending();
+                    }
+                }
+            } 
+            else
+            {
+                FileStream fs = new FileStream(path, FileMode.Create);
+                fs.Close();
             }
             return true;
         }
 
-        private Boolean writeDateToFile()
+        private bool writeDateToFile()
         {
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
@@ -121,7 +148,8 @@ namespace PPOk_Notifications.NotificationSending
                     if (fs.Position < fs.Length)
                     {
                         string dtString = reader.ReadString();
-                        parsedDateTime = DateTime.Parse(dtString);                    }
+                        parsedDateTime = DateTime.Parse(dtString);
+                    }
                 }
                 fs.Close();
             }
