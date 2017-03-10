@@ -77,10 +77,32 @@ namespace PPOk_Notifications.Models
             return notification;
         }
 
+        public static Notification markSent(Notification notification)
+        {
+            notification.sent = true;
+            notification.sentTime = DateTime.Now;
+
+            return notification;
+        }
+
+        public static Notification markSent(Notification notification, DateTime time)
+        {
+            notification.sent = true;
+            notification.sentTime = time;
+            return notification;
+        }
+
         public static Notification getTestNotification()
         {
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             Random rand = new Random();
+            test.notificationID = rand.Next(1000, 10000000);
+            return test;
+        }
+
+        public static Notification getTestNotification(Random rand)
+        {
+            Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             test.notificationID = rand.Next(1000, 10000000);
             return test;
         }

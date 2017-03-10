@@ -11,7 +11,7 @@ namespace PPOk_Notifications.NotificationSending
     public class NotificationSender : IRegisteredObject
     {
         string path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        int minsBetweenSending = 15;
+        int minsBetweenSending = 1;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -38,7 +38,7 @@ namespace PPOk_Notifications.NotificationSending
                 {
                     return;
                 }
-                prepareForSending();
+                checkIfSend();
             }
         }
 
@@ -52,7 +52,6 @@ namespace PPOk_Notifications.NotificationSending
 
         private void prepareForSending()
         {
-            saveDate();
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
@@ -62,10 +61,12 @@ namespace PPOk_Notifications.NotificationSending
 
         private static void sendNotification(Notification n)
         {
+            System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.notificationID);
+
             //Call Database for patient using n.patientID
             if (n.notificationType == Notification.NotificationType.Recall)
             {
-                // TODO Call twillio api using phone call and message saved in notification
+                // TODO Call twillio api using phone call and use message saved in notification
             }
             else
             {
@@ -73,21 +74,26 @@ namespace PPOk_Notifications.NotificationSending
                 // TODO Call Twilio api using patient prefered contact method
                 // Mark as sent
             }
+            Notification.markSent(n);
         }
 
         private List<Notification> getNotifications()
         {
+            List<Notification> list = new List<Notification>();
             // TODO Make database call
             // TODO Get patient preferences and filter notifications to be sent based on preferences
             // TODO Get patients whose birthday is today and  narrow down based on preferences
-            Notification test = Notification.getTestNotification();
+            Random rand = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                Notification test = Notification.getTestNotification(rand);
+                list.Add(test);
+            }
 
-            List<Notification> list = new List<Notification>();
-            list.Add(test);
             return list;
         }
 
-        private bool saveDate()
+        private bool checkIfSend()
         {
             DateTime? lastDTwhenSent = null;
             if (File.Exists(path))
@@ -97,7 +103,6 @@ namespace PPOk_Notifications.NotificationSending
                 {
                     writeDateToFile();
                     prepareForSending();
-                    System.Diagnostics.Debug.WriteLine("Sending");
                 }
                 else
                 {
@@ -106,7 +111,6 @@ namespace PPOk_Notifications.NotificationSending
                     {
                         writeDateToFile();
                         prepareForSending();
-                        System.Diagnostics.Debug.WriteLine("Sending");
                     }
                 }
             } 
