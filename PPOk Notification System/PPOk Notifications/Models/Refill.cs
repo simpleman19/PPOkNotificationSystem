@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PPOk_Notifications.NotificationSending;
 
 namespace PPOk_Notifications.Models
 {
@@ -24,7 +25,7 @@ namespace PPOk_Notifications.Models
         public void setFilled()
         {
             refilled = true;
-            Notification.sendFilledNotification(this);
+            NotificationSender.sendFilledNotification(this);
         }
     }
 }

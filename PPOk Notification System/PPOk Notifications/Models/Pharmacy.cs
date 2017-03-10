@@ -19,7 +19,15 @@ namespace PPOk_Notifications.Models
         public Refill createRefill(Prescription prescription, Patient patient)
         {
             Refill refill = new Refill(prescription);
-            NotificationSending.NotificationSender.sendRefilledNotification(this);
+
+            return refill;
+        }
+
+        public List<Notification> getNotifications()
+        {
+            List<Notification> notifications = new List<Notification>();
+
+            return notifications;
         }
 
     }

@@ -42,9 +42,9 @@ namespace PPOk_Notifications.NotificationSending
             }
         }
 
-        public bool sendFilledNotification(Refill refill)
+        public static bool sendFilledNotification(Refill refill)
         {
-            Notification n = new Notification(refill);
+            Notification n = new Notification(refill, Notification.NotificationType.Refilled);
             // Save notification to database
             sendNotification(n);
             return true;
@@ -60,55 +60,65 @@ namespace PPOk_Notifications.NotificationSending
             }
         }
 
-        private void sendNotification(Notification n)
+        private static void sendNotification(Notification n)
         {
             //Call Database for patient using n.patientID
             if (n.notificationType == Notification.NotificationType.Recall)
             {
-                // Call twillio api using phone call and message saved in notification
+                // TODO Call twillio api using phone call and message saved in notification
             }
             else
             {
-                // Get template from pharmacy
-                // Call Twilio api using patient prefered contact method
+                // TODO Get template from pharmacy
+                // TODO Call Twilio api using patient prefered contact method
                 // Mark as sent
             }
         }
 
         private List<Notification> getNotifications()
         {
-            //Make database call
-            Notification test = new Notification();
-            test.notificationID = 1111111;
-            test.notificationType = Notification.NotificationType.Refill;
-            test.patientID = 1;
-            test.scheduledTime = DateTime.Now;
+            // TODO Make database call
+            // TODO Get patient preferences and filter notifications to be sent based on preferences
+            // TODO Get patients whose birthday is today and  narrow down based on preferences
+            Notification test = Notification.getTestNotification();
 
             List<Notification> list = new List<Notification>();
             list.Add(test);
             return list;
         }
 
-        private Boolean saveDate()
+        private bool saveDate()
         {
             DateTime? lastDTwhenSent = null;
             if (File.Exists(path))
             {
                 lastDTwhenSent = readDateFromFile();
-            }
-            if (lastDTwhenSent != null)
-            {
-                TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
-                if (span.Minutes >= minsBetweenSending)
+                if (lastDTwhenSent == null)
                 {
                     writeDateToFile();
+                    prepareForSending();
                     System.Diagnostics.Debug.WriteLine("Sending");
                 }
+                else
+                {
+                    TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
+                    if (span.Minutes >= minsBetweenSending)
+                    {
+                        writeDateToFile();
+                        prepareForSending();
+                        System.Diagnostics.Debug.WriteLine("Sending");
+                    }
+                }
+            } 
+            else
+            {
+                FileStream fs = new FileStream(path, FileMode.Create);
+                fs.Close();
             }
             return true;
         }
 
-        private Boolean writeDateToFile()
+        private bool writeDateToFile()
         {
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
@@ -134,7 +144,8 @@ namespace PPOk_Notifications.NotificationSending
                     if (fs.Position < fs.Length)
                     {
                         string dtString = reader.ReadString();
-                        parsedDateTime = DateTime.Parse(dtString);                    }
+                        parsedDateTime = DateTime.Parse(dtString);
+                    }
                 }
                 fs.Close();
             }
