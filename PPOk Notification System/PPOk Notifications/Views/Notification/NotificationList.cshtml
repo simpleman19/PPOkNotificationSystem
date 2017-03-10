@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PPOk_Notifications.Models.Notification>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <table class="table" id="badge_list">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.scheduledTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.patientID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.notificationType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.sent)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.scheduledTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patientID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.notificationType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sent)
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

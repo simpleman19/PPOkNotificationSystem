@@ -16,5 +16,19 @@ namespace PPOk_Notifications.Models
         public Template templateRecall { get; set; }
         public Template templateBirthday { get; set; }
 
+        public Refill createRefill(Prescription prescription, Patient patient)
+        {
+            Refill refill = new Refill(prescription);
+
+            return refill;
+        }
+
+        public List<Notification> getNotifications()
+        {
+            List<Notification> notifications = new List<Notification>();
+
+            return notifications;
+        }
+
     }
 }
