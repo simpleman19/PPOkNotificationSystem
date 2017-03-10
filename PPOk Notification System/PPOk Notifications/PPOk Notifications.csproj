@@ -220,6 +220,26 @@
     <None Include="Scripts\_references.js" />
     <Content Include="Service\SQL\Database_Create.sql" />
     <Content Include="Service\SQL\Database_Drop.sql" />
+    <Content Include="Service\SQL\User_Enable.sql" />
+    <Content Include="Service\SQL\User_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\User_GetAll_Active.sql" />
+    <Content Include="Service\SQL\User_GetByEmail_Inactive.sql" />
+    <Content Include="Service\SQL\User_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\User_GetByName_Inactive.sql" />
+    <Content Include="Service\SQL\User_GetByName_Active.sql" />
+    <Content Include="Service\SQL\User_GetByName.sql" />
+    <Content Include="Service\SQL\User_GetByEmail_Active.sql" />
+    <Content Include="Service\SQL\User_GetByEmail.sql" />
+    <Content Include="Service\SQL\User_GetById_Active.sql" />
+    <Content Include="Service\SQL\User_Update.sql" />
+    <Content Include="Service\SQL\User_Update_Inactive.sql" />
+    <Content Include="Service\SQL\User_Update_Active.sql" />
+    <Content Include="Service\SQL\User_GetAll.sql" />
+    <Content Include="Service\SQL\User_GetById.sql" />
+    <Content Include="Service\SQL\User_Disable.sql" />
+    <Content Include="Service\SQL\User_Insert_Or_Update.sql" />
+    <Content Include="Service\SQL\User_Insert.sql" />
+    <Content Include="Service\SQL\template.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

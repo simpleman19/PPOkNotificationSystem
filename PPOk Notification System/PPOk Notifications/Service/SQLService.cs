@@ -58,7 +58,7 @@ namespace PPOk_Notifications.Service {
 		 *     User Operations
 		 */
 		#region User Operations
-		
+
 		#endregion
 	}
 }
