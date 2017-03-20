@@ -182,6 +182,7 @@
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PharmacistLoginController.cs" />
     <Compile Include="Controllers\PharmacyController.cs" />
+    <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Models\OneTimePass.cs" />
     <Compile Include="Models\Patient.cs" />
@@ -349,6 +350,8 @@
     <Content Include="Views\PharmacistLogin\Reset.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetResult.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetRequest.cshtml" />
+    <Content Include="Views\Admin\PharmacyListView.cshtml" />
+    <Content Include="Views\Admin\PharmacyModificationView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

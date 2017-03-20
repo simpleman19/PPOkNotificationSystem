@@ -21,6 +21,7 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+        // pharmacy uploading patients
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Upload(HttpPostedFileBase upload)
