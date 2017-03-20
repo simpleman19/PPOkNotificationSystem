@@ -184,6 +184,7 @@
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OneTimePass.cs" />
     <Compile Include="Models\Patient.cs" />
     <Compile Include="Models\Pharmacy.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Models\Prescription.cs" />
     <Compile Include="Models\Refill.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Service\MappingService.cs" />
     <Compile Include="Service\ScriptService.cs" />
     <Compile Include="Service\SQLService.cs" />
     <Compile Include="Service\TwilioApi.cs" />
@@ -296,6 +298,16 @@
     <Content Include="Service\SQL\EmailOTP_Enable.sql" />
     <Content Include="Service\SQL\Login_Disable.sql" />
     <Content Include="Service\SQL\Login_Enable.sql" />
+    <Content Include="Service\SQL\Login_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Login_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetById_Active.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId_Active.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId.sql" />
+    <Content Include="Service\SQL\Login_Update_Inactive.sql" />
+    <Content Include="Service\SQL\Login_Update_Active.sql" />
+    <Content Include="Service\SQL\Login_Update.sql" />
     <Content Include="Service\SQL\Notification_Disable.sql" />
     <Content Include="Service\SQL\Notification_Enable.sql" />
     <Content Include="Service\SQL\OTP_Disable.sql" />
@@ -313,9 +325,11 @@
     <Content Include="Service\SQL\Template_Disable.sql" />
     <Content Include="Service\SQL\Template_Enable.sql" />
     <Content Include="Service\SQL\User_Enable.sql" />
+    <Content Include="Service\SQL\Login_GetAll.sql" />
     <Content Include="Service\SQL\User_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\User_GetAll_Active.sql" />
     <Content Include="Service\SQL\User_GetByEmail_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetById.sql" />
     <Content Include="Service\SQL\User_GetById_Inactive.sql" />
     <Content Include="Service\SQL\User_GetByName_Inactive.sql" />
     <Content Include="Service\SQL\User_GetByName_Active.sql" />
@@ -323,6 +337,8 @@
     <Content Include="Service\SQL\User_GetByEmail_Active.sql" />
     <Content Include="Service\SQL\User_GetByEmail.sql" />
     <Content Include="Service\SQL\User_GetById_Active.sql" />
+    <Content Include="Service\SQL\Login_Insert.sql" />
+    <Content Include="Service\SQL\Login_Insert_Or_Update.sql" />
     <Content Include="Service\SQL\User_Update.sql" />
     <Content Include="Service\SQL\User_Update_Inactive.sql" />
     <Content Include="Service\SQL\User_Update_Active.sql" />

@@ -80,16 +80,19 @@ namespace PPOk_Notifications.Service {
 		#region Get all
 		public List<User> GetUsers() {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getall"]).AsList();
 			}
 		}
 		public List<User> GetUsersActive() {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getall_active"]).AsList();
 			}
 		}
 		public List<User> GetUsersInactive() {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getall_inactive"]).AsList();
 			}
 		}
@@ -98,16 +101,19 @@ namespace PPOk_Notifications.Service {
 		#region Get by id
 		public User GetUserById(int user_id) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
 		public User GetUserByIdActive(int user_id) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
 		public User GetUserByIdInactive(int user_id) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid_inactive"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
@@ -116,16 +122,19 @@ namespace PPOk_Notifications.Service {
 		#region Get by email
 		public User GetUserByEmail(string user_email) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyemail"], new { user_email = user_email }).FirstOrDefault();
 			}
 		}
 		public User GetUserByEmailActive(string user_email) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyemail_active"], new { user_email = user_email }).FirstOrDefault();
 			}
 		}
 		public User GetUserByEmailInactive(string user_email) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyemail_inactive"], new { user_email = user_email }).FirstOrDefault();
 			}
 		}
@@ -134,16 +143,19 @@ namespace PPOk_Notifications.Service {
 		#region Get by name
 		public User GetUserByName(string user_fname, string user_lname) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyname"], new { user_fname = user_fname, user_lname = user_lname }).FirstOrDefault();
 			}
 		}
 		public User GetUserByNameActive(string user_fname, string user_lname) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyname_active"], new { user_fname = user_fname, user_lname = user_lname }).FirstOrDefault();
 			}
 		}
 		public User GetUserByNameInactive(string user_fname, string user_lname) {
 			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyname_inactive"], new { user_fname = user_fname, user_lname = user_lname }).FirstOrDefault();
 			}
 		}
@@ -187,6 +199,113 @@ namespace PPOk_Notifications.Service {
 		 *     Login Operations
 		 */
 		#region Login Operations
+
+		#region Enable/Disable Operations
+		public void Login_Enable(int login_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_enable"], new { login_id = login_id });
+			}
+		}
+		public void Login_Disable(int login_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_disable"], new { login_id = login_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Login> GetLogins() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getall"]).AsList();
+			}
+		}
+		public List<Login> GetLoginsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getall_active"]).AsList();
+			}
+		}
+		public List<Login> GetLoginsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Login GetLoginById(int login_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyid"], new { login_id = login_id }).FirstOrDefault();
+			}
+		}
+		public Login GetLoginByIdActive(int login_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyid_active"], new { login_id = login_id }).FirstOrDefault();
+			}
+		}
+		public Login GetLoginByIdInactive(int login_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyid_inactive"], new { login_id = login_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by user id
+		public Login GetLoginByUserId(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Login GetLoginByUserIdActive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Login GetLoginByUserIdInactive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
+				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void LoginInsert(Login login) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_insert"], login);
+			}
+		}
+		public void LoginInsertOrUpdate(Login login) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_insert_or_update"], login);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void LoginUpdate(Login login) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_update"], login);
+			}
+		}
+		public void LoginUpdateActive(Login login) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_update_active"], login);
+			}
+		}
+		public void LoginUpdateInactive(Login login) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["login_update_inactive"], login);
+			}
+		}
+		#endregion
 
 		#endregion
 
