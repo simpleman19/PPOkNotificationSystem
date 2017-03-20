@@ -1,2 +1,74 @@
-﻿
+﻿@model IEnumerable<PPOk_Notifications.Models.Pharmacy>
+
+@{
+    ViewBag.Title = "PharmacyList";
+}
+
+<h2>List of Pharmacies</h2>
+
+<script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
+
+<p>
+    <!-- TODO support this link -->
+    @Html.ActionLink("Add New", "AddPharmacy")
+</p>
+<table class="table" id="pharmacy_list">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PharmacyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PharmacyAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PharmacyPhone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PharmacyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PharmacyAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PharmacyPhone)
+                </td>
+                <td> 
+                    <!-- TODO support these links -->
+                    @Html.ActionLink("Edit", "EditPharmacy", new {  id=item.PharmacyId  }) |
+                    @Html.ActionLink("View", "ViewPharmacy", new { id = item.PharmacyId }) |
+                    @Html.ActionLink("Delete", "DeletePharmacy", new { id = item.PharmacyId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        pharmacy_table = $('#pharmacy_list').DataTable({
+            "dom": '<"pull-left"f><"pull-right"l>tip',
+            "paging": false,
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: {
+                searchPlaceholder: "Search Pharmacies"
+            }
+        });
+    }());
+
+</script>
 
