@@ -21,6 +21,9 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+        // TODO additional actions and such need to be supported for this view.
+        public ActionResult PharmacistList() { return View(); }
+
         // pharmacy uploading patients
         [HttpPost]
         [ValidateAntiForgeryToken]
