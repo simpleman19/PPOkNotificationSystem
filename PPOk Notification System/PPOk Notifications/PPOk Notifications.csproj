@@ -350,8 +350,8 @@
     <Content Include="Views\PharmacistLogin\Reset.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetResult.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetRequest.cshtml" />
-    <Content Include="Views\Admin\PharmacyListView.cshtml" />
-    <Content Include="Views\Admin\PharmacyModificationView.cshtml" />
+    <Content Include="Views\PpokAdmin\PharmacyListView.cshtml" />
+    <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

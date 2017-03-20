@@ -1,6 +1,7 @@
 ﻿using LumenWorks.Framework.IO.Csv;
 using PPOk_Notifications.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Web;
@@ -22,7 +23,11 @@ namespace PPOk_Notifications.Controllers
         }
 
         // TODO additional actions and such need to be supported for this view.
-        public ActionResult PharmacistList() { return View(); }
+        public ActionResult PharmacistListView() {
+            // TODO sql to load in etc
+            IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
+            return View(param);
+        }
 
         // pharmacy uploading patients
         [HttpPost]

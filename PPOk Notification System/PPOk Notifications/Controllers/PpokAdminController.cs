@@ -1,4 +1,5 @@
 ﻿using PPOk_Notifications.Service;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Web;
@@ -26,20 +27,22 @@ namespace PPOk_Notifications.Controllers
         // can select edit/view/delete from list
         public ActionResult PharmacyListView()
         {
+            // TODO: Get Pharmacies
+            IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PharmacyListView");
+                return PartialView("PharmacyListView",param);
             }
             else
             {
-                return View();
+                return View(param);
             }
         }
 
         // returned view for adding, editing, or viewing a pharmacy
         public ActionResult PharmacyModificationView(int Id)
         {
-            SQLService db = new SQLService();
+            //TODO needs sql service support SQLService db = new SQLService();
 
             Models.Pharmacy pharmacy = new Models.Pharmacy(); // TODO (needs additional sql services)  = db.GetPharmacyById(Id);
             Models.PharmacyUser admin = new Models.PharmacyUser(); // TODO (needs additional sql services), search db for admin user with matching pharmacy id
@@ -48,20 +51,23 @@ namespace PPOk_Notifications.Controllers
                 // TODO would 'if (id == null)' work better?
                 // TODO can create pharmacy id here or in constructor or with sql service depending on implementation
                 // TODO can create admin id here or in constructor or with sql service depending on implementation
-
+                /*
                 pharmacy = new Models.Pharmacy();
                 admin = new Models.PharmacyUser();
                 admin.IsAdmin = true;
                 admin.PharmacyId = pharmacy.PharmacyId;
+                */
             }
+
+            System.Tuple<Models.Pharmacy,Models.PharmacyUser> param = new System.Tuple<Models.Pharmacy, Models.PharmacyUser>(pharmacy, admin);
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PharmacyModificationView", pharmacy);
+                return PartialView("PharmacyModificationView", param);
             }
             else
             {
-                return View(pharmacy);
+                return View(param);
             }
         }
 
