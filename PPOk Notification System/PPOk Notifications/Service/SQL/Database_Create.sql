@@ -16,8 +16,8 @@ CREATE TABLE [PPOK].[dbo].[login]
 ( 
 	[login_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
 	[user_id] bigint FOREIGN KEY REFERENCES [user]([user_id]) NOT NULL, 
-	[login_hash] varchar(255) NOT NULL, 
-	[login_salt] varchar(32) NOT NULL, 
+	[login_hash] binary(64) NOT NULL, 
+	[login_salt] binary(32) NOT NULL, 
 	[login_token] varchar(255) NOT NULL, 
 	[object_active] bit NOT NULL
 )

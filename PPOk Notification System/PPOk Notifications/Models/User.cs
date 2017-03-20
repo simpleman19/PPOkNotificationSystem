@@ -17,5 +17,7 @@ namespace PPOk_Notifications.Models
 		[Column(Name = "user_type")] public char Type { get; set; }
 
 		[Column(Name = "object_active")] public bool Enabled { get; set; }
+
+		public Login UserLogin { get; set; }
     }
 }
