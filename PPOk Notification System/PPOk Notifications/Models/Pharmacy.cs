@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models
 {
     [Serializable, DisplayName("Pharmacy")]
     public class Pharmacy
     {
-        [DisplayName("Pharmacy ID")] public long PharmacyId { get; set; }
-        [DisplayName("Pharmacy Name")] public string PharmacyName { get; set; }
-        [DisplayName("Pharmacy Phone")] public string PharmacyPhone { get; set; }
-        [DisplayName("Pharmacy Address")] public string PharmacyAddress { get; set; }
+        [DisplayName("Pharmacy ID")] [Column(Name = "pharmacy_id")] public long PharmacyId { get; set; }
+        [DisplayName("Pharmacy Name")] [Column(Name = "pharmacy_name")] public string PharmacyName { get; set; }
+        [DisplayName("Pharmacy Phone")] [Column(Name = "pharmacy_phone")] public string PharmacyPhone { get; set; }
+        [DisplayName("Pharmacy Address")] [Column(Name = "pharmacy_address")] public string PharmacyAddress { get; set; }
         public Template TemplateRefill;
         public Template TemplateRefilled;
         public Template TemplateReady;

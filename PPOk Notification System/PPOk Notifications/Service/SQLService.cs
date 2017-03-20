@@ -315,6 +315,92 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Pharmacy Operations
 
+		#region Enable/Disable Operations
+		public void Pharmacy_Enable(int pharmacy_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_enable"], new { pharmacy_id = pharmacy_id });
+			}
+		}
+		public void Pharmacy_Disable(int pharmacy_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_disable"], new { pharmacy_id = pharmacy_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Pharmacy> GetPharmacies() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getall"]).AsList();
+			}
+		}
+		public List<Pharmacy> GetPharmaciesActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getall_active"]).AsList();
+			}
+		}
+		public List<Pharmacy> GetPharmaciesInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Pharmacy GetPharmacyById(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacy GetPharmacyByIdActive(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid_active"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacy GetPharmacyByIdInactive(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
+				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid_inactive"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void PharmacyInsert(Pharmacy pharmacy) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_insert"], pharmacy);
+			}
+		}
+		public void PharmacyInsertOrUpdate(Pharmacy pharmacy) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_insert_or_update"], pharmacy);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void PharmacyUpdate(Pharmacy pharmacy) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_update"], pharmacy);
+			}
+		}
+		public void PharmacyUpdateActive(Pharmacy pharmacy) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_update_active"], pharmacy);
+			}
+		}
+		public void PharmacyUpdateInactive(Pharmacy pharmacy) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacy_update_inactive"], pharmacy);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
