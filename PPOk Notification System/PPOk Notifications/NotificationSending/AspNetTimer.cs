@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Threading;
-using PPOk_Notifications.NotificationSending;
 
-
-public static class AspNetTimer
+namespace PPOk_Notifications.NotificationSending
 {
-    private static readonly Timer _timer = new Timer(OnTimerElapsed);
-    private static readonly NotificationSender _notificationSender = new NotificationSender();
-
-    public static void Start()
+    public static class AspNetTimer
     {
-        _timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(30000));
-    }
+        private static readonly Timer Timer = new Timer(OnTimerElapsed);
+        private static readonly NotificationSender NotificationSender = new NotificationSender();
 
-    private static void OnTimerElapsed(object sender)
-    {
-        _notificationSender.DoWork();
+        public static void Start()
+        {
+            Timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(30000));
+        }
+
+        private static void OnTimerElapsed(object sender)
+        {
+            NotificationSender.DoWork();
+        }
     }
 }

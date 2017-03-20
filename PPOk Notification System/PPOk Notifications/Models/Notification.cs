@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace PPOk_Notifications.Models
 {
@@ -15,95 +12,95 @@ namespace PPOk_Notifications.Models
             Birthday            
         };
 
-        public long notificationID;
-        public long patientID;
-        public NotificationType notificationType;
-        public DateTime scheduledTime;
-        public DateTime sentTime;
-        public bool sent;
-        public String notificationResponse;
-        public String notificationMessage;
+        public long NotificationId;
+        public long PatientId;
+        public NotificationType Type;
+        public DateTime ScheduledTime;
+        public DateTime SentTime;
+        public bool Sent;
+        public String NotificationResponse;
+        public String NotificationMessage;
 
         public Notification(DateTime dateTime, long patientId, NotificationType type)
         {
-            sent = false;
-            patientID = patientId;
-            notificationType = type;
-            scheduledTime = dateTime;
+            Sent = false;
+            PatientId = patientId;
+            Type = type;
+            ScheduledTime = dateTime;
         }
 
         public Notification(DateTime dateTime, long patientId, NotificationType type, String message)
         {
-            sent = false;
-            patientID = patientId;
-            notificationType = type;
-            scheduledTime = dateTime;
-            notificationMessage = message;
+            Sent = false;
+            PatientId = patientId;
+            Type = type;
+            ScheduledTime = dateTime;
+            NotificationMessage = message;
         }
 
         public Notification(Refill refill, NotificationType type)
         {
             if (type == NotificationType.Refilled)
             {
-                scheduledTime = DateTime.Now;
+                ScheduledTime = DateTime.Now;
             } else if (type == NotificationType.Refill)
             {
 
             }
-            notificationType = type;
+            Type = type;
             //Make database call to get patient id from prescription id
             //patientId = database.getPrescription(prescriptionID);
-            sent = false;
+            Sent = false;
         }
 
-        public static Notification createNotification(DateTime dateTime, long patientID, NotificationType type)
+        public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type)
         {
             Notification notification = new Notification(dateTime, patientID, type);
             //Save notification to database
             return notification;
         }
 
-        public static Notification createNotification(DateTime dateTime, long patientID, NotificationType type, String message)
+        public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type, String message)
         {
             Notification notification = new Notification(dateTime, patientID, type, message);
             //Save notification to database
             return notification;
         }
 
-        public static Notification createNotification(Refill refill, NotificationType type)
+        public static Notification CreateNotification(Refill refill, NotificationType type)
         {
             Notification notification = new Notification(refill, type);
             //Save notification to database
             return notification;
         }
 
-        public static Notification markSent(Notification notification)
+        public static Notification MarkSent(Notification notification)
         {
-            notification.sent = true;
-            notification.sentTime = DateTime.Now;
+            notification.Sent = true;
+            notification.SentTime = DateTime.Now;
 
             return notification;
         }
 
-        public static Notification markSent(Notification notification, DateTime time)
+        public static Notification MarkSent(Notification notification, DateTime time)
         {
-            notification.sent = true;
-            notification.sentTime = time;
+            notification.Sent = true;
+            notification.SentTime = time;
             return notification;
         }
 
-        public static Notification getTestNotification()
+        public static Notification GetTestNotification()
         {
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             Random rand = new Random();
-            test.notificationID = rand.Next(1000, 10000000);
+            test.NotificationId = rand.Next(1000, 10000000);
             return test;
         }
 
-        public static Notification getTestNotification(Random rand)
+        public static Notification GetTestNotification(Random rand)
         {
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
-            test.notificationID = rand.Next(1000, 10000000);
+            test.NotificationId = rand.Next(1000, 10000000);
             return test;
         }
     }

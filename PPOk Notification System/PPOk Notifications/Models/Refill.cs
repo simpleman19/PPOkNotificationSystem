@@ -1,31 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using PPOk_Notifications.NotificationSending;
 
 namespace PPOk_Notifications.Models
 {
     public class Refill
     {
-        public long refillID { get; set; }
-        public long prescriptionID { get; set; }
-        public DateTime refillDate { get; set; }
-        public bool refilled { get; set; }
+        public long RefillId { get; set; }
+        public long PrescriptionId { get; set; }
+        public DateTime RefillDate { get; set; }
+        public bool Refilled { get; set; }
 
         public Refill(Prescription prescription)
         {
-            prescriptionID = prescription.precriptionID;
-            refilled = false;
-            Notification.createNotification(prescription.prescriptionDateFilled.AddDays(prescription.prescriptionDaysSupply - 2), prescription.patientID, Notification.NotificationType.Refill);
+            PrescriptionId = prescription.PrecriptionId;
+            Refilled = false;
+            Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
             
             // Save to database
         }
         
-        public void setFilled()
+        public void SetFilled()
         {
-            refilled = true;
-            NotificationSender.sendFilledNotification(this);
+            Refilled = true;
+            NotificationSender.SendFilledNotification(this);
         }
     }
 }
