@@ -48,11 +48,11 @@ namespace PPOk_Notifications.Controllers
                 // TODO would 'if (id == null)' work better?
                 // TODO can create pharmacy id here or in constructor or with sql service depending on implementation
                 // TODO can create admin id here or in constructor or with sql service depending on implementation
-                // TODO pharmacyUser models do not match ERD, must resolve then add the pharmacy id to the created admin here
 
                 pharmacy = new Models.Pharmacy();
                 admin = new Models.PharmacyUser();
                 admin.IsAdmin = true;
+                admin.PharmacyId = pharmacy.PharmacyId;
             }
 
             if (Request.IsAjaxRequest())
