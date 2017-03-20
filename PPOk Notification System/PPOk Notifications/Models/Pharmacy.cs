@@ -7,6 +7,7 @@ namespace PPOk_Notifications.Models
     [Serializable, DisplayName("Pharmacy")]
     public class Pharmacy
     {
+
         [DisplayName("Pharmacy ID")] public long PharmacyId { get; set; }
         [DisplayName("Pharmacy Name")] public string PharmacyName { get; set; }
         [DisplayName("Pharmacy Phone")] public string PharmacyPhone { get; set; }
