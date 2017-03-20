@@ -9,6 +9,7 @@ namespace PPOk_Notifications.Models
     {
         public long patientID { get; set; }
         public long precriptionID { get; set; }
+        public int prescriptionNumber { get; set; }
         public String prescriptionName { get; set; }
         public DateTime prescriptionDateFilled { get; set; }
         public int prescriptionDaysSupply { get; set; }

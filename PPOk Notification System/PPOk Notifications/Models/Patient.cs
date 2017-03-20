@@ -8,11 +8,12 @@ namespace PPOk_Notifications.Models
     public class Patient : User
     {
         public long patientID { get; set; }
-        public DateTime dateOfBirth { get; set; }
+        public int personCode;
+        public DateTime dateOfBirth;
         public DateTime preferedContactTime;
         public Boolean sendBirthdayMessage;
         public Boolean sendRefillMessage;
-        public OneTimePass oneTimePass { get; set; }
+        public OneTimePass oneTimePass;
 
         public enum PrimaryContactMethod
         {
