@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PPOk_Notifications.Models
+﻿namespace PPOk_Notifications.Models
 {
     public class User
     {
-        public string lastName;
-        public string firstName;
-        public long idNumber;
-        public string phone;
-        public string email;
-        public string token;
-        public string sessionID;
+        public string LastName;
+        public string FirstName;
+        public long IdNumber;
+        public string Phone;
+        public string Email;
+        public string Token;
+        public string SessionId;
     }
 }

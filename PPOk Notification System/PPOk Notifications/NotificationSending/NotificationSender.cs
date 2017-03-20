@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.IO;
@@ -10,8 +9,8 @@ namespace PPOk_Notifications.NotificationSending
 {
     public class NotificationSender : IRegisteredObject
     {
-        string path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        int minsBetweenSending = 1;
+        private readonly string _path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
+        private const int MinsBetweenSending = 1;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -38,33 +37,33 @@ namespace PPOk_Notifications.NotificationSending
                 {
                     return;
                 }
-                checkIfSend();
+                CheckIfSend();
             }
         }
 
-        public static bool sendFilledNotification(Refill refill)
+        public static bool SendFilledNotification(Refill refill)
         {
             Notification n = new Notification(refill, Notification.NotificationType.Refilled);
             // Save notification to database
-            sendNotification(n);
+            SendNotification(n);
             return true;
         }
 
-        private void prepareForSending()
+        private void PrepareForSending()
         {
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
-                sendNotification(n);
+                SendNotification(n);
             }
         }
 
-        private static void sendNotification(Notification n)
+        private static void SendNotification(Notification n)
         {
-            System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.notificationID);
+            System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
 
             //Call Database for patient using n.patientID
-            if (n.notificationType == Notification.NotificationType.Recall)
+            if (n.Type == Notification.NotificationType.Recall)
             {
                 // TODO Call twillio api using phone call and use message saved in notification
             }
@@ -74,7 +73,7 @@ namespace PPOk_Notifications.NotificationSending
                 // TODO Call Twilio api using patient prefered contact method
                 // Mark as sent
             }
-            Notification.markSent(n);
+            Notification.MarkSent(n);
         }
 
         private List<Notification> getNotifications()
@@ -86,45 +85,45 @@ namespace PPOk_Notifications.NotificationSending
             Random rand = new Random();
             for (int i = 0; i < 5; i++)
             {
-                Notification test = Notification.getTestNotification(rand);
+                Notification test = Notification.GetTestNotification(rand);
                 list.Add(test);
             }
 
             return list;
         }
 
-        private bool checkIfSend()
+        private bool CheckIfSend()
         {
             DateTime? lastDTwhenSent = null;
-            if (File.Exists(path))
+            if (File.Exists(_path))
             {
-                lastDTwhenSent = readDateFromFile();
+                lastDTwhenSent = ReadDateFromFile();
                 if (lastDTwhenSent == null)
                 {
-                    writeDateToFile();
-                    prepareForSending();
+                    WriteDateToFile();
+                    PrepareForSending();
                 }
                 else
                 {
                     TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
-                    if (span.Minutes >= minsBetweenSending)
+                    if (span.Minutes >= MinsBetweenSending)
                     {
-                        writeDateToFile();
-                        prepareForSending();
+                        WriteDateToFile();
+                        PrepareForSending();
                     }
                 }
             } 
             else
             {
-                FileStream fs = new FileStream(path, FileMode.Create);
+                FileStream fs = new FileStream(_path, FileMode.Create);
                 fs.Close();
             }
             return true;
         }
 
-        private bool writeDateToFile()
+        private bool WriteDateToFile()
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(_path, FileMode.OpenOrCreate))
             {
                 using (BinaryWriter writer = new BinaryWriter(fs))
                 {
@@ -137,10 +136,10 @@ namespace PPOk_Notifications.NotificationSending
             return true;
         }
 
-        private DateTime? readDateFromFile()
+        private DateTime? ReadDateFromFile()
         {
             DateTime? parsedDateTime = null;
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(_path, FileMode.OpenOrCreate))
             {
                 using (BinaryReader reader = new BinaryReader(fs))
                 {

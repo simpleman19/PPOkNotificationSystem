@@ -1,54 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace PPOk_Notifications.Models
 {
     public class Pharmacy
     {
-        public long pharmacyID { get; set; }
-        public String pharmacyName { get; set; }
-        public String pharmacyPhone { get; set; }
-        public String pharmacyAddress { get; set; }
-        public Template templateRefill;
-        public Template templateRefilled;
-        public Template templateReady;
-        public Template templateRecall;
-        public Template templateBirthday;
+        public long PharmacyId { get; set; }
+        public string PharmacyName { get; set; }
+        public string PharmacyPhone { get; set; }
+        public string PharmacyAddress { get; set; }
+        public Template TemplateRefill;
+        public Template TemplateRefilled;
+        public Template TemplateReady;
+        public Template TemplateRecall;
+        public Template TemplateBirthday;
 
-        public Refill createRefill(Prescription prescription, Patient patient)
+        public Refill CreateRefill(Prescription prescription, Patient patient)
         {
             Refill refill = new Refill(prescription);
 
             return refill;
         }
 
-        public List<Notification> getNotifications()
+        public List<Notification> GetNotifications()
         {
             List<Notification> notifications = new List<Notification>();
 
             return notifications;
         }
 
-        public Template getRefillTemplate()
+        public Template GetRefillTemplate()
         {
-            return parseTemplate(templateRefill);
+            return parseTemplate(TemplateRefill);
         }
 
-        public Template getRecallTemplate()
+        public Template GetRecallTemplate()
         {
-            return parseTemplate(templateRecall);
+            return parseTemplate(TemplateRecall);
         }
 
-        public Template getRefilledTemplate()
+        public Template GetRefilledTemplate()
         {
-            return parseTemplate(templateRefilled);
+            return parseTemplate(TemplateRefilled);
         }
 
-        public Template getBirthdayTemplate()
+        public Template GetBirthdayTemplate()
         {
-            return parseTemplate(templateBirthday);
+            return parseTemplate(TemplateBirthday);
         }
 
         private Template parseTemplate(Template template)

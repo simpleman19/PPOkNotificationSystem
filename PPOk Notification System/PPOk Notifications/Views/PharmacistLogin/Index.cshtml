@@ -1,0 +1,43 @@
+﻿@using PPOk_Notifications.Controllers
+@model PharmacistLoginController.LoginResult?
+
+@{
+    ViewBag.Title = "Pharmacist Login";
+}
+
+<h2>Pharmacist Login</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="inner-addon left-addon">
+        <i class="glyphicon glyphicon-user"></i>
+        <input type="text" name="username" class="form-control" placeholder="Username" />
+    </div>
+
+    <div class="inner-addon left-addon" style="margin-top: 10px;">
+        <i class="glyphicon glyphicon-lock"></i>
+        <input type="password" name="password" class="form-control" placeholder="Password" />
+    </div>
+
+    if (Model != null)
+    {
+        <div style="margin-top: 5px;">
+            @switch (Model)
+            {
+                case PharmacistLoginController.LoginResult.WrongPassword:
+                    <span style="color: red;">Incorrect password.</span>
+                    break;
+                case PharmacistLoginController.LoginResult.UserNotFound:
+                    <span style="color: red;">User not found.</span>
+                    break;
+                case PharmacistLoginController.LoginResult.PasswordNotSet:
+                    <span style="color: red;">No password is set for this user. Please contact your administrator.</span>
+                    break;
+            }
+        </div>
+    }
+
+    <div class="form-group" style="margin-top: 10px;">
+        <input type="submit" value="Login" , class="btn btn-default" />
+    </div>
+}
