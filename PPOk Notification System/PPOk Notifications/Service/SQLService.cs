@@ -409,6 +409,19 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Pharmacist Operations
 
+		#region Enable/Disable Operations
+		public void Pharmacist_Enable(int pharmacist_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_enable"], new { pharmacist_id = pharmacist_id });
+			}
+		}
+		public void Pharmacist_Disable(int pharmacist_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_disable"], new { pharmacist_id = pharmacist_id });
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
