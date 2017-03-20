@@ -1,7 +1,10 @@
-﻿using Dapper;
+﻿using System.Collections.Generic;
+using Dapper;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
 	public class SQLService {
@@ -75,7 +78,6 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get all
-        /*
 		public List<User> GetUsers() {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getall"]).AsList();
@@ -90,11 +92,10 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getall_inactive"]).AsList();
 			}
-		}*/
+		}
 		#endregion
 
 		#region Get by id
-            /*
 		public User GetUserById(int user_id) {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyid"], new { user_id = user_id }).FirstOrDefault();
@@ -109,11 +110,10 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyid_inactive"], new { user_id = user_id }).FirstOrDefault();
 			}
-		}*/
+		}
 		#endregion
 
 		#region Get by email
-        /*
 		public User GetUserByEmail(string user_email) {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyemail"], new { user_email = user_email }).FirstOrDefault();
@@ -128,11 +128,10 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyemail_inactive"], new { user_email = user_email }).FirstOrDefault();
 			}
-		}*/
+		}
 		#endregion
 
 		#region Get by name
-        /*
 		public User GetUserByName(string user_fname, string user_lname) {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyname"], new { user_fname = user_fname, user_lname = user_lname }).FirstOrDefault();
@@ -147,11 +146,10 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				return db.Query<User>(ScriptService.Scripts["user_getbyname_inactive"], new { user_fname = user_fname, user_lname = user_lname }).FirstOrDefault();
 			}
-		}*/
+		}
 		#endregion
 
 		#region Insert
-        /*
 		public void UserInsert(User user) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_insert"], user);
@@ -161,11 +159,10 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_insert_or_update"], user);
 			}
-		}*/
+		}
 		#endregion
 
 		#region Update
-        /*
 		public void UserUpdate(User user) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_update"], user);
@@ -180,7 +177,7 @@ namespace PPOk_Notifications.Service {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_update_inactive"], user);
 			}
-		}*/
+		}
 		#endregion
 
 		#endregion
