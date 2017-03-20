@@ -11,7 +11,7 @@
 {
     <div class="inner-addon left-addon">
         <i class="glyphicon glyphicon-user"></i>
-        <input type="text" name="username" class="form-control" placeholder="Username" />
+        <input type="text" name="email" class="form-control" placeholder="Email" />
     </div>
 
     <div class="inner-addon left-addon" style="margin-top: 10px;">
@@ -31,8 +31,10 @@
                     <span style="color: red;">User not found.</span>
                     break;
                 case PharmacistLoginController.LoginResult.PasswordNotSet:
-                    <span style="color: red;">No password is set for this user. Please contact your administrator.</span>
+                    <span style="color: red;">No password is set for this user.</span>
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         </div>
     }
@@ -40,4 +42,6 @@
     <div class="form-group" style="margin-top: 10px;">
         <input type="submit" value="Login" , class="btn btn-default" />
     </div>
+
+    <a href="/PharmacistLogin/ResetRequest">Reset Password</a>
 }

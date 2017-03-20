@@ -346,6 +346,9 @@
     <Content Include="Views\Pharmacy\Upload.cshtml" />
     <Content Include="Views\PharmacistLogin\Index.cshtml" />
     <Content Include="Views\PharmacistLogin\Success.cshtml" />
+    <Content Include="Views\PharmacistLogin\Reset.cshtml" />
+    <Content Include="Views\PharmacistLogin\ResetResult.cshtml" />
+    <Content Include="Views\PharmacistLogin\ResetRequest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
