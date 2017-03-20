@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using PPOk_Notifications.Models;
@@ -145,12 +146,12 @@ namespace PPOk_Notifications.Controllers
 
         private byte[] HashPassword(PharmacyUser user, string password)
         {
-            if (string.IsNullOrEmpty(user.Salt))
+            if (user.Salt == null)
             {
                 user.GenerateSalt();
             }
 
-            var saltedPassword = Encoding.UTF8.GetBytes(user.Salt + password);
+            var saltedPassword = Encoding.UTF8.GetBytes(Convert.ToBase64String(user.Salt) + password);
 
             byte[] hash;
             using (var sha = new SHA512Managed())
