@@ -6,9 +6,9 @@ namespace PPOk_Notifications.Models
     {
 		[Column(Name = "user_lname")] public string LastName { get; set; }
 
-		[Column(Name = "user_fname")] public string FirstName { get; set; }
+        [Column(Name = "user_fname")] public string FirstName { get; set; }
 
-		[Column(Name = "user_id")] public long IdNumber { get; set; }
+        [Column(Name = "user_id")] public long IdNumber { get; set; }
 
 		[Column(Name = "user_phone")] public string Phone { get; set; }
 
