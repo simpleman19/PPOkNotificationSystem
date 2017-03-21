@@ -524,6 +524,113 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Template Operations
 
+		#region Enable/Disable Operations
+		public void Template_Enable(int template_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_enable"], new { template_id = template_id });
+			}
+		}
+		public void Template_Disable(int template_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_disable"], new { template_id = template_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Template> GetTemplates() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getall"]).AsList();
+			}
+		}
+		public List<Template> GetTemplatesActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getall_active"]).AsList();
+			}
+		}
+		public List<Template> GetTemplatesInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Template GetTemplateById(int template_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbyid"], new { template_id = template_id }).FirstOrDefault();
+			}
+		}
+		public Template GetTemplateByIdActive(int template_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbyid_active"], new { template_id = template_id }).FirstOrDefault();
+			}
+		}
+		public Template GetTemplateByIdInactive(int template_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbyid_inactive"], new { template_id = template_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by pharmacy id
+		public Template GetTemplateByUserId(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		public Template GetTemplateByUserIdActive(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		public Template GetTemplateByUserIdInactive(int pharmacy_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
+				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void TemplateInsert(Template template) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_insert"], template);
+			}
+		}
+		public void TemplateInsertOrUpdate(Template template) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_insert_or_update"], template);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void TemplateUpdate(Template template) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_update"], template);
+			}
+		}
+		public void TemplateUpdateActive(Template template) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_update_active"], template);
+			}
+		}
+		public void TemplateUpdateInactive(Template template) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["template_update_inactive"], template);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
