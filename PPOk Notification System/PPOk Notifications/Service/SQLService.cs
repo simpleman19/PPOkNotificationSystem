@@ -869,6 +869,113 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Refill Operations
 
+		#region Enable/Disable Operations
+		public void Refill_Enable(int refill_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_enable"], new { refill_id = refill_id });
+			}
+		}
+		public void Refill_Disable(int refill_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_disable"], new { refill_id = refill_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Refill> GetRefills() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getall"]).AsList();
+			}
+		}
+		public List<Refill> GetRefillsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getall_active"]).AsList();
+			}
+		}
+		public List<Refill> GetRefillsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Refill GetRefillById(int refill_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid"], new { refill_id = refill_id }).FirstOrDefault();
+			}
+		}
+		public Refill GetRefillByIdActive(int refill_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_active"], new { refill_id = refill_id }).FirstOrDefault();
+			}
+		}
+		public Refill GetRefillByIdInactive(int refill_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_inactive"], new { refill_id = refill_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by prescription id
+		public Refill GetRefillByPrescriptionId(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		public Refill GetRefillByPrescriptionIdActive(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_active"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		public Refill GetRefillByPrescriptionIdInactive(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_inactive"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void RefillInsert(Refill refill) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_insert"], refill);
+			}
+		}
+		public void RefillInsertOrUpdate(Refill refill) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_insert_or_update"], refill);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void RefillUpdate(Refill refill) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_update"], refill);
+			}
+		}
+		public void RefillUpdateActive(Refill refill) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_update_active"], refill);
+			}
+		}
+		public void RefillUpdateInactive(Refill refill) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["refill_update_inactive"], refill);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
