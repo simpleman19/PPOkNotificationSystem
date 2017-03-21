@@ -422,6 +422,100 @@ namespace PPOk_Notifications.Service {
 		}
 		#endregion
 
+		#region Get all
+		public List<Pharmacist> GetPharmacists() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall"]).AsList();
+			}
+		}
+		public List<Pharmacist> GetPharmacistsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall_active"]).AsList();
+			}
+		}
+		public List<Pharmacist> GetPharmacistsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Pharmacist GetPharmacistById(int pharmacist_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacist GetPharmacistByIdActive(int pharmacist_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_active"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacist GetPharmacistByIdInactive(int pharmacist_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_inactive"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by user id
+		public Pharmacist GetPharmacistByUserId(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacist GetPharmacistByUserIdActive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Pharmacist GetPharmacistByUserIdInactive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void PharmacistInsert(Pharmacist pharmacist) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_insert"], pharmacist);
+			}
+		}
+		public void PharmacistInsertOrUpdate(Pharmacist pharmacist) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_insert_or_update"], pharmacist);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void PharmacistUpdate(Pharmacist pharmacist) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_update"], pharmacist);
+			}
+		}
+		public void PharmacistUpdateActive(Pharmacist pharmacist) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_update_active"], pharmacist);
+			}
+		}
+		public void PharmacistUpdateInactive(Pharmacist pharmacist) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["pharmacist_update_inactive"], pharmacist);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*

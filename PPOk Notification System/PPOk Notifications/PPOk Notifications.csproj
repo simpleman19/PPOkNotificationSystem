@@ -187,6 +187,7 @@
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OneTimePass.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Pharmacist.cs" />
     <Compile Include="Models\Pharmacy.cs" />
     <Compile Include="Models\PharmacyUser.cs" />
     <Compile Include="Models\Prescription.cs" />
