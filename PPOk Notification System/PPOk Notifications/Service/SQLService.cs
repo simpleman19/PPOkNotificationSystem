@@ -754,6 +754,113 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Prescription Operations
 
+		#region Enable/Disable Operations
+		public void Prescription_Enable(int prescription_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_enable"], new { prescription_id = prescription_id });
+			}
+		}
+		public void Prescription_Disable(int prescription_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_disable"], new { prescription_id = prescription_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Prescription> GetPrescriptions() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getall"]).AsList();
+			}
+		}
+		public List<Prescription> GetPrescriptionsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getall_active"]).AsList();
+			}
+		}
+		public List<Prescription> GetPrescriptionsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Prescription GetPrescriptionById(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		public Prescription GetPrescriptionByIdActive(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid_active"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		public Prescription GetPrescriptionByIdInactive(int prescription_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid_inactive"], new { prescription_id = prescription_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by patient id
+		public Prescription GetPrescriptionByPatientId(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Prescription GetPrescriptionByPatientIdActive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid_active"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Prescription GetPrescriptionByPatientIdInactive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void PrescriptionInsert(Prescription prescription) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_insert"], prescription);
+			}
+		}
+		public void PrescriptionInsertOrUpdate(Prescription prescription) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_insert_or_update"], prescription);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void PrescriptionUpdate(Prescription prescription) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_update"], prescription);
+			}
+		}
+		public void PrescriptionUpdateActive(Prescription prescription) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_update_active"], prescription);
+			}
+		}
+		public void PrescriptionUpdateInactive(Prescription prescription) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["prescription_update_inactive"], prescription);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
