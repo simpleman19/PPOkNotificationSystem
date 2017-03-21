@@ -984,6 +984,113 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Notification Operations
 
+		#region Enable/Disable Operations
+		public void Notification_Enable(int notification_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_enable"], new { notification_id = notification_id });
+			}
+		}
+		public void Notification_Disable(int notification_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_disable"], new { notification_id = notification_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Notification> GetNotifications() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall"]).AsList();
+			}
+		}
+		public List<Notification> GetNotificationsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_active"]).AsList();
+			}
+		}
+		public List<Notification> GetNotificationsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Notification GetNotificationById(int notification_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbyid"], new { notification_id = notification_id }).FirstOrDefault();
+			}
+		}
+		public Notification GetNotificationByIdActive(int notification_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbyid_active"], new { notification_id = notification_id }).FirstOrDefault();
+			}
+		}
+		public Notification GetNotificationByIdInactive(int notification_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbyid_inactive"], new { notification_id = notification_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by patient id
+		public Notification GetNotificationByPatientId(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbypatientid"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Notification GetNotificationByPatientIdActive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbypatientid_active"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Notification GetNotificationByPatientIdInactive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getbypatientid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void NotificationInsert(Notification notification) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_insert"], notification);
+			}
+		}
+		public void NotificationInsertOrUpdate(Notification notification) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_insert_or_update"], notification);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void NotificationUpdate(Notification notification) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_update"], notification);
+			}
+		}
+		public void NotificationUpdateActive(Notification notification) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_update_active"], notification);
+			}
+		}
+		public void NotificationUpdateInactive(Notification notification) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["notification_update_inactive"], notification);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
