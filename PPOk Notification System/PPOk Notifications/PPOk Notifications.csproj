@@ -184,8 +184,9 @@
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Models\EmailOTP.cs" />
     <Compile Include="Models\Login.cs" />
-    <Compile Include="Models\OneTimePass.cs" />
+    <Compile Include="Models\OTP.cs" />
     <Compile Include="Models\Patient.cs" />
     <Compile Include="Models\Pharmacist.cs" />
     <Compile Include="Models\Pharmacy.cs" />
