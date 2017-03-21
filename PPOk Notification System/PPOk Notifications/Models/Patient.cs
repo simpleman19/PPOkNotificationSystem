@@ -10,7 +10,7 @@ namespace PPOk_Notifications.Models
         public DateTime PreferedContactTime { get; set; }
         public bool SendBirthdayMessage { get; set; }
         public bool SendRefillMessage { get; set; }
-        public OneTimePass OneTimePass { get; set; }
+        public OTP Otp { get; set; }
         public PrimaryContactMethod ContactMethod { get; set; }
 
         public enum PrimaryContactMethod
