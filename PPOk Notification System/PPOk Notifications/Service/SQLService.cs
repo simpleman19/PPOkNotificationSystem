@@ -639,6 +639,113 @@ namespace PPOk_Notifications.Service {
 		 */
 		#region Patient Operations
 
+		#region Enable/Disable Operations
+		public void Patient_Enable(int patient_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_enable"], new { patient_id = patient_id });
+			}
+		}
+		public void Patient_Disable(int patient_id) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_disable"], new { patient_id = patient_id });
+			}
+		}
+		#endregion
+
+		#region Get all
+		public List<Patient> GetPatients() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getall"]).AsList();
+			}
+		}
+		public List<Patient> GetPatientsActive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getall_active"]).AsList();
+			}
+		}
+		public List<Patient> GetPatientsInactive() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by id
+		public Patient GetPatientById(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByIdActive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_active"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByIdInactive(int patient_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Get by user id
+		public Patient GetPatientByUserId(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByUserIdActive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByUserIdInactive(int user_id) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
+			}
+		}
+		#endregion
+
+		#region Insert
+		public void PatientInsert(Patient patient) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_insert"], patient);
+			}
+		}
+		public void PatientInsertOrUpdate(Patient patient) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_insert_or_update"], patient);
+			}
+		}
+		#endregion
+
+		#region Update
+		public void PatientUpdate(Patient patient) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_update"], patient);
+			}
+		}
+		public void PatientUpdateActive(Patient patient) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_update_active"], patient);
+			}
+		}
+		public void PatientUpdateInactive(Patient patient) {
+			using (var db = connect()) {
+				db.Execute(ScriptService.Scripts["patient_update_inactive"], patient);
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/*
