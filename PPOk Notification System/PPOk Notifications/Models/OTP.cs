@@ -2,7 +2,7 @@
 
 namespace PPOk_Notifications.Models
 {
-    public class OneTimePass
+    public class OTP
     {
         public long OtpId { get; set; }
         public long UserId { get; set; }
