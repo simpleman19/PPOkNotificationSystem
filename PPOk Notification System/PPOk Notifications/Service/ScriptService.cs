@@ -16,19 +16,18 @@ namespace PPOk_Notifications.Service {
 				.ToDictionary(f => Path.GetFileNameWithoutExtension(f).ToLower(), File.ReadAllText, StringComparer.OrdinalIgnoreCase);
 		}
 
-		public static void Execute(IDbConnection db, string name, Object thing = null) {
-			string script = Scripts[name];
+		public static void Execute(IDbConnection db, string name, object thing = null) {
+			var script = Scripts[name];
 			if (script != null) {
-				List<string> commands = Regex.Split(script, @"^\s*GO\s*$",
+				var commands = Regex.Split(script, @"^\s*GO\s*$",
 					RegexOptions.Multiline | RegexOptions.IgnoreCase).ToList();
 				db.Open();
-				foreach (string command in commands) {
-					if (command.Trim() != "") {
-						if (thing != null) {
-							db.Execute(command, thing);
-						} else {
-							db.Execute(command);
-						}
+				foreach (var command in commands) {
+					if (command.Trim() == "") continue;
+					if (thing != null) {
+						db.Execute(command, thing);
+					} else {
+						db.Execute(command);
 					}
 				}
 				db.Close();

@@ -1,0 +1,26 @@
+﻿@using PPOk_Notifications.Controllers
+@model PharmacistLoginController.ResetResults?
+
+@{
+    ViewBag.Title = "Password Reset";
+}
+
+<h2>Password Reset</h2>
+
+@switch (Model)
+{
+    case PharmacistLoginController.ResetResults.UserNotFound:
+        <p>User not found.</p>
+        break;
+    case PharmacistLoginController.ResetResults.PasswordNotSet:
+        <p>No password was provided.</p>
+        break;
+    case PharmacistLoginController.ResetResults.PasswordsDontMatch:
+        <p>The given password and confirmation password did not match each other.</p>
+        break;
+    case null:
+        <p>You have successfully reset your password!</p>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}

@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models
 {
     public class Template
     {
-        public long templateID { get; set; }
-        public long pharmacyID { get; set; }
-        public String templateEmail { get; set; }
-        public String templateText { get; set; }
-        public String templatePhone { get; set; }
+        [Column(Name = "template_id")] public long TemplateId { get; set; }
+
+        public long PharmacyId { get; set; }
+
+        public string TemplateEmail { get; set; }
+
+        public string TemplateText { get; set; }
+
+        public string TemplatePhone { get; set; }
 
     }
 }

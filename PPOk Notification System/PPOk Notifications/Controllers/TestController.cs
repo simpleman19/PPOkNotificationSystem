@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers {

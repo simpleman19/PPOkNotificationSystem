@@ -180,14 +180,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\PharmacistLoginController.cs" />
     <Compile Include="Controllers\PharmacyController.cs" />
+    <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Models\OneTimePass.cs" />
+    <Compile Include="Models\EmailOTP.cs" />
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\OTP.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Pharmacist.cs" />
     <Compile Include="Models\Pharmacy.cs" />
+    <Compile Include="Models\PharmacyUser.cs" />
     <Compile Include="Models\Prescription.cs" />
     <Compile Include="Models\Refill.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Service\MappingService.cs" />
     <Compile Include="Service\ScriptService.cs" />
     <Compile Include="Service\SQLService.cs" />
     <Compile Include="Service\TwilioApi.cs" />
@@ -286,12 +293,54 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\responsive-tabs.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Service\SQL\blank.sql" />
     <Content Include="Service\SQL\Database_Create.sql" />
     <Content Include="Service\SQL\Database_Drop.sql" />
+    <Content Include="Service\SQL\EmailOTP_Disable.sql" />
+    <Content Include="Service\SQL\EmailOTP_Enable.sql" />
+    <Content Include="Service\SQL\Login_Disable.sql" />
+    <Content Include="Service\SQL\Login_Enable.sql" />
+    <Content Include="Service\SQL\Login_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Login_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetById_Active.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId_Active.sql" />
+    <Content Include="Service\SQL\Login_GetByUserId.sql" />
+    <Content Include="Service\SQL\Login_Update_Inactive.sql" />
+    <Content Include="Service\SQL\Login_Update_Active.sql" />
+    <Content Include="Service\SQL\Login_Update.sql" />
+    <Content Include="Service\SQL\Notification_Disable.sql" />
+    <Content Include="Service\SQL\Notification_Enable.sql" />
+    <Content Include="Service\SQL\OTP_Disable.sql" />
+    <Content Include="Service\SQL\OTP_Enable.sql" />
+    <Content Include="Service\SQL\Patient_Disable.sql" />
+    <Content Include="Service\SQL\Patient_Enable.sql" />
+    <Content Include="Service\SQL\Pharmacist_Disable.sql" />
+    <Content Include="Service\SQL\Pharmacist_Enable.sql" />
+    <Content Include="Service\SQL\Pharmacy_Disable.sql" />
+    <Content Include="Service\SQL\Pharmacy_Enable.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetById_Active.sql" />
+    <Content Include="Service\SQL\Pharmacy_Update_Inactive.sql" />
+    <Content Include="Service\SQL\Pharmacy_Update_Active.sql" />
+    <Content Include="Service\SQL\Pharmacy_Update.sql" />
+    <Content Include="Service\SQL\Prescription_Disable.sql" />
+    <Content Include="Service\SQL\Prescription_Enable.sql" />
+    <Content Include="Service\SQL\Refill_Disable.sql" />
+    <Content Include="Service\SQL\Refill_Enable.sql" />
+    <Content Include="Service\SQL\Template_Disable.sql" />
+    <Content Include="Service\SQL\Template_Enable.sql" />
     <Content Include="Service\SQL\User_Enable.sql" />
+    <Content Include="Service\SQL\Login_GetAll.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetAll.sql" />
     <Content Include="Service\SQL\User_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\User_GetAll_Active.sql" />
     <Content Include="Service\SQL\User_GetByEmail_Inactive.sql" />
+    <Content Include="Service\SQL\Login_GetById.sql" />
+    <Content Include="Service\SQL\Pharmacy_GetById.sql" />
     <Content Include="Service\SQL\User_GetById_Inactive.sql" />
     <Content Include="Service\SQL\User_GetByName_Inactive.sql" />
     <Content Include="Service\SQL\User_GetByName_Active.sql" />
@@ -299,6 +348,10 @@
     <Content Include="Service\SQL\User_GetByEmail_Active.sql" />
     <Content Include="Service\SQL\User_GetByEmail.sql" />
     <Content Include="Service\SQL\User_GetById_Active.sql" />
+    <Content Include="Service\SQL\Login_Insert.sql" />
+    <Content Include="Service\SQL\Login_Insert_Or_Update.sql" />
+    <Content Include="Service\SQL\Pharmacy_Insert.sql" />
+    <Content Include="Service\SQL\Pharmacy_Insert_Or_Update.sql" />
     <Content Include="Service\SQL\User_Update.sql" />
     <Content Include="Service\SQL\User_Update_Inactive.sql" />
     <Content Include="Service\SQL\User_Update_Active.sql" />
@@ -307,7 +360,6 @@
     <Content Include="Service\SQL\User_Disable.sql" />
     <Content Include="Service\SQL\User_Insert_Or_Update.sql" />
     <Content Include="Service\SQL\User_Insert.sql" />
-    <Content Include="Service\SQL\template.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +394,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Pharmacy\Pharmacy.cshtml" />
     <Content Include="Views\Pharmacy\Upload.cshtml" />
+    <Content Include="Views\PharmacistLogin\Index.cshtml" />
+    <Content Include="Views\PharmacistLogin\Success.cshtml" />
+    <Content Include="Views\PharmacistLogin\Reset.cshtml" />
+    <Content Include="Views\PharmacistLogin\ResetResult.cshtml" />
+    <Content Include="Views\PharmacistLogin\ResetRequest.cshtml" />
+    <Content Include="Views\Admin\PharmacyListView.cshtml" />
+    <Content Include="Views\Admin\PharmacyModificationView.cshtml" />
+    <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

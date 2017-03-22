@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using PPOk_Notifications.Models;
 
@@ -20,7 +17,7 @@ namespace PPOk_Notifications.Controllers
             List<Notification> list = new List<Notification>(); 
             for (int i = 0; i < 100; i++)
             {
-                list.Add(Notification.getTestNotification());
+                list.Add(Notification.GetTestNotification());
             }
             return View(list);
         }
