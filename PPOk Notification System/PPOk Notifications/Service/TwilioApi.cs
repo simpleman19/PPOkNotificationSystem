@@ -3,7 +3,6 @@ using PPOk_Notifications.Models;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 using Twilio;
-using System.Collections.Generic;
 
 namespace PPOk_Notifications.Service
 {
@@ -11,12 +10,11 @@ namespace PPOk_Notifications.Service
     {
         private const string AccountSid = "AC2fcaf6f7256a0f7891903318195c9e01";
         private const string AuthToken = "7504188a03f5969ff3549eaf8fba3e9c";
-
         Pharmacy pharmacy;
 
         bool testTwilio = false;
 
-        public TwilioApi(Pharmacy pharm)
+        TwilioApi(Pharmacy pharm)
         {
             TwilioClient.Init(AccountSid, AuthToken);
             pharmacy = pharm;
@@ -31,7 +29,7 @@ namespace PPOk_Notifications.Service
             {
                 var message = MessageResource.Create(
                     to: new PhoneNumber("+18065703539"),
-                    from: new PhoneNumber("+14052469892 "),
+                    from: new PhoneNumber("+19999999998"),
                     body: temp.TemplateText);
             }
 
