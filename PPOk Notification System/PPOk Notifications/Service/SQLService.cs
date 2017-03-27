@@ -3,7 +3,6 @@ using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
@@ -34,11 +33,6 @@ namespace PPOk_Notifications.Service {
 		 * =======================================
 		 *     Database Operations
 		 */
-
-        /// commented out sql services
-        /// FIXME: errors because models not set up correctly yet
-
-
         #region Database Operations
         public string Rebuild() {
 			//Resets entire database with fresh empty model
