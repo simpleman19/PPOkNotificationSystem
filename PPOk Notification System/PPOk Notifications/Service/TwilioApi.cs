@@ -8,9 +8,11 @@ namespace PPOk_Notifications.Service
 {
     public class TwilioApi
     {
-        private const string AccountSid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-        private const string AuthToken = "an_auth_token";
+        private const string AccountSid = "AC2fcaf6f7256a0f7891903318195c9e01";
+        private const string AuthToken = "7504188a03f5969ff3549eaf8fba3e9c";
         Pharmacy pharmacy;
+
+        bool testTwilio = false;
 
         TwilioApi(Pharmacy pharm)
         {
@@ -20,26 +22,33 @@ namespace PPOk_Notifications.Service
 
         public void SendTextMessage(Notification notification)
         {
-            // TODO Look up patient phone number in database from notification patient id
-            Patient patient = new Patient();
+            var db = new SQLService();
+            Patient p = db.GetPatientById(notification.PatientId);
             Template temp = GetTempFromPharmacy(notification.Type);
+            if (testTwilio)
+            {
+                var message = MessageResource.Create(
+                    to: new PhoneNumber("+18065703539"),
+                    from: new PhoneNumber("+19999999998"),
+                    body: temp.TemplateText);
+            }
 
-            var message = MessageResource.Create(
-                to: new PhoneNumber("+19999999999"),
-                from: new PhoneNumber("+19999999998"),
-                body: temp.TemplateText);
         }
 
         public void MakePhoneCall(Notification notification)
         {
-            // TODO Look up patient phone number in database from notification patient id
-            Patient patient = new Patient();
+            var db = new SQLService();
+            Patient p = db.GetPatientById(notification.PatientId);
 
-            var to = new PhoneNumber("+14155551212");
-            var from = new PhoneNumber("+15017250604");
-            var call = CallResource.Create(to,
-                                           from,
-                                           url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+            if (testTwilio)
+            {
+                var to = new PhoneNumber("+18065703539");
+                var from = new PhoneNumber("+15017250604");
+                var call = CallResource.Create(to,
+                                               from,
+                                               url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+
+            }
             //TODO create xmls for phone calls
         }
 
