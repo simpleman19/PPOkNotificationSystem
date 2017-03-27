@@ -668,13 +668,13 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Patient GetPatientById(int patient_id) {
+		public Patient GetPatientById(long patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public Patient GetPatientByIdActive(int patient_id) {
+		public Patient GetPatientByIdActive(long patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_active"], new { patient_id = patient_id }).FirstOrDefault();
@@ -1060,6 +1060,7 @@ namespace PPOk_Notifications.Service {
 				db.Execute(ScriptService.Scripts["notification_insert"], notification);
 			}
 		}
+
 		public void NotificationInsertOrUpdate(Notification notification) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["notification_insert_or_update"], notification);

@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.IO;
 using PPOk_Notifications.Models;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.NotificationSending
 {
@@ -44,7 +45,8 @@ namespace PPOk_Notifications.NotificationSending
         public static bool SendFilledNotification(Refill refill)
         {
             Notification n = new Notification(refill, Notification.NotificationType.Refilled);
-            // Save notification to database
+            var db = new SQLService();
+            db.NotificationInsert(n);
             SendNotification(n);
             return true;
         }
@@ -61,8 +63,9 @@ namespace PPOk_Notifications.NotificationSending
         private static void SendNotification(Notification n)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
+            var db = new SQLService();
+            Patient p = db.GetPatientById(n.PatientId);
 
-            //Call Database for patient using n.patientID
             if (n.Type == Notification.NotificationType.Recall)
             {
                 // TODO Call twillio api using phone call and use message saved in notification
@@ -70,6 +73,17 @@ namespace PPOk_Notifications.NotificationSending
             else
             {
                 // TODO Get template from pharmacy
+                switch(p.ContactMethod)
+                {
+                    case Patient.PrimaryContactMethod.Call:
+                        break;
+                    case Patient.PrimaryContactMethod.Email:
+                        break;
+                    case Patient.PrimaryContactMethod.Text:
+                        break;
+                    default:
+                        break;
+                }
                 // TODO Call Twilio api using patient prefered contact method
                 // Mark as sent
             }
@@ -78,17 +92,9 @@ namespace PPOk_Notifications.NotificationSending
 
         private List<Notification> getNotifications()
         {
-            List<Notification> list = new List<Notification>();
-            // TODO Make database call
-            // TODO Get patient preferences and filter notifications to be sent based on preferences
-            // TODO Get patients whose birthday is today and  narrow down based on preferences
-            Random rand = new Random();
-            for (int i = 0; i < 5; i++)
-            {
-                Notification test = Notification.GetTestNotification(rand);
-                list.Add(test);
-            }
-
+            var db = new SQLService();
+            List<Notification> list = db.GetNotificationsActive();
+            // TODO add birthdays and get not sent but before current datetime
             return list;
         }
 
