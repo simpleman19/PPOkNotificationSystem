@@ -93,19 +93,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public User GetUserById(int user_id) {
+		public User GetUserById(long user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public User GetUserByIdActive(int user_id) {
+		public User GetUserByIdActive(long user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public User GetUserByIdInactive(int user_id) {
+		public User GetUserByIdInactive(long user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyid_inactive"], new { user_id = user_id }).FirstOrDefault();
