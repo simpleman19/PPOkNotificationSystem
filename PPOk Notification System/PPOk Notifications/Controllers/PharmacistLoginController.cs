@@ -35,7 +35,7 @@ namespace PPOk_Notifications.Controllers
             {
                 return View(LoginResult.WrongPassword);
             }
-
+            Session["user_id"] = user.IdNumber;
             return RedirectToAction("Success");
         }
 
