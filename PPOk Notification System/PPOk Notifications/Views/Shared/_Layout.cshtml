@@ -39,7 +39,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("PPOk Notifier", "Index", "PharmacistLogin", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("PPOk Notifier", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -65,62 +65,26 @@
             </div>
         </div>
     </div>
-    @if (loggedIn)
-    {
-        <div class="row">
-            <div class="col-xs-2 col-xs-offset-10">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" style="margin:10px;">
-                    Upload Patient File
-                </button>
-            </div>
-        </div>
-    }
-    </div>
-   
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - PPOk Notification Scheduler</p>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 
+    <script type="text/javascript">
+
+        $(function () {
+            $('.navbar-nav li').click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+            });
+        });
+
+    </script>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-@if (loggedIn)
-{
-    <!-- Modal for upload -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Patient Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary()
-
-                        <div class="form-group">
-                            <input type="file" id="dataFile" name="upload" />
-                        </div>
-
-                        <div class="form-group">
-                            <input type="submit" value="Upload" class="btn btn-default" />
-                        </div>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
 </body>
 </html>
