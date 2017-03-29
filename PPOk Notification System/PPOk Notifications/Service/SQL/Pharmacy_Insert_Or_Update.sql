@@ -42,7 +42,6 @@ SET
 	[template_refill] = @template_refill.TemplateId, 
 	[template_ready] = @template_ready.TemplateId, 
 	[template_recall] = @template_recall.TemplateId, 
-	[template_birthday] = @template_birthday.TemplateId, 
-	[object_active] = 1
+	[template_birthday] = @template_birthday.TemplateId
 WHERE [pharmacy].[pharmacy_id] = @pharmacy_id
 END

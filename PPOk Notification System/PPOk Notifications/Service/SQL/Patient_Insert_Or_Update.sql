@@ -45,7 +45,6 @@ SET
 	[preference_phone] = @preference_phone, 
 	[preference_text] = @preference_text, 
 	[preference_email] = @preference_email, 
-	[preference_time] = @preference_time, 
-	[object_active] = 1
+	[preference_time] = @preference_time
 WHERE [patient].[patient_id] = @patient_id
 END
