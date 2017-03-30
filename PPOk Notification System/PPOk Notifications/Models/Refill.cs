@@ -1,5 +1,6 @@
 ﻿using System;
 using PPOk_Notifications.NotificationSending;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models
 {
@@ -14,9 +15,10 @@ namespace PPOk_Notifications.Models
         {
             PrescriptionId = prescription.PrecriptionId;
             Refilled = false;
-            Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
-            
-            // Save to database
+            var notification = Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
+
+            var db = new SQLService();
+            db.NotificationInsert(notification);
         }
         
         public void SetFilled()
