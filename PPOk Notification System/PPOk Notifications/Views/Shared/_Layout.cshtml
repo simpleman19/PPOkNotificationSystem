@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-@{ 
+@{
     bool loggedIn = false;
     bool pharmacist = false;
     bool pharmAdmin = false;
@@ -57,7 +57,8 @@
                     @if (!loggedIn)
                     {
                         <li><a href="~/PharmacistLogin/">Login</a></li>
-                    } else
+                    }
+                    else
                     {
                         <li><a href="~/PharmacistLogin/Logout">Logout</a></li>
                     }
@@ -76,7 +77,7 @@
         </div>
     }
     </div>
-   
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -88,39 +89,39 @@
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-@if (loggedIn)
-{
+    @if (loggedIn)
+    {
     <!-- Modal for upload -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Patient Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary()
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload Patient Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary()
 
-                        <div class="form-group">
-                            <input type="file" id="dataFile" name="upload" />
-                        </div>
+                            <div class="form-group">
+                                <input type="file" id="dataFile" name="upload" />
+                            </div>
 
-                        <div class="form-group">
-                            <input type="submit" value="Upload" class="btn btn-default" />
-                        </div>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="form-group">
+                                <input type="submit" value="Upload" class="btn btn-default" />
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
 </body>
 </html>
