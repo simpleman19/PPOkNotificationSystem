@@ -27,8 +27,9 @@ namespace PPOk_Notifications.Controllers
         // can select edit/view/delete from list
         public ActionResult PharmacyListView()
         {
-            // TODO: Get Pharmacies
+            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
+            ((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
             if (Request.IsAjaxRequest())
             {
                 return PartialView("PharmacyListView",param);

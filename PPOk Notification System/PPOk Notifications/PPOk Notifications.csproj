@@ -401,6 +401,9 @@
     <Content Include="Views\PpokAdmin\PharmacyListView.cshtml" />
     <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
+    <Content Include="Views\Pharmacy\PatientListView.cshtml" />
+    <Content Include="Views\Pharmacy\NotificationListView.cshtml" />
+    <Content Include="Views\Pharmacy\RefillListView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
