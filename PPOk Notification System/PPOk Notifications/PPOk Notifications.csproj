@@ -266,7 +266,6 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="NotificationSending\AspNetTimer.cs" />
-    <Content Include="App_Data\lastNoficiationSent.bin" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -441,8 +440,8 @@
     <Content Include="Views\PharmacistLogin\Reset.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetResult.cshtml" />
     <Content Include="Views\PharmacistLogin\ResetRequest.cshtml" />
-    <Content Include="Views\Admin\PharmacyListView.cshtml" />
-    <Content Include="Views\Admin\PharmacyModificationView.cshtml" />
+    <Content Include="Views\PpokAdmin\PharmacyListView.cshtml" />
+    <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -451,7 +450,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
