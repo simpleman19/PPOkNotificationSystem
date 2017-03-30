@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using PPOk_Notifications.Models;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
@@ -20,6 +21,13 @@ namespace PPOk_Notifications.Controllers
                 list.Add(Notification.GetTestNotification());
             }
             return View(list);
+        }
+
+        public ActionResult DeleteNotification(long id)
+        {
+            var db = new SQLService();
+            db.Notification_Disable(id);
+            return Redirect("/Notification/NotificationList");
         }
     }
 }
