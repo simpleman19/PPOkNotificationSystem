@@ -10,9 +10,18 @@
 <link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
 
 <p>
-    <!-- TODO support this link -->
     @Html.ActionLink("Add New", "AddPharmacy")
 </p>
+
+
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <table class="table" id="pharmacy_list">
     <thead>
         <tr>

@@ -51,7 +51,6 @@
                     @Html.DisplayFor(modelItem => item.RefillDate)
                 </td>
                 <td>
-                    <!-- TODO support these links -->
                     @Html.ActionLink("ToggleComplete", "ToggleComplete", new { id = item.RefillId }) | 
                     @Html.ActionLink("SendNotification", "SendNotification", new { id = item.RefillId })
                 </td>

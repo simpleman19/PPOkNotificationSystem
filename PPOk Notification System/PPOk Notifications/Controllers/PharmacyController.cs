@@ -1,5 +1,6 @@
 ﻿using LumenWorks.Framework.IO.Csv;
 using PPOk_Notifications.Models;
+using PPOk_Notifications.Service;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,7 +23,6 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        // TODO additional actions and such need to be supported for this view.
         [HttpPost]
         public ActionResult PharmacistListView()
         {
@@ -30,18 +30,25 @@ namespace PPOk_Notifications.Controllers
             IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            // pharmacy users are not pharmacists !?  Something is off within the models...
-            return View(param);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("PharmacistListView", param);
+            }
+            else
+            {
+                return View();
+            }
         }
         [HttpGet]
         public ActionResult PharmacistListView(string searchString)
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
-            List<PPOk_Notifications.Models.PharmacyUser> filtered = new List<PPOk_Notifications.Models.PharmacyUser>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            // pharmacy users are not pharmacists !?  Something is off within the models...
+            List<PPOk_Notifications.Models.PharmacyUser> filtered = new List<PPOk_Notifications.Models.PharmacyUser>();
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
@@ -55,24 +62,73 @@ namespace PPOk_Notifications.Controllers
                     }
                 }
             }
-            return View(filtered);
+            else { filtered = param; }
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("PharmacistListView", filtered);
+            }
+            else
+            {
+                return View(filtered);
+            }
         }
-        // TODO additional actions and such need to be supported for this view.
+        public ActionResult AddPharmacist(long id)
+        {
+
+            SQLService database = new SQLService();
+            Pharmacist pharmy = new Pharmacist();
+
+            if (id != 0)
+                pharmy = database.GetPharmacistById((int)id);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("AddPharmacist", pharmy);
+            }
+            else
+            {
+                return View(pharmy);
+            }
+        }
+        public ActionResult EditPharmacist(long id)
+        {
+            return Redirect("Pharmacy/AddPharmacist"  + id);
+        }
+        public ActionResult DeletePharmacist(long id)
+        {
+            var db = new SQLService();
+            db.Pharmacist_Disable((int)id);
+            return Redirect("/Pharmacy/PhamacistListView");
+        }
+        
         [HttpPost]
         public ActionResult RefillListView()
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
+
             // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-            return View(param);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("RefillListView", param);
+            }
+            else
+            {
+                return View(param);
+            }
         }
         [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
-            List<PPOk_Notifications.Models.Refill> filtered = new List<PPOk_Notifications.Models.Refill>();
+        
             // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
+        
+            List<PPOk_Notifications.Models.Refill> filtered = new List<PPOk_Notifications.Models.Refill>();
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
@@ -83,24 +139,57 @@ namespace PPOk_Notifications.Controllers
                     }
                 }
             }
-            return View(filtered);
+            else { filtered = param; }
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("RefillListView", filtered);
+            }
+            else
+            {
+                return View(filtered);
+            }
+
         }
-        // TODO additional actions and such need to be supported for this view.
+
+        public ActionResult ToggleComplete(long id)
+        {
+            var db = new SQLService();
+            db.GetRefillById((int)id).Refilled = !db.GetRefillById((int)id).Refilled;
+            return Redirect("/Pharmacy/RefillListView");
+        }
+
+        public ActionResult SendNotification(long id)
+        {
+            // TODO
+            return View();
+        }
+        
+
         [HttpPost]
         public ActionResult PatientListView()
         {
             IEnumerable<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             ((List<PPOk_Notifications.Models.Patient>)param).AddRange(serv.GetPatients());
-            return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService> (param,serv));
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("PatientListView", new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
+            }
+            else
+            {
+                return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
+            }
         }
+
         [HttpGet]
         public ActionResult PatientListView(string searchString)
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
+            List<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
             List<PPOk_Notifications.Models.Patient> filtered = new List<PPOk_Notifications.Models.Patient>();
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
+            param.AddRange(serv.GetPatients());
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
@@ -114,58 +203,29 @@ namespace PPOk_Notifications.Controllers
                     }
                 }
             }
-            return View(filtered);
-        }
-        // TODO additional actions and such need to be supported for this view.
-        [HttpPost]
-        public ActionResult NotificationListView()
-        {
-            IEnumerable<PPOk_Notifications.Models.Notification> param = new List<PPOk_Notifications.Models.Notification>();
-            // test data
-            // NOTE BENE! Test will cause crash bc patient with id 3 does not exist (need to add w/sql services properly first)
-            /*
-            Prescription perscript = new Prescription();
-            perscript.PatientId = 3;
-            perscript.PrecriptionId = 2;
-            perscript.PrescriptionDaysSupply = 5;
-            perscript.PrescriptionDateFilled = DateTime.UtcNow;
-            perscript.PrescriptionName = "mururezol";
-            perscript.PrescriptionNumber = 444;
-            perscript.PrescriptionRefills = 5;
-            perscript.PrescriptionUpc = "OAEUAOEUR";
-            Notification notif = new Notification(new Refill(perscript), Notification.NotificationType.Refill);
-            notif.Sent = true;
-            ((List<PPOk_Notifications.Models.Notification>)param).Add(notif);
-            */
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-           ((List<PPOk_Notifications.Models.Notification>)param).AddRange(serv.GetNotifications());
-            // return view
-            return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Notification>,
-                PPOk_Notifications.Service.SQLService>
-                (param, serv));
-        }
-        [HttpGet]
-        public ActionResult NotificationListView(string searchString)
-        {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Notification> param = new List<PPOk_Notifications.Models.Notification>();
-            List<PPOk_Notifications.Models.Notification> filtered = new List<PPOk_Notifications.Models.Notification>();
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-            if (!String.IsNullOrEmpty(searchString))
+            else { filtered = param; }
+
+            if (Request.IsAjaxRequest())
             {
-                foreach (var item in param)
-                {
-                    if (item.NotificationId.ToString().Contains(searchString) ||
-                        item.Type.ToString().Contains(searchString) ||
-                        item.PatientId.ToString().Contains(searchString) ||
-                        serv.GetPatientById((int)item.PatientId).FirstName.Contains(searchString) ||
-                        serv.GetPatientById((int)item.PatientId).LastName.Contains(searchString) )
-                    {
-                        filtered.Add(item);
-                    }
-                }
+                return PartialView("PatientListView", filtered);
             }
-            return View(filtered);
+            else
+            {
+                return View(filtered);
+            }
+        }
+        public ActionResult AddPatient()
+        {
+            // TODO: Will need a view or modal for this
+            return View();
+        }
+        public ActionResult CycleMethod(long id)
+        {
+            var db = new SQLService();
+            db.GetPatientById(id).ContactMethod = db.GetPatientById(id).ContactMethod==Patient.PrimaryContactMethod.Call?
+                Patient.PrimaryContactMethod.Email : db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Email?
+                Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
+            return Redirect("/Pharmacy/PatientListView");
         }
 
         // pharmacy uploading patients

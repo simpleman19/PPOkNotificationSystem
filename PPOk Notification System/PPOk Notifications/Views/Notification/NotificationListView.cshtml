@@ -12,7 +12,6 @@
 <p>Sent Notifications Indicated in Green</p>
 
 <p>
-    <!-- TODO support this link -->
     @Html.ActionLink("Add Notification", "AddNotification")
 </p>
 
@@ -65,7 +64,6 @@
                     @Html.DisplayFor(modelItem => item.ScheduledTime)
                 </td>
                 <td>
-                    <!-- TODO support these links -->
                     @Html.ActionLink("Cancel", "CancelNotification", new { id = item.NotificationId }) |
                 </td>
             </tr>

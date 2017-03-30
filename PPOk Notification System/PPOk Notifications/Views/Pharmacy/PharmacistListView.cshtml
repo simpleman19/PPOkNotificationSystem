@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
 
 <p>
-    <!-- TODO support this link -->
     @Html.ActionLink("Add Pharmacist", "AddPharmacist")
 </p>
 
@@ -51,7 +50,6 @@
                     @Html.DisplayFor(modelItem => item.Phone)
                 </td>
                 <td> 
-                    <!-- TODO support these links -->
                     @Html.ActionLink("Edit", "EditPharmacist", new {  id = item.IdNumber  }) |
                     @Html.ActionLink("Delete", "DeletePharmacist", new { id = item.IdNumber })
                 </td>
