@@ -184,6 +184,7 @@
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\TwilioController.cs" />
     <Compile Include="Models\EmailOTP.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OTP.cs" />
@@ -443,6 +444,7 @@
     <Content Include="Views\PpokAdmin\PharmacyListView.cshtml" />
     <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
+    <Content Include="Views\Twilio\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
