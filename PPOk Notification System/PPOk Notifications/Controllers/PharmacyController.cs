@@ -27,7 +27,8 @@ namespace PPOk_Notifications.Controllers
         public ActionResult PharmacistListView(string searchString)
         {
             SQLService db = new SQLService();
-            var pharms = db.GetPharmacistsActive();
+            // FIXME: Key not in dictionary var pharms = db.GetPharmacistsActive();
+            var pharms = new List<PharmacyUser>();
             return View(pharms);
         }
 
@@ -36,21 +37,21 @@ namespace PPOk_Notifications.Controllers
             SQLService database = new SQLService();
             Pharmacist pharmy = new Pharmacist();
 
-            if (id != 0)
-                pharmy = database.GetPharmacistById((int)id);
+            //if (id != 0)
+            //    pharmy = database.GetPharmacistById((int)id);
 
             return View(pharmy);
         }
 
         public ActionResult EditPharmacist(long id)
         {
-            return Redirect("Pharmacy/AddPharmacist" + id);
+            return Redirect("Pharmacy/AddPharmacist/" + id);
         }
 
         public ActionResult DeletePharmacist(long id)
         {
             var db = new SQLService();
-            db.Pharmacist_Disable((int)id);
+            //db.Pharmacist_Disable((int)id);
             return Redirect("/Pharmacy/PhamacistListView");
         }
         
@@ -67,19 +68,20 @@ namespace PPOk_Notifications.Controllers
             return View(refills);
         }
 
-        public ActionResult ToggleComplete(long id)
+        public ActionResult SetFilled(long id)
         {
             var db = new SQLService();
-            db.GetRefillById((int)id).Refilled = !db.GetRefillById((int)id).Refilled;
+           // db.GetRefillById((int)id).Refilled = !db.GetRefillById((int)id).Refilled;
             return Redirect("/Pharmacy/RefillListView");
         }
 
-        public ActionResult SendNotification(long id)
+        public ActionResult DeleteRefill(long id)
         {
-            // TODO
-            return View();
+            var db = new SQLService();
+            // db.Refill_Disable((int)id);
+            return Redirect("/Pharmacy/RefillListView");
         }
-        
+
         public ActionResult PatientListView(string searchString)
         {
             var db = new SQLService();
@@ -92,18 +94,33 @@ namespace PPOk_Notifications.Controllers
 
             return View(patients);
         }
-        public ActionResult AddPatient()
+        public ActionResult AddPatient(long id)
         {
+            var patient = new Patient();
+            if (id != 0) {
+                //get patient data and put in patient.. hafta wait on db stuff
+            }
             // TODO: Will need a view or modal for this
-            return View();
+            return View(patient);
         }
         public ActionResult CycleMethod(long id)
         {
             var db = new SQLService();
+            /*
             db.GetPatientById(id).ContactMethod = db.GetPatientById(id).ContactMethod==Patient.PrimaryContactMethod.Call?
                 Patient.PrimaryContactMethod.Email : db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Email?
                 Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
+            */
             return Redirect("/Pharmacy/PatientListView");
+        }
+        public ActionResult EdiPatient(long id) {
+            return Redirect("/Pharmacy/AddPatient/" + id);
+        }
+        public ActionResult DetailsPatient(long id) {
+            return Redirect("/Pharmacy/AddPatient/" + id);
+        }
+        public ActionResult DeletePatient(long id) {
+            return Redirect("/Pharmacy/AddPatient/" + id);
         }
 
         // pharmacy uploading patients

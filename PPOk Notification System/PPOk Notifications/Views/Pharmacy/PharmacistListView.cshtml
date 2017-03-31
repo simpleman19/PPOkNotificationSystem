@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PPOk_Notifications.Models.PharmacyUser>
+﻿@model List<PPOk_Notifications.Models.PharmacyUser>
 
 @{
     ViewBag.Title = "PharmacistList";
@@ -10,25 +10,17 @@
     @Html.ActionLink("Add Pharmacist", "AddPharmacist")
 </p>
 
-@using (Html.BeginForm())
-{
-    <p>
-        Title: @Html.TextBox("SearchString") <br />
-        <input type="submit" value="Filter" />
-    </p>
-}
-
 <table class="table" id="pharmacy_list">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                first_name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                last_name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                phone
             </th>
             <th></th>
         </tr>

@@ -31,6 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PreferedContactTime)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactMethod)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,9 +60,13 @@
                     @Html.DisplayFor(modelItem => item.PreferedContactTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PatientId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.PatientId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PatientId })
+                    @Html.DisplayFor(modelItem => item.ContactMethod)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditPatient", new { id = item.PatientId }) |
+                    @Html.ActionLink("Details", "DetailsPatient", new { id = item.PatientId }) |
+                    @Html.ActionLink("Delete", "DeletePatient", new { id = item.PatientId }) |
+                    @Html.ActionLink("Cycle Contact Method", "CycleMethod", new { id = item.PatientId })
                 </td>
             </tr>
         }
