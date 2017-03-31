@@ -1,2 +1,2 @@
 ﻿SELECT [patient].*
-FROM [PPOK].[dbo].[notification]
+FROM [PPOK].[dbo].[patient]
