@@ -26,12 +26,12 @@ namespace PPOk_Notifications.Controllers
         // returned view for seeing a list of pharmacies
         // can add to list
         // can select edit/view/delete from list
-        [HttpPost]
+        //[HttpPost]
         public ActionResult PharmacyListView()
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
-            ((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
+            //((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
             if (Request.IsAjaxRequest())
             {
                 return PartialView("PharmacyListView", param);
@@ -41,7 +41,7 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
-
+        /* 99.9% sure this will not be used in any capacity given new search
         [HttpGet]
         public ActionResult PharmacyListView(string searchString)
         {
@@ -73,6 +73,7 @@ namespace PPOk_Notifications.Controllers
                 return View(filtered);
             }
         }
+        */
 
         // returned view for adding, editing, or viewing a pharmacy
         public ActionResult PharmacyModificationView(int id)
