@@ -250,6 +250,7 @@ namespace PPOk_Notifications.Controllers
                         
                         foreach (DataRow row in csvTable.Rows)
                         {
+                            var db = new SQLService();
                             //TODO check if patient exist in the databse already.
                             //If it does, then check prescriptions for that patients if they are in databse.
                             //If yes, check for new refills.
@@ -280,9 +281,9 @@ namespace PPOk_Notifications.Controllers
                             prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                             prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
                             Refill refill = new Refill(prescription);
-                            //SqlService.AddPatient(patient);
-                            //SqlService.AddPrescription(prescription);
-                            //SqlService.AddRefill(refill);
+                            db.PatientInsert(patient);
+                            db.PrescriptionInsert(prescription);
+                            db.RefillInsert(refill);
                         } 
                     }
                     else
