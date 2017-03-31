@@ -27,6 +27,8 @@ namespace PPOk_Notifications.Service
             var db = new SQLService();
             Patient p = db.GetPatientById(notification.PatientId);
             Template temp = GetTempFromPharmacy(notification.Type);
+            temp = new Template();
+            temp.TemplateText = "Your prescription is ready";
             if (testTwilio)
             {
                 var message = MessageResource.Create(
@@ -54,6 +56,24 @@ namespace PPOk_Notifications.Service
             //TODO create xmls for phone calls
         }
 
+        public void MakeRecallPhoneCall(Notification notification)
+        {
+            var db = new SQLService();
+            Patient p = db.GetPatientById(notification.PatientId);
+
+            if (testTwilio)
+            {
+                var to = new PhoneNumber("+18065703539");
+                var from = new PhoneNumber("+15017250604");
+                var call = CallResource.Create(to,
+                                               from,
+                                               url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+
+            }
+            //TODO create xmls for phone calls
+        }
+
+
         private Template GetTempFromPharmacy(Notification.NotificationType type)
         {
             Template temp = null;
@@ -65,8 +85,8 @@ namespace PPOk_Notifications.Service
                 case Notification.NotificationType.Recall:
                     temp = pharmacy.GetRecallTemplate();
                     break;
-                case Notification.NotificationType.Refilled:
-                    temp = pharmacy.GetRefilledTemplate();
+                case Notification.NotificationType.Ready:
+                    temp = pharmacy.GetReadyTemplate();
                     break;
                 case Notification.NotificationType.Birthday:
                     temp = pharmacy.GetBirthdayTemplate();

@@ -8,9 +8,9 @@
 )
 VALUES
 (
-	@pharmacy_id, 
-	@template_email, 
-	@template_text, 
-	@template_phone,
+	@PharmacyId, 
+	@TemplateEmail, 
+	@TemplateText, 
+	@TemplatePhone,
 	1
 )

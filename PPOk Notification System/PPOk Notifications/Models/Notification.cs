@@ -11,7 +11,7 @@ namespace PPOk_Notifications.Models
         public enum NotificationType
         {
             Refill,
-            Refilled,
+            Ready,
             Recall,
             Birthday            
         };
@@ -41,6 +41,11 @@ namespace PPOk_Notifications.Models
         [Column(Name = "notification_message")]
         public String NotificationMessage { get; set; }
 
+        public Notification()
+        {
+
+        }
+
         public Notification(DateTime dateTime, long patientId, NotificationType type)
         {
             Sent = false;
@@ -60,7 +65,7 @@ namespace PPOk_Notifications.Models
 
         public Notification(Refill refill, NotificationType type)
         {
-            if (type == NotificationType.Refilled)
+            if (type == NotificationType.Ready)
             {
                 ScheduledTime = DateTime.Now;
             } else if (type == NotificationType.Refill)

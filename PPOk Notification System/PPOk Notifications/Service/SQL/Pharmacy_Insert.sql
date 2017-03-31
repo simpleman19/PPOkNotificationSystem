@@ -11,12 +11,12 @@
 )
 VALUES
 (
-	@pharmacy_name,
-	@pharmacy_phone,
-	@pharmacy_address,
-	@template_refill.TemplateId,
-	@template_ready.TemplateId,
-	@template_recall.TemplateId,
-	@template_birthday.TemplateId,
+	@PharmacyName,
+	@PharmacyPhone,
+	@PharmacyAddress,
+	@TemplateRefillId,
+	@TemplateReadyId,
+	@TemplateRecallId,
+	@TemplateBirthdayId,
 	1
 )

@@ -21,6 +21,11 @@ namespace PPOk_Notifications.Models
         public DateTime RefillDate { get; set; }
         public bool Refilled { get; set; }
 
+        public Refill()
+        {
+
+        }
+
         public Refill(Prescription prescription)
         {
             PrescriptionId = prescription.PrecriptionId;
@@ -35,6 +40,15 @@ namespace PPOk_Notifications.Models
         {
             Refilled = true;
             NotificationSender.SendFilledNotification(this);
+        }
+
+        public static Refill getTestRefill()
+        {
+            var refill = new Refill();
+            refill.PrescriptionId = 1123;
+            refill.RefillDate = DateTime.Now;
+            refill.Refilled = false;
+            return refill;
         }
     }
 }
