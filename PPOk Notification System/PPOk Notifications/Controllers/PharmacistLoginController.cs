@@ -112,10 +112,10 @@ namespace PPOk_Notifications.Controllers
             PasswordsDontMatch
         }
 
-        private PharmacyUser GetUser(string email)
+        private Pharmacist GetUser(string email)
         {
             // TODO get user from database
-            var user = new PharmacyUser();
+            var user = new Pharmacist();
             user.Email = email;
 
             return user;
@@ -144,7 +144,7 @@ namespace PPOk_Notifications.Controllers
             return true;
         }
 
-        private byte[] HashPassword(PharmacyUser user, string password)
+        private byte[] HashPassword(Pharmacist user, string password)
         {
             if (user.Salt == null)
             {
