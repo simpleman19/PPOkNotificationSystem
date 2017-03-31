@@ -20,7 +20,9 @@ namespace PPOk_Notifications.Controllers {
             pharm.PharmacyPhone = "+19999999999";
             db.PharmacyInsertOrUpdate(pharm);
 
-            var pharmAdmin = new PharmacyUser();
+            var pharmAdmin = new Pharmacist();
+            pharmAdmin.FirstName = "Pharma";
+            Pharmacist.HashPassword(pharmAdmin, "harambe");
 
             return Redirect("/");
         }
