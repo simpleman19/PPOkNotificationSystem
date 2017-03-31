@@ -23,7 +23,7 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult PharmacistListView()
         {
             SQLService serv = new SQLService();
@@ -37,9 +37,10 @@ namespace PPOk_Notifications.Controllers
             }
             else
             {
-                return View();
+                return View(param);
             }
         }
+        /*              99.9% sure this won't be used given new search
         [HttpGet]
         public ActionResult PharmacistListView(string searchString)
         {
@@ -71,6 +72,7 @@ namespace PPOk_Notifications.Controllers
 
             return View(filtered);
         }
+        */
         public ActionResult AddPharmacist(long id)
         {
 
@@ -100,7 +102,7 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
         
-        [HttpPost]
+        //[HttpPost]
         public ActionResult RefillListView()
         {
             SQLService serv = new SQLService();
@@ -117,6 +119,7 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
+        /*              99.9% sure this won't be used in any capacity given new search method
         [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
@@ -148,7 +151,7 @@ namespace PPOk_Notifications.Controllers
                 return View(filtered);
             }
 
-        }
+        }*/
 
         public ActionResult ToggleComplete(long id)
         {
@@ -164,30 +167,30 @@ namespace PPOk_Notifications.Controllers
         }
         
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult PatientListView()
         {
             IEnumerable<Patient> param = new List<Patient>();
             SQLService serv = new SQLService();
-            ((List<Patient>)param).AddRange(serv.GetPatients());
+            //((List<Patient>)param).AddRange(serv.GetPatients());
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
+                return PartialView("PatientListView", param);
             }
             else
             {
-                return View(new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
+                return View(param);
             }
         }
-
+        /*      99.99% sure this won't be used in any capacity given new search method
         [HttpGet]
         public ActionResult PatientListView(string searchString)
         {
             SQLService serv = new SQLService();
             List<Patient> param = new List<Patient>();
             List<Patient> filtered = new List<Patient>();
-            param.AddRange(serv.GetPatients());
+            //param.AddRange(serv.GetPatients());
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
@@ -212,6 +215,7 @@ namespace PPOk_Notifications.Controllers
                 return View(filtered);
             }
         }
+        */
         public ActionResult AddPatient()
         {
             // TODO: Will need a view or modal for this
