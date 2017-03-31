@@ -585,6 +585,9 @@
     <Content Include="Service\SQL\Login_Update.sql" />
     <Content Include="Service\SQL\Notification_Disable.sql" />
     <Content Include="Service\SQL\Notification_Enable.sql" />
+    <Content Include="Service\SQL\Notification_GetAll_Future_Time.sql" />
+    <Content Include="Service\SQL\Notification_GetAll_Future_Date.sql" />
+    <Content Include="Service\SQL\Notification_GetAll_Today.sql" />
     <Content Include="Service\SQL\Notification_GetAll.sql" />
     <Content Include="Service\SQL\Notification_GetAll_Active.sql" />
     <Content Include="Service\SQL\Notification_GetAll_Inactive.sql" />
@@ -625,6 +628,8 @@
     <Content Include="Service\SQL\Pharmacy_GetAll_Active.sql" />
     <Content Include="Service\SQL\Pharmacy_GetById_Inactive.sql" />
     <Content Include="Service\SQL\Pharmacy_GetById_Active.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Active.sql" />
     <Content Include="Service\SQL\Prescription_GetAll.sql" />
     <Content Include="Service\SQL\Refill_Update_Inactive.sql" />
     <Content Include="Service\SQL\Refill_Update_Active.sql" />
