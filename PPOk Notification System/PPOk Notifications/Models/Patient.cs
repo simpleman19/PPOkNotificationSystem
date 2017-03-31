@@ -28,7 +28,13 @@ namespace PPOk_Notifications.Models
         {
             Text,
             Call,
-            Email
+            Email,
+            OptOut
+        }
+
+        public Pharmacy getPharmacy()
+        {
+            return new Pharmacy();
         }
     }
 }

@@ -40,7 +40,17 @@ namespace PPOk_Notifications.Controllers
         {
             var db = new SQLService();
             List<Notification> notifications = db.GetNotificationsActive();
-
+            if (notifications.Count == 0)
+            {
+                Notification n = null;
+                Random rand = new Random();
+                for (int i = 0; i < 100; i++)
+                {
+                    n = Notification.GetTestNotification(rand);
+                    db.NotificationInsertOrUpdate(n);
+                }
+                notifications = db.GetNotificationsActive();
+            }
             return View(notifications);
         }
 

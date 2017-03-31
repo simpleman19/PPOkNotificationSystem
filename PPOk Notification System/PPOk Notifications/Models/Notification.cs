@@ -41,6 +41,11 @@ namespace PPOk_Notifications.Models
         [Column(Name = "notification_message")]
         public String NotificationMessage { get; set; }
 
+        public Notification()
+        {
+
+        }
+
         public Notification(DateTime dateTime, long patientId, NotificationType type)
         {
             Sent = false;

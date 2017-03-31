@@ -47,20 +47,26 @@ namespace PPOk_Notifications.NotificationSending
             Notification n = new Notification(refill, Notification.NotificationType.Ready);
             var db = new SQLService();
             db.NotificationInsert(n);
-            SendNotification(n);
+            var pat = db.GetPatientById(n.PatientId);
+            TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+            SendNotification(n, twilio);
             return true;
         }
 
         private void PrepareForSending()
         {
+            var db = new SQLService();
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
-                SendNotification(n);
+                Patient pat = db.GetPatientById(n.PatientId);
+
+                TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+                SendNotification(n, twilio);
             }
         }
 
-        private static void SendNotification(Notification n)
+        private static void SendNotification(Notification n, TwilioApi twilio)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
             var db = new SQLService();
@@ -68,18 +74,25 @@ namespace PPOk_Notifications.NotificationSending
 
             if (n.Type == Notification.NotificationType.Recall)
             {
-                // TODO Call twillio api using phone call and use message saved in notification
+                twilio.MakeRecallPhoneCall(n);
             }
             else
             {
+
                 // TODO Get template from pharmacy
                 switch(p.ContactMethod)
                 {
                     case Patient.PrimaryContactMethod.Call:
+                        twilio.MakePhoneCall(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
+
                         break;
                     case Patient.PrimaryContactMethod.Text:
+                        twilio.SendTextMessage(n);
+                        break;
+                    case Patient.PrimaryContactMethod.OptOut:
+                        // Do nothing
                         break;
                     default:
                         break;

@@ -144,7 +144,13 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Twilio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Twilio.5.1.0\lib\net451\Twilio.dll</HintPath>
+      <HintPath>..\packages\Twilio.5.1.1\lib\net451\Twilio.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio.AspNet.Common, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.AspNet.Mvc.5.0.1\lib\net451\Twilio.AspNet.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio.AspNet.Mvc, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.AspNet.Mvc.5.0.1\lib\net451\Twilio.AspNet.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="WebBackgrounder, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WebBackgrounder.0.2.0\lib\net40\WebBackgrounder.dll</HintPath>
@@ -184,7 +190,7 @@
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\TwilioController.cs" />
+    <Compile Include="Controllers\TwilioResponseController.cs" />
     <Compile Include="Models\EmailOTP.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OTP.cs" />
@@ -729,6 +735,7 @@
     <Content Include="Views\Notification\NotificationListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />
     <Content Include="Views\Pharmacy\Admin.cshtml" />
+    <Content Include="Views\TwilioResponse\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
