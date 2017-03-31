@@ -1,25 +1,15 @@
-﻿@model Tuple<IEnumerable<PPOk_Notifications.Models.Refill>, PPOk_Notifications.Service.SQLService>
+﻿@model IEnumerable<PPOk_Notifications.Models.Refill>
 
 @{
-    ViewBag.Title = "RefillList";
+    ViewBag.Title = "Refill List";
 }
 
 <h2>List of Refills</h2>
-
-<script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
-<link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
 
 <p>
     Complete Refills Indicated in Green
 </p>
 
-@using (Html.BeginForm())
-{
-<p>
-    Title: @Html.TextBox("SearchString") <br />
-    <input type="submit" value="Filter" />
-</p>
-}
 
 <table class="table" id="refill_list">
     <thead>
@@ -37,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Item1)
+        @foreach (var item in Model)
         {
             string style = item.Refilled == true ? "background-color:#d0fd07" : null;
             <tr style="@style">
@@ -51,8 +41,8 @@
                     @Html.DisplayFor(modelItem => item.RefillDate)
                 </td>
                 <td>
-                    @Html.ActionLink("ToggleComplete", "ToggleComplete", new { id = item.RefillId }) | 
-                    @Html.ActionLink("SendNotification", "SendNotification", new { id = item.RefillId })
+                    @Html.ActionLink("Set Filled", "SetFilled", new { id = item.RefillId }) | 
+                    @Html.ActionLink("Delete", "DeleteRefill", new { id = item.RefillId })
                 </td>
             </tr>
         }
@@ -64,13 +54,6 @@
         pharmacy_table = $('#refill_list').DataTable({
             "dom": '<"pull-left"f><"pull-right"l>tip',
             "paging": false,
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
             language: {
                 searchPlaceholder: "Search Refills"
             }

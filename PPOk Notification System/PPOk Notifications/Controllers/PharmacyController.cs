@@ -54,11 +54,17 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
         
-        [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
+            var db = new SQLService();
+            //var refills = db.GetRefillsActive();
+            List<Refill> refills = new List<Refill>();
+            for (int i = 0; i < 10; i++)
+            {
+                refills.Add(Refill.getTestRefill());
+            }
 
-            return View();
+            return View(refills);
         }
 
         public ActionResult ToggleComplete(long id)
@@ -74,54 +80,17 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
         
-
-        [HttpPost]
-        public ActionResult PatientListView()
-        {
-            IEnumerable<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            ((List<PPOk_Notifications.Models.Patient>)param).AddRange(serv.GetPatients());
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PatientListView", new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
-            }
-            else
-            {
-                return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
-            }
-        }
-
-        [HttpGet]
         public ActionResult PatientListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            List<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
-            List<PPOk_Notifications.Models.Patient> filtered = new List<PPOk_Notifications.Models.Patient>();
-            param.AddRange(serv.GetPatients());
-            if (!String.IsNullOrEmpty(searchString))
+            var db = new SQLService();
+            //var patients = db.GetPatientsActive();
+            List<Patient> patients = new List<Patient>();
+            for (int i = 0; i < 10; i++)
             {
-                foreach (var item in param)
-                {
-                    if (item.FirstName.ToString().Contains(searchString) ||
-                        item.LastName.ToString().Contains(searchString) ||
-                        item.PatientId.ToString().Contains(searchString) ||
-                        item.Phone.ToString().Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
+                patients.Add(Patient.getTestPatient());
             }
-            else { filtered = param; }
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PatientListView", filtered);
-            }
-            else
-            {
-                return View(filtered);
-            }
+            return View(patients);
         }
         public ActionResult AddPatient()
         {
