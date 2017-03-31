@@ -53,6 +53,18 @@ namespace PPOk_Notifications.NotificationSending
             return true;
         }
 
+        public static void SentRecalls(List<Notification> notifications)
+        {
+            var db = new SQLService();
+            foreach (Notification n in notifications)
+            {
+                Patient pat = db.GetPatientById(n.PatientId);
+
+                TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+                SendNotification(n, twilio);
+            }
+        }
+
         private void PrepareForSending()
         {
             var db = new SQLService();
