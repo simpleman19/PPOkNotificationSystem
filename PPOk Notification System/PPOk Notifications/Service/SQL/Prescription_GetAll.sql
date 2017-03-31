@@ -1,2 +1,2 @@
-﻿SELECT [presctiption].*
-FROM [PPOK].[dbo].[presctiption]
+﻿SELECT [prescription].*
+FROM [PPOK].[dbo].[prescription]
