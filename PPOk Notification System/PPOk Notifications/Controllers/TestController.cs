@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using PPOk_Notifications.Service;
+using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers {
 	public class TestController : Controller {
@@ -7,6 +8,21 @@ namespace PPOk_Notifications.Controllers {
 		public ActionResult Index() {
 			return View();
 		}
+
+        public ActionResult AddFakeLogin()
+        {
+            var db = new SQLService();
+
+            var pharm = new Pharmacy();
+            pharm.PharmacyName = "Test Pharmacy";
+            pharm.PharmacyAddress = "An address";
+            pharm.PharmacyPhone = "+19999999999";
+            db.PharmacyInsertOrUpdate(pharm);
+
+            var pharmAdmin = new PharmacyUser();
+
+            return Redirect("/");
+        }
 
 		public string Reset() {
 			SQLService sql = new SQLService();
