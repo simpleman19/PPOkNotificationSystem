@@ -14,9 +14,9 @@ VALUES
 	@PharmacyName,
 	@PharmacyPhone,
 	@PharmacyAddress,
-	@TemplateRefill.TemplateId,
-	@TemplateReady.TemplateId,
-	@TemplateRecall.TemplateId,
-	@TemplateBirthday.TemplateId,
+	@TemplateRefillId,
+	@TemplateReadyId,
+	@TemplateRecallId,
+	@TemplateBirthdayId,
 	1
 )
