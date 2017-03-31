@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers {
@@ -24,5 +25,11 @@ namespace PPOk_Notifications.Controllers {
 			}
 			return debug;
 		}
+
+	    public string InsertFake()
+	    {
+            Pharmacy.FakeDataFill();
+	        return "success";
+	    }
 	}
 }

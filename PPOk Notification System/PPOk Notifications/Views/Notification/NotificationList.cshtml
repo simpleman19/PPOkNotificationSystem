@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PPOk_Notifications.Models.Notification>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Notifications";
 }
 
 <!DOCTYPE html>
@@ -12,49 +12,72 @@
     <title></title>
 </head>
 <body>
-    <div>
-        <table class="table" id="badge_list">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ScheduledTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PatientId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Type)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Sent)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ScheduledTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PatientId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Sent)
-                        </td>
+    <div class="container">
+        <div class="row"  style="margin-bottom:25px;">
+            <h2>List of Notifications</h2>
+            <p>Pick a date range to view notifications:</p>
+            <div class="row">
+                <input type="text" id="datepicker1" />
+                <input type="text" id="datepicker2" />
+            </div>
+            <p>**Add a date picker to change notifications returned</p>
+            <button class="btn btn-default" onclick="reloadNotifications()">Get Notifications</button>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <table class="table" id="notification_list">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ScheduledTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PatientId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Sent)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ScheduledTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PatientId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Sent)
+                                </td>
 
-                        <td>
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                <td>
+                                    @Html.ActionLink("Delete", "DeleteNotification", new { id = item.NotificationId })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    <script>
+        $("#notification_list").DataTable();
+        $("#datepicker1").datepicker();
+        $("#datepicker2").datepicker();
+
+        function reloadNotifications() {
+            console.log("reloading");
+        }
+    </script>
 </body>
 </html>

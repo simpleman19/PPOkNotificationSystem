@@ -1,0 +1,73 @@
+﻿@model Tuple<IEnumerable<PPOk_Notifications.Models.Patient>,PPOk_Notifications.Service.SQLService>
+
+@{
+    ViewBag.Title = "PatientList";
+}
+
+<h2>List of Patients</h2>
+
+<script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
+
+<p>
+    @Html.ActionLink("Add Patient", "AddPatient")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+
+<table class="table" id="patient_list">
+    <thead>
+        <tr>
+            <th>
+                patient_name
+            </th>
+            <th>
+                 contact_method 
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item1)
+        {
+            <tr>
+                <td>
+                    @Model.Item2.GetPatientById((int)item.PatientId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactMethod)
+                </td>
+                <td>
+                    @Html.ActionLink("Cycle Contact Method", "CycleMethod", new { id = item.PatientId }) |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        pharmacy_table = $('#pharmacy_list').DataTable({
+            "dom": '<"pull-left"f><"pull-right"l>tip',
+            "paging": false,
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: {
+                searchPlaceholder: "Search Patients"
+            }
+        });
+    }());
+
+</script>
+

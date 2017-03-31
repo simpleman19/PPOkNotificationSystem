@@ -4,15 +4,23 @@
     ViewBag.Title = "PharmacistList";
 }
 
-<h2>List of Pharmacies</h2>
+<h2>List of Pharmacists</h2>
 
 <script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
 
 <p>
-    <!-- TODO support this link -->
     @Html.ActionLink("Add Pharmacist", "AddPharmacist")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <table class="table" id="pharmacy_list">
     <thead>
         <tr>
@@ -42,7 +50,6 @@
                     @Html.DisplayFor(modelItem => item.Phone)
                 </td>
                 <td> 
-                    <!-- TODO support these links -->
                     @Html.ActionLink("Edit", "EditPharmacist", new {  id = item.IdNumber  }) |
                     @Html.ActionLink("Delete", "DeletePharmacist", new { id = item.IdNumber })
                 </td>

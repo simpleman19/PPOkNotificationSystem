@@ -1,0 +1,81 @@
+﻿@model Tuple<IEnumerable<PPOk_Notifications.Models.Refill>, PPOk_Notifications.Service.SQLService>
+
+@{
+    ViewBag.Title = "RefillList";
+}
+
+<h2>List of Refills</h2>
+
+<script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
+
+<p>
+    Complete Refills Indicated in Green
+</p>
+
+@using (Html.BeginForm())
+{
+<p>
+    Title: @Html.TextBox("SearchString") <br />
+    <input type="submit" value="Filter" />
+</p>
+}
+
+<table class="table" id="refill_list">
+    <thead>
+        <tr>
+            <th>
+                refill_id
+            </th>
+            <th>
+                prescription_id
+            </th>
+            <th>
+                refill_date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item1)
+        {
+            string style = item.Refilled == true ? "background-color:#d0fd07" : null;
+            <tr style="@style">
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefillId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrescriptionId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefillDate)
+                </td>
+                <td>
+                    @Html.ActionLink("ToggleComplete", "ToggleComplete", new { id = item.RefillId }) | 
+                    @Html.ActionLink("SendNotification", "SendNotification", new { id = item.RefillId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        pharmacy_table = $('#refill_list').DataTable({
+            "dom": '<"pull-left"f><"pull-right"l>tip',
+            "paging": false,
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: {
+                searchPlaceholder: "Search Refills"
+            }
+        });
+    }());
+
+</script>
+

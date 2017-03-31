@@ -1,0 +1,93 @@
+﻿@model Tuple<IEnumerable<PPOk_Notifications.Models.Notification>,PPOk_Notifications.Service.SQLService>
+
+@{
+    ViewBag.Title = "NotificationList";
+}
+
+<h2>List of Notifications</h2>
+
+<script src="~/browser_components/datatables/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
+
+<p>Sent Notifications Indicated in Green</p>
+
+<p>
+    @Html.ActionLink("Add Notification", "AddNotification")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+
+<table class="table" id="notification_list">
+    <thead>
+        <tr>
+            <th>
+                patient_name
+                @* Html.DisplayNameFor(model => model.Item1.PatientId) *@
+            </th>
+            <th>
+                notification_id
+                @* Html.DisplayNameFor(model => model.Item1.NotificationId) *@
+            </th>
+            <th>
+                notification_type
+                @* Html.DisplayNameFor(model => model.Item1.Type) -*@
+            </th>
+            <th>
+                scheduled_time
+                @* Html.DisplayNameFor(model => model.Item1.ScheduledTime) *@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item1)
+        {
+            string style = item.Sent == true ? "background-color:#d0fd07" : null;
+            <tr style="@style">
+                <td>
+                    @Model.Item2.GetPatientById((int)item.PatientId)
+                    @* Html.DisplayFor(modelItem => item.PatientId) *@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotificationId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScheduledTime)
+                </td>
+                <td>
+                    @Html.ActionLink("Cancel", "CancelNotification", new { id = item.NotificationId }) |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        pharmacy_table = $('#pharmacy_list').DataTable({
+            "dom": '<"pull-left"f><"pull-right"l>tip',
+            "paging": false,
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            language: {
+                searchPlaceholder: "Search Notifications"
+            }
+        });
+    }());
+
+</script>
+

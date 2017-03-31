@@ -1,4 +1,6 @@
 ﻿using PPOk_Notifications.Service;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Web;
@@ -24,44 +26,78 @@ namespace PPOk_Notifications.Controllers
         // returned view for seeing a list of pharmacies
         // can add to list
         // can select edit/view/delete from list
+        [HttpPost]
         public ActionResult PharmacyListView()
         {
+            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
+            IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
+            ((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PharmacyListView");
+                return PartialView("PharmacyListView", param);
             }
             else
             {
-                return View();
+                return View(param);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult PharmacyListView(string searchString)
+        {
+            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
+            List<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
+            param.AddRange(serv.GetPharmacies());
+            List<PPOk_Notifications.Models.Pharmacy> filtered = new List<PPOk_Notifications.Models.Pharmacy>();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                foreach (var item in param)
+                {
+                    if (item.PharmacyAddress.ToString().Contains(searchString) ||
+                        item.PharmacyId.ToString().Contains(searchString) ||
+                        item.PharmacyName.ToString().Contains(searchString) ||
+                        item.PharmacyPhone.ToString().Contains(searchString))
+                    {
+                        filtered.Add(item);
+                    }
+                }
+            }
+            else { filtered = param; }
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("PharmacyListView", filtered);
+            }
+            else
+            {
+                return View(filtered);
             }
         }
 
         // returned view for adding, editing, or viewing a pharmacy
-        public ActionResult PharmacyModificationView(int Id)
+        public ActionResult PharmacyModificationView(int id)
         {
-            SQLService db = new SQLService();
+            SQLService database = new SQLService();
 
-            Models.Pharmacy pharmacy = new Models.Pharmacy(); // TODO (needs additional sql services)  = db.GetPharmacyById(Id);
-            Models.PharmacyUser admin = new Models.PharmacyUser(); // TODO (needs additional sql services), search db for admin user with matching pharmacy id
-            if (pharmacy.PharmacyName == "") {
+            Models.Pharmacy pharmacy = new Models.Pharmacy();
+            if (id != 0)
+                pharmacy = database.GetPharmacyById(id);
 
-                // TODO would 'if (id == null)' work better?
-                // TODO can create pharmacy id here or in constructor or with sql service depending on implementation
-                // TODO can create admin id here or in constructor or with sql service depending on implementation
+            // FIXME: phamacyuser vs pharmacist
+            List<Models.PharmacyUser> pharmacists = new List<Models.PharmacyUser>();//database.GetPharmacists();
+            Models.PharmacyUser admin = new Models.PharmacyUser();
+            admin.IsAdmin = true;
+            foreach (var pharmacist in pharmacists) { if (pharmacist.IsAdmin && pharmacist.PharmacyId == pharmacy.PharmacyId) { admin = pharmacist; } }
 
-                pharmacy = new Models.Pharmacy();
-                admin = new Models.PharmacyUser();
-                admin.IsAdmin = true;
-                admin.PharmacyId = pharmacy.PharmacyId;
-            }
+            System.Tuple<Models.Pharmacy, Models.PharmacyUser> param = new System.Tuple<Models.Pharmacy, Models.PharmacyUser>(pharmacy, admin);
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PharmacyModificationView", pharmacy);
+                return PartialView("PharmacyModificationView", param);
             }
             else
             {
-                return View(pharmacy);
+                return View(param);
             }
         }
 
@@ -69,41 +105,24 @@ namespace PPOk_Notifications.Controllers
         public void PharmacyModificationView(System.Tuple<Models.Pharmacy, Models.PharmacyUser> pharmacyAndAdmin)
         {
             SQLService database = new SQLService();
-            // TODO (needs more sql services) database.UpdatePharmacy(pharmacyAndAdmin.Item1); database.UpdatePharmacy(pharmacyAndAdmin.Item2);
         }
 
-        // TODO AddPharmacy
-        // TODO EditPharmacy long id
-        // TODO ViewPharmacy long id
-        // TODO DeletePharmacy   see vv
+        public ActionResult AddPharmacy()
+        {
+            return Redirect("PpokAdmin/PharmacyModificationView");
+        }
+        public ActionResult EditPharmacy(long id)
+        {
+            return Redirect("PpokAdmin/PharmacyModificationView" + id.ToString());
+        }
+        public ActionResult ViewPharmacy(long id)
+        {
+            return Redirect("PpokAdmin/PharmacyModificationView" + id.ToString());
+        }
         public void DeletePharmacy(long id)
         {
-            /*
-             * TODO
-             * could do this multiple ways
-                <%= 
-                    Html.ActionLink( 
-                                    "Label", 
-                                    "Action",  
-                                    "Controller",
-                                    new {Parameter1 = Model.Data1, Parameter2 = Model.Data2},
-                                    null
-                                   ) 
-                %>  
-             *
-             * 
-             * 
-
-            SQLService db = new SQLService();
-            if (id != 0)
-            {
-                // TODO delete the pharmacy
-            }
-            else
-            {
-                // TODO delete the pharmacy
-            }
-            */
+            SQLService database = new SQLService();
+            database.Pharmacy_Disable((int)id);
         }
     }
 }

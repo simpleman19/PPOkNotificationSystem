@@ -4,31 +4,36 @@
     ViewBag.Title = "Reset Password";
 }
 
-<h2>Reset Password: @Model</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4" style="text-align:center;">
+            <h2 style="margin-bottom:20px; margin-top:40px;">Reset Password for @Model</h2>
+            @using (Html.BeginForm())
+            {
+                <div class="inner-addon left-addon" style="min-width:100%;">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" style="min-width:100%;"/>
+                </div>
 
-@using (Html.BeginForm())
-{
-    <div class="inner-addon left-addon">
-        <i class="glyphicon glyphicon-lock"></i>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-    </div>
+                <div class="inner-addon left-addon" style="margin-top: 10px; min-width:100%;">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" oninput="check(this)" style="min-width:100%;"/>
+                </div>
 
-    <div class="inner-addon left-addon" style="margin-top: 10px;">
-        <i class="glyphicon glyphicon-lock"></i>
-        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" oninput="check(this)"/>
-    </div>
+                <script language="javascript" type="text/javascript">
+                    function check(input) {
+                        if (input.value !== document.getElementById("password").value) {
+                            input.setCustomValidity("Password must match above.");
+                        } else {
+                            input.setCustomValidity("");
+                        }
+                    }
+                </script>
 
-    <script language="javascript" type="text/javascript">
-        function check(input) {
-            if (input.value !== document.getElementById("password").value) {
-                input.setCustomValidity("Password must match above.");
-            } else {
-                input.setCustomValidity("");
+                <div class="form-group" style="margin-top: 10px;">
+                    <input type="submit" value="Reset" class="btn btn-default" />
+                </div>
             }
-        }
-    </script>
-
-    <div class="form-group" style="margin-top: 10px;">
-        <input type="submit" value="Login" class="btn btn-default" />
+        </div>
     </div>
-}
+</div>
