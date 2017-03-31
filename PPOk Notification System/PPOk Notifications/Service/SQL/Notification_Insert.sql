@@ -9,7 +9,7 @@
 VALUES
 ( 
 	@PatientId, 
-	@NotificationType, 
+	@Type, 
 	@NotificationTime,
 	@NotificationResponse,
 	1

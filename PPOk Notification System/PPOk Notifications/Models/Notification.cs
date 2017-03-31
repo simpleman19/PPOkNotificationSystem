@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using PPOk_Notifications.Service;
 
@@ -19,32 +18,36 @@ namespace PPOk_Notifications.Models
         [DisplayName("Notification ID")]
         [Column(Name = "notification_id")]
         public long NotificationId { get; set; }
+
         [DisplayName("Patient ID")]
         [Column(Name = "patient_id")]
         public long PatientId { get; set; }
+
         [DisplayName("Notification Type")]
         [Column(Name = "notification_type")]
         public NotificationType Type { get; set; }
+
         [DisplayName("Scheduled Time")]
         [Column(Name = "scheduled_time")]
         public DateTime ScheduledTime { get; set; }
+
         [DisplayName("Sent Time")]
         [Column(Name = "sent_time")]
         public DateTime SentTime { get; set; }
+
         [DisplayName("Send Status")]
         [Column(Name = "send_status")]
         public bool Sent { get; set; }
+
         [DisplayName("Notification Response")]
         [Column(Name = "notification_response")]
-        public String NotificationResponse { get; set; }
+        public string NotificationResponse { get; set; }
+
         [DisplayName("Notification Message")]
         [Column(Name = "notification_message")]
-        public String NotificationMessage { get; set; }
+        public string NotificationMessage { get; set; }
 
-        public Notification()
-        {
-
-        }
+        public Notification() {}
 
         public Notification(DateTime dateTime, long patientId, NotificationType type)
         {

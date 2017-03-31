@@ -19,7 +19,7 @@ VALUES
 ( 
 	@NotificationId,
 	@PatientId, 
-	@NotificationType, 
+	@Type, 
 	@NotificationTime,
 	@NotificationResponse,
 	1
@@ -31,7 +31,7 @@ BEGIN
 UPDATE [PPOK].[dbo].[notification]
 SET
 	[patient_id] = @PatientId, 
-	[notification_type] = @NotificationType, 
+	[notification_type] = @Type, 
 	[notification_time] = @NotificationTime,
 	[notification_response] = @NotificationResponse
 WHERE [notification].[notification_id] = @NotificationId
