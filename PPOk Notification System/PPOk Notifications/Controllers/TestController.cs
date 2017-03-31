@@ -17,11 +17,17 @@ namespace PPOk_Notifications.Controllers {
             pharm.PharmacyName = "Test Pharmacy";
             pharm.PharmacyAddress = "An address";
             pharm.PharmacyPhone = "+19999999999";
-            db.PharmacyInsertOrUpdate(pharm);
+            db.PharmacyInsert(pharm);
 
+            var list = db.GetPharmacies();
+            pharm = list[0];
             var pharmAdmin = new Pharmacist();
             pharmAdmin.FirstName = "Pharma";
             Pharmacist.HashPassword(pharmAdmin, "harambe");
+            pharmAdmin.Email = "admin@admin.com";
+            pharmAdmin.PharmacyId = pharm.PharmacyId;
+            pharmAdmin.IsAdmin = true;
+            db.PharmacistInsertOrUpdate(pharmAdmin);
 
             return Redirect("/");
         }
