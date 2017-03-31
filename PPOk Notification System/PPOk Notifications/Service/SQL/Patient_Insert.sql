@@ -12,13 +12,13 @@
 )
 VALUES
 ( 
-	@pharmacy_id, 
-	@user_id, 
-	@patient_dob, 
-	@patient_phone, 
-	@preference_phone, 
-	@preference_text, 
-	@preference_email, 
-	@preference_time, 
+	@PharmacyId, 
+	@UserId, 
+	@PatientDob, 
+	@PatientPhone, 
+	@PreferencePhone, 
+	@PreferenceText, 
+	@PreferenceEmail, 
+	@PreferenceTime, 
 	1
 )

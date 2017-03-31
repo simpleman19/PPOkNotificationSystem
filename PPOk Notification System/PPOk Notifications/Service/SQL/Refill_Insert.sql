@@ -7,8 +7,8 @@
 )
 VALUES
 (
-	@prescription_id, 
-	@refill_date, 
-	@refill_filled, 
+	@PrescriptionId, 
+	@RefillDate, 
+	@RefillFilled, 
 	1
 )

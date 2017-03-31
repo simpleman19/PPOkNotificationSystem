@@ -8,9 +8,9 @@
 )
 VALUES
 (
-	@user_id,
-	@login_hash,
-	@login_salt,
-	@login_token,
+	@UserId,
+	@LoginHash,
+	@LoginSalt,
+	@LoginToken,
 	1
 )

@@ -8,9 +8,9 @@
 )
 VALUES
 ( 
-	@patient_id, 
-	@notification_type, 
-	@notification_time,
-	@notification_response,
+	@PatientId, 
+	@NotificationType, 
+	@NotificationTime,
+	@NotificationResponse,
 	1
 )

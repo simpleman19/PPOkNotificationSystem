@@ -8,9 +8,9 @@
 )
 VALUES
 (
-	@user_type,
-	@user_fname,
-	@user_lname,
-	@user_email,
+	@UserType,
+	@UserFname,
+	@UserLname,
+	@UserEmail,
 	1
 )

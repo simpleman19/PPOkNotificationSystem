@@ -1,8 +1,8 @@
 ﻿UPDATE [PPOK].[dbo].[notification]
 SET
-	[patient_id] = @patient_id, 
-	[notification_type] = @notification_type, 
-	[notification_time] = @notification_time,
-	[notification_response] = @notification_response
-WHERE [notification].[notification_id] = @notification_id
+	[patient_id] = @PatientId, 
+	[notification_type] = @NotificationType, 
+	[notification_time] = @NotificationTime,
+	[notification_response] = @NotificationResponse
+WHERE [notification].[notification_id] = @NotificationId
 	AND [notification].[object_active] = 0
