@@ -23,76 +23,30 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult PharmacistListView()
-        {
-            SQLService serv = new SQLService();
-            IEnumerable<PharmacyUser> param = new List<PharmacyUser>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", param);
-            }
-            else
-            {
-                return View();
-            }
-        }
         [HttpGet]
         public ActionResult PharmacistListView(string searchString)
         {
-            SQLService serv = new SQLService();
-            List<PharmacyUser> param = new List<PharmacyUser>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            List<PharmacyUser> filtered = new List<PharmacyUser>();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.Email.Contains(searchString) ||
-                        item.FirstName.Contains(searchString) ||
-                        item.LastName.Contains(searchString) ||
-                        item.Phone.Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", filtered);
-            }
-
-            return View(filtered);
+            SQLService db = new SQLService();
+            var pharms = db.GetPharmacistsActive();
+            return View(pharms);
         }
+
         public ActionResult AddPharmacist(long id)
         {
-
             SQLService database = new SQLService();
             Pharmacist pharmy = new Pharmacist();
 
             if (id != 0)
                 pharmy = database.GetPharmacistById((int)id);
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("AddPharmacist", pharmy);
-            }
-            else
-            {
-                return View(pharmy);
-            }
+            return View(pharmy);
         }
+
         public ActionResult EditPharmacist(long id)
         {
-            return Redirect("Pharmacy/AddPharmacist"  + id);
+            return Redirect("Pharmacy/AddPharmacist" + id);
         }
+
         public ActionResult DeletePharmacist(long id)
         {
             var db = new SQLService();
@@ -100,54 +54,11 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
         
-        [HttpPost]
-        public ActionResult RefillListView()
-        {
-            SQLService serv = new SQLService();
-            IEnumerable<Refill> param = new List<Refill>();
-
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("RefillListView", Tuple.Create(param, serv));
-            }
-            else
-            {
-                return View(param);
-            }
-        }
         [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
-            SQLService serv = new SQLService();
-            List<Refill> param = new List<Refill>();
 
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-
-            List<Refill> filtered = new List<Refill>();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.PrescriptionId.ToString().Contains(searchString) ||
-                        item.RefillId.ToString().Contains(searchString)) {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("RefillListView", Tuple.Create((IEnumerable<Refill>) filtered, serv));
-            }
-            else
-            {
-                return View(filtered);
-            }
-
+            return View();
         }
 
         public ActionResult ToggleComplete(long id)
@@ -167,35 +78,35 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult PatientListView()
         {
-            IEnumerable<Patient> param = new List<Patient>();
-            SQLService serv = new SQLService();
-            ((List<Patient>)param).AddRange(serv.GetPatients());
+            IEnumerable<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
+            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
+            ((List<PPOk_Notifications.Models.Patient>)param).AddRange(serv.GetPatients());
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
+                return PartialView("PatientListView", new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
             }
             else
             {
-                return View(new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
+                return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
             }
         }
 
         [HttpGet]
         public ActionResult PatientListView(string searchString)
         {
-            SQLService serv = new SQLService();
-            List<Patient> param = new List<Patient>();
-            List<Patient> filtered = new List<Patient>();
+            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
+            List<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
+            List<PPOk_Notifications.Models.Patient> filtered = new List<PPOk_Notifications.Models.Patient>();
             param.AddRange(serv.GetPatients());
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
                 {
-                    if (item.FirstName.Contains(searchString) ||
-                        item.LastName.Contains(searchString) ||
+                    if (item.FirstName.ToString().Contains(searchString) ||
+                        item.LastName.ToString().Contains(searchString) ||
                         item.PatientId.ToString().Contains(searchString) ||
-                        item.Phone.Contains(searchString))
+                        item.Phone.ToString().Contains(searchString))
                     {
                         filtered.Add(item);
                     }
@@ -205,7 +116,7 @@ namespace PPOk_Notifications.Controllers
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", Tuple.Create((IEnumerable<Patient>) filtered, serv));
+                return PartialView("PatientListView", filtered);
             }
             else
             {
@@ -298,46 +209,6 @@ namespace PPOk_Notifications.Controllers
                     ModelState.AddModelError("File", "Please Upload Your file");
                 }
             }
-            return View();
-        }
-
-        public ActionResult Admin()
-        {
-            Pharmacy pharmacy = new SQLService().GetPharmacyById(1);
-            pharmacy.GetTemplates();
-            return View(pharmacy);
-        }
-
-        [HttpPost]
-        public ActionResult Admin(
-            string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
-            string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
-            string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
-            string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
-            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate)
-        {
-            SQLService service = new SQLService();
-            Pharmacy pharmacy = service.GetPharmacyById(1);
-            pharmacy.GetTemplates();
-
-            pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
-            pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
-            pharmacy.TemplateRefill.TemplateEmail = refillEmailTemplate;
-
-            pharmacy.TemplateReady.TemplateText = pickupTextTemplate;
-            pharmacy.TemplateReady.TemplatePhone = pickupPhoneTemplate;
-            pharmacy.TemplateReady.TemplateEmail = pickupEmailTemplate;
-
-            pharmacy.TemplateRecall.TemplateText = recallTextTemplate;
-            pharmacy.TemplateRecall.TemplatePhone = recallPhoneTemplate;
-            pharmacy.TemplateRecall.TemplateEmail = recallEmailTemplate;
-
-            pharmacy.TemplateBirthday.TemplateText = birthdayTextTemplate;
-            pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
-            pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
-
-            service.PharmacyUpdate(pharmacy);
-
             return View();
         }
     }
