@@ -47,7 +47,7 @@ namespace PPOk_Notifications.Controllers
         {
             PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
             List<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
-            param.AddRange(serv.GetPharmacies());
+            //param.AddRange(serv.GetPharmacies());
             List<PPOk_Notifications.Models.Pharmacy> filtered = new List<PPOk_Notifications.Models.Pharmacy>();
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -80,8 +80,8 @@ namespace PPOk_Notifications.Controllers
             SQLService database = new SQLService();
 
             Models.Pharmacy pharmacy = new Models.Pharmacy();
-            if (id != 0)
-                pharmacy = database.GetPharmacyById(id);
+            //if (id != 0)
+            //    pharmacy = database.GetPharmacyById(id);
 
             // FIXME: phamacyuser vs pharmacist
             List<Models.PharmacyUser> pharmacists = new List<Models.PharmacyUser>();//database.GetPharmacists();
@@ -109,20 +109,20 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult AddPharmacy()
         {
-            return Redirect("PpokAdmin/PharmacyModificationView");
+            return Redirect("PharmacyModificationView/0");
         }
         public ActionResult EditPharmacy(long id)
         {
-            return Redirect("PpokAdmin/PharmacyModificationView" + id.ToString());
+            return Redirect("PharmacyModificationView/" + id.ToString());
         }
         public ActionResult ViewPharmacy(long id)
         {
-            return Redirect("PpokAdmin/PharmacyModificationView" + id.ToString());
+            return Redirect("PharmacyModificationView/" + id.ToString());
         }
         public void DeletePharmacy(long id)
         {
             SQLService database = new SQLService();
-            database.Pharmacy_Disable((int)id);
+            //database.Pharmacy_Disable((int)id);
         }
     }
 }

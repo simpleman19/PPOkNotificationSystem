@@ -15,64 +15,10 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult NotificationListView()
-        {
-            IEnumerable<PPOk_Notifications.Models.Notification> param = new List<PPOk_Notifications.Models.Notification>();
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            ((List<PPOk_Notifications.Models.Notification>)param).AddRange(serv.GetNotifications());
-            // return view
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("NotificationListView", new System.Tuple<IEnumerable<PPOk_Notifications.Models.Notification>,
-                    PPOk_Notifications.Service.SQLService>
-                    (param, serv));
-            }
-            else
-            {
-                return View(new System.Tuple<IEnumerable<PPOk_Notifications.Models.Notification>,
-                    PPOk_Notifications.Service.SQLService>
-                    (param, serv));
-            }
-        }
-        [HttpGet]
-        public ActionResult NotificationListView(string searchString)
-        {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            List<PPOk_Notifications.Models.Notification> param = new List<PPOk_Notifications.Models.Notification>();
-            List<PPOk_Notifications.Models.Notification> filtered = new List<PPOk_Notifications.Models.Notification>();
-            param.AddRange(serv.GetNotifications());
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.NotificationId.ToString().Contains(searchString) ||
-                        item.Type.ToString().Contains(searchString) ||
-                        item.PatientId.ToString().Contains(searchString) ||
-                        serv.GetPatientById((int)item.PatientId).FirstName.Contains(searchString) ||
-                        serv.GetPatientById((int)item.PatientId).LastName.Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("NotificationListView", filtered);
-            }
-            else
-            {
-                return View(filtered);
-            }
-        }
-
         public ActionResult CancelNotification(long id)
         {
             var db = new SQLService();
-            db.Notification_Disable(id);
+            //db.Notification_Disable(id);
             return Redirect("/Notification/NotificationListView");
         }
 
@@ -90,24 +36,31 @@ namespace PPOk_Notifications.Controllers
             }
         }
 
-
-        /*
         public ActionResult NotificationList()
         {
-            List<Notification> list = new List<Notification>(); 
-            for (int i = 0; i < 100; i++)
+            var db = new SQLService();
+            // List<Notification> notifications = db.GetNotificationsActive();
+            List<Notification> notifications = new List<Notification>();
+            if (notifications.Count == 0)
             {
-                list.Add(Notification.GetTestNotification());
+                Notification n = null;
+                Random rand = new Random();
+                for (int i = 0; i < 100; i++)
+                {
+                    n = Notification.GetTestNotification(rand);
+                    //db.NotificationInsertOrUpdate(n);
+                    notifications.Add(n);
+                }
+              //  notifications = db.GetNotificationsActive();
             }
-            return View(list);
+            return View(notifications);
         }
 
         public ActionResult DeleteNotification(long id)
         {
             var db = new SQLService();
-            db.Notification_Disable(id);
+            //db.Notification_Disable(id);
             return Redirect("/Notification/NotificationList");
         }
-        */
     }
 }

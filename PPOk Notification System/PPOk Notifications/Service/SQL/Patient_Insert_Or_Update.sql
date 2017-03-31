@@ -2,7 +2,7 @@
 ( 
 	SELECT 1 
 	FROM [PPOK].[dbo].[patient] 
-	WHERE [patient_id] = @patient_id 
+	WHERE [patient_id] = @PatientId 
 )
 BEGIN
 SET IDENTITY_INSERT [PPOK].[dbo].[patient] ON
@@ -21,15 +21,15 @@ INSERT INTO [PPOK].[dbo].[patient]
 )
 VALUES
 ( 
-	@patient_id,
-	@pharmacy_id, 
-	@user_id, 
-	@patient_dob, 
-	@patient_phone, 
-	@preference_phone, 
-	@preference_text, 
-	@preference_email, 
-	@preference_time, 
+	@PatientId,
+	@PharmacyId, 
+	@UserId, 
+	@PatientDob, 
+	@PatientPhone, 
+	@PreferencePhone, 
+	@PreferenceText, 
+	@PreferenceEmail, 
+	@PreferenceTime, 
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[patient] OFF
@@ -38,13 +38,13 @@ ELSE
 BEGIN
 UPDATE [PPOK].[dbo].[patient]
 SET
-	[pharmacy_id] = @pharmacy_id, 
-	[user_id] = @user_id, 
-	[patient_dob] = @patient_dob, 
-	[patient_phone] = @patient_phone, 
-	[preference_phone] = @preference_phone, 
-	[preference_text] = @preference_text, 
-	[preference_email] = @preference_email, 
-	[preference_time] = @preference_time
-WHERE [patient].[patient_id] = @patient_id
+	[pharmacy_id] = @PharmacyId, 
+	[user_id] = @UserId, 
+	[patient_dob] = @PatientDob, 
+	[patient_phone] = @PatientPhone, 
+	[preference_phone] = @PreferencePhone, 
+	[preference_text] = @PreferenceText, 
+	[preference_email] = @PreferenceEmail, 
+	[preference_time] = @PreferenceTime
+WHERE [patient].[patient_id] = @PatientId
 END

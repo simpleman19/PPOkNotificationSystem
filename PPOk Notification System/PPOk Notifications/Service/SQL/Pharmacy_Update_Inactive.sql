@@ -1,11 +1,11 @@
 ﻿UPDATE [PPOK].[dbo].[pharmacy]
 SET
-	[pharmacy_name] = @pharmacy_name, 
-	[pharmacy_phone] = @pharmacy_phone, 
-	[pharmacy_address] = @pharmacy_address, 
-	[template_refill] = @template_refill.TemplateId, 
-	[template_ready] = @template_ready.TemplateId, 
-	[template_recall] = @template_recall.TemplateId, 
-	[template_birthday] = @template_birthday.TemplateId
-WHERE [pharmacy].[pharmacy_id] = @pharmacy_id
+	[pharmacy_name] = @PharmacyName, 
+	[pharmacy_phone] = @PharmacyPhone, 
+	[pharmacy_address] = @PharmacyAddress, 
+	[template_refill] = @TemplateRefillId, 
+	[template_ready] = @TemplateReadyId, 
+	[template_recall] = @TemplateRecallId, 
+	[template_birthday] = @TemplateBirthdayId
+WHERE [pharmacy].[pharmacy_id] = @PharmacyId
 	AND [pharmacy].[object_active] = 0

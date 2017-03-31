@@ -2,7 +2,7 @@
 ( 
 	SELECT 1 
 	FROM [PPOK].[dbo].[pharmacy] 
-	WHERE [pharmacy_id] = @pharmacy_id 
+	WHERE [pharmacy_id] = @PharmacyId 
 )
 BEGIN
 SET IDENTITY_INSERT [PPOK].[dbo].[pharmacy] ON
@@ -20,14 +20,14 @@ INSERT INTO [PPOK].[dbo].[pharmacy]
 )
 VALUES
 (
-	@pharmacy_id,
-	@pharmacy_name,
-	@pharmacy_phone,
-	@pharmacy_address,
-	@template_refill.TemplateId,
-	@template_ready.TemplateId,
-	@template_recall.TemplateId,
-	@template_birthday.TemplateId,
+	@PharmacyId,
+	@PharmacyName,
+	@PharmacyPhone,
+	@PharmacyAddress,
+	@TemplateRefillId,
+	@TemplateReadyId,
+	@TemplateRecallId,
+	@TemplateBirthdayId,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[pharmacy] OFF
@@ -36,12 +36,12 @@ ELSE
 BEGIN
 UPDATE [PPOK].[dbo].[pharmacy]
 SET
-	[pharmacy_name] = @pharmacy_name, 
-	[pharmacy_phone] = @pharmacy_phone, 
-	[pharmacy_address] = @pharmacy_address, 
-	[template_refill] = @template_refill.TemplateId, 
-	[template_ready] = @template_ready.TemplateId, 
-	[template_recall] = @template_recall.TemplateId, 
-	[template_birthday] = @template_birthday.TemplateId
-WHERE [pharmacy].[pharmacy_id] = @pharmacy_id
+	[pharmacy_name] = @PharmacyName, 
+	[pharmacy_phone] = @PharmacyPhone, 
+	[pharmacy_address] = @PharmacyAddress, 
+	[template_refill] = @TemplateRefillId, 
+	[template_ready] = @TemplateReadyId, 
+	[template_recall] = @TemplateRecallId, 
+	[template_birthday] = @TemplateBirthdayId
+WHERE [pharmacy].[pharmacy_id] = @PharmacyId
 END
