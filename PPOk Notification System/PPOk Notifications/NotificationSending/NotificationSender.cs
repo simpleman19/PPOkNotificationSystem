@@ -44,7 +44,7 @@ namespace PPOk_Notifications.NotificationSending
 
         public static bool SendFilledNotification(Refill refill)
         {
-            Notification n = new Notification(refill, Notification.NotificationType.Refilled);
+            Notification n = new Notification(refill, Notification.NotificationType.Ready);
             var db = new SQLService();
             db.NotificationInsert(n);
             SendNotification(n);

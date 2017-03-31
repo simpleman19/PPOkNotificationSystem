@@ -1,0 +1,120 @@
+﻿@model PPOk_Notifications.Models.Pharmacy
+@{
+    ViewBag.Title = "Admin";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="template-container-parent">
+        <h2>Message Templates</h2>
+
+        <div>
+            <h3>Refill Templtes</h3>
+
+            <div class="template-container">
+                <div class="left template-item">
+                    <h4>Text Template</h4>
+                    <textarea name="refillTextTemplate">@Model.TemplateRefill.TemplateText</textarea>
+                </div>
+
+                <div class="center template-item">
+                    <h4>Phone Call Template</h4>
+                    <textarea name="refillPhoneTemplate">@Model.TemplateRefill.TemplatePhone</textarea>
+                </div>
+                
+                <div class="right template-item">
+                    <h4>Email Template</h4>
+                    <textarea name="refillEmailTemplate">@Model.TemplateRefill.TemplateEmail</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Pickup Templtes</h3>
+            
+            <div class="template-container">
+                <div class="left template-item">
+                    <h4>Text Template</h4>
+                    <textarea name="pickupTextTemplate">@Model.TemplateReady.TemplateText</textarea>
+                </div>
+
+                <div class="center template-item">
+                    <h4>Phone Call Template</h4>
+                    <textarea name="pickupPhoneTemplate">@Model.TemplateReady.TemplatePhone</textarea>
+                </div>
+
+                <div class="right template-item">
+                    <h4>Email Template</h4>
+                    <textarea name="pickupEmailTemplate">@Model.TemplateReady.TemplateEmail</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Recall Templtes</h3>
+            
+            <div class="template-container">
+                <div class="left template-item">
+                    <h4>Text Template</h4>
+                    <textarea name="recallTextTemplate">@Model.TemplateRecall.TemplateText</textarea>
+                </div>
+
+                <div class="center template-item">
+                    <h4>Phone Call Template</h4>
+                    <textarea name="recallPhoneTemplate">@Model.TemplateRecall.TemplatePhone</textarea>
+                </div>
+
+                <div class="right template-item">
+                    <h4>Email Template</h4>
+                    <textarea name="recallEmailTemplate">@Model.TemplateRecall.TemplateEmail</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Birthday Templtes</h3>
+            
+            <div class="template-container">
+                <div class="left template-item">
+                    <h4>Text Template</h4>
+                    <textarea name="birthdayTextTemplate">@Model.TemplateBirthday.TemplateText</textarea>
+                </div>
+
+                <div class="center template-item">
+                    <h4>Phone Call Template</h4>
+                    <textarea name="birthdayPhoneTemplate">@Model.TemplateBirthday.TemplatePhone</textarea>
+                </div>
+
+                <div class="right template-item">
+                    <h4>Email Template</h4>
+                    <textarea name="birthdayEmailTemplate">@Model.TemplateBirthday.TemplateEmail</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Notification Disabled Template</h3>
+            
+            <div class="template-container">
+                <div class="left template-item">
+                    <h4>Text Template</h4>
+                    <textarea name="notificationDisabledTextTemplate"></textarea>
+                </div>
+
+                <div class="center template-item">
+                    <h4>Phone Call Template</h4>
+                    <textarea name="notificationDisabledPhoneTemplate"></textarea>
+                </div>
+
+                <div class="right template-item">
+                    <h4>Email Template</h4>
+                    <textarea name="notificationDisabledEmailTemplate"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 10px;">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}

@@ -727,6 +727,7 @@
     <Content Include="Views\Pharmacy\PatientListView.cshtml" />
     <Content Include="Views\Notification\NotificationListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />
+    <Content Include="Views\Pharmacy\Admin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

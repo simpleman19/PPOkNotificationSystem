@@ -26,8 +26,8 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult PharmacistListView()
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
+            SQLService serv = new SQLService();
+            IEnumerable<PharmacyUser> param = new List<PharmacyUser>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
 
@@ -43,20 +43,20 @@ namespace PPOk_Notifications.Controllers
         [HttpGet]
         public ActionResult PharmacistListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
+            SQLService serv = new SQLService();
+            List<PharmacyUser> param = new List<PharmacyUser>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            List<PPOk_Notifications.Models.PharmacyUser> filtered = new List<PPOk_Notifications.Models.PharmacyUser>();
+            List<PharmacyUser> filtered = new List<PharmacyUser>();
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
                 {
-                    if (item.Email.ToString().Contains(searchString) ||
-                        item.FirstName.ToString().Contains(searchString) ||
-                        item.LastName.ToString().Contains(searchString) ||
-                        item.Phone.ToString().Contains(searchString))
+                    if (item.Email.Contains(searchString) ||
+                        item.FirstName.Contains(searchString) ||
+                        item.LastName.Contains(searchString) ||
+                        item.Phone.Contains(searchString))
                     {
                         filtered.Add(item);
                     }
@@ -68,10 +68,8 @@ namespace PPOk_Notifications.Controllers
             {
                 return PartialView("PharmacistListView", filtered);
             }
-            else
-            {
-                return View(filtered);
-            }
+
+            return View(filtered);
         }
         public ActionResult AddPharmacist(long id)
         {
@@ -105,14 +103,14 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult RefillListView()
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
+            SQLService serv = new SQLService();
+            IEnumerable<Refill> param = new List<Refill>();
 
             // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("RefillListView", param);
+                return PartialView("RefillListView", Tuple.Create(param, serv));
             }
             else
             {
@@ -122,12 +120,12 @@ namespace PPOk_Notifications.Controllers
         [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
-        
+            SQLService serv = new SQLService();
+            List<Refill> param = new List<Refill>();
+
             // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-        
-            List<PPOk_Notifications.Models.Refill> filtered = new List<PPOk_Notifications.Models.Refill>();
+
+            List<Refill> filtered = new List<Refill>();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -143,7 +141,7 @@ namespace PPOk_Notifications.Controllers
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("RefillListView", filtered);
+                return PartialView("RefillListView", Tuple.Create((IEnumerable<Refill>) filtered, serv));
             }
             else
             {
@@ -169,35 +167,35 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult PatientListView()
         {
-            IEnumerable<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            ((List<PPOk_Notifications.Models.Patient>)param).AddRange(serv.GetPatients());
+            IEnumerable<Patient> param = new List<Patient>();
+            SQLService serv = new SQLService();
+            ((List<Patient>)param).AddRange(serv.GetPatients());
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
+                return PartialView("PatientListView", new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
             }
             else
             {
-                return View(new Tuple<IEnumerable<PPOk_Notifications.Models.Patient>, PPOk_Notifications.Service.SQLService>(param, serv));
+                return View(new Tuple<IEnumerable<Patient>, SQLService>(param, serv));
             }
         }
 
         [HttpGet]
         public ActionResult PatientListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            List<PPOk_Notifications.Models.Patient> param = new List<PPOk_Notifications.Models.Patient>();
-            List<PPOk_Notifications.Models.Patient> filtered = new List<PPOk_Notifications.Models.Patient>();
+            SQLService serv = new SQLService();
+            List<Patient> param = new List<Patient>();
+            List<Patient> filtered = new List<Patient>();
             param.AddRange(serv.GetPatients());
             if (!String.IsNullOrEmpty(searchString))
             {
                 foreach (var item in param)
                 {
-                    if (item.FirstName.ToString().Contains(searchString) ||
-                        item.LastName.ToString().Contains(searchString) ||
+                    if (item.FirstName.Contains(searchString) ||
+                        item.LastName.Contains(searchString) ||
                         item.PatientId.ToString().Contains(searchString) ||
-                        item.Phone.ToString().Contains(searchString))
+                        item.Phone.Contains(searchString))
                     {
                         filtered.Add(item);
                     }
@@ -207,7 +205,7 @@ namespace PPOk_Notifications.Controllers
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", filtered);
+                return PartialView("PatientListView", Tuple.Create((IEnumerable<Patient>) filtered, serv));
             }
             else
             {
@@ -299,6 +297,46 @@ namespace PPOk_Notifications.Controllers
                     ModelState.AddModelError("File", "Please Upload Your file");
                 }
             }
+            return View();
+        }
+
+        public ActionResult Admin()
+        {
+            Pharmacy pharmacy = new SQLService().GetPharmacyById(1);
+            pharmacy.GetTemplates();
+            return View(pharmacy);
+        }
+
+        [HttpPost]
+        public ActionResult Admin(
+            string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
+            string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
+            string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
+            string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
+            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate)
+        {
+            SQLService service = new SQLService();
+            Pharmacy pharmacy = service.GetPharmacyById(1);
+            pharmacy.GetTemplates();
+
+            pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
+            pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
+            pharmacy.TemplateRefill.TemplateEmail = refillEmailTemplate;
+
+            pharmacy.TemplateReady.TemplateText = pickupTextTemplate;
+            pharmacy.TemplateReady.TemplatePhone = pickupPhoneTemplate;
+            pharmacy.TemplateReady.TemplateEmail = pickupEmailTemplate;
+
+            pharmacy.TemplateRecall.TemplateText = recallTextTemplate;
+            pharmacy.TemplateRecall.TemplatePhone = recallPhoneTemplate;
+            pharmacy.TemplateRecall.TemplateEmail = recallEmailTemplate;
+
+            pharmacy.TemplateBirthday.TemplateText = birthdayTextTemplate;
+            pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
+            pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
+
+            service.PharmacyUpdate(pharmacy);
+
             return View();
         }
     }

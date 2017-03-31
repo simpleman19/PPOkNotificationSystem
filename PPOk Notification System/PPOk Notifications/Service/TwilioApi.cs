@@ -65,8 +65,8 @@ namespace PPOk_Notifications.Service
                 case Notification.NotificationType.Recall:
                     temp = pharmacy.GetRecallTemplate();
                     break;
-                case Notification.NotificationType.Refilled:
-                    temp = pharmacy.GetRefilledTemplate();
+                case Notification.NotificationType.Ready:
+                    temp = pharmacy.GetReadyTemplate();
                     break;
                 case Notification.NotificationType.Birthday:
                     temp = pharmacy.GetBirthdayTemplate();
