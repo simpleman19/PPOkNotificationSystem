@@ -27,41 +27,38 @@ namespace PPOk_Notifications.Models
         public Refill CreateRefill(Prescription prescription, Patient patient)
         {
             Refill refill = new Refill(prescription);
-
+            // TODO ? this looks incomplete
             return refill;
         }
 
         public List<Notification> GetNotifications()
         {
             List<Notification> notifications = new List<Notification>();
-
+            // TODO
             return notifications;
         }
 
-        public Template GetRefillTemplate()
+        public Template GetRefillTemplate() => ParseTemplate(TemplateRefill);
+        public Template GetRecallTemplate() => ParseTemplate(TemplateRecall);
+        public Template GetReadyTemplate() => ParseTemplate(TemplateReady);
+        public Template GetBirthdayTemplate() => ParseTemplate(TemplateBirthday);
+
+        private Template ParseTemplate(Template template)
         {
-            return parseTemplate(TemplateRefill);
+            return new Template
+            {
+                TemplateText = Replace(template.TemplateText),
+                TemplatePhone = Replace(template.TemplatePhone),
+                TemplateEmail = Replace(template.TemplateEmail)
+            };
         }
 
-        public Template GetRecallTemplate()
+        private string Replace(string oldText)
         {
-            return parseTemplate(TemplateRecall);
-        }
-
-        public Template GetReadyTemplate()
-        {
-            return parseTemplate(TemplateReady);
-        }
-
-        public Template GetBirthdayTemplate()
-        {
-            return parseTemplate(TemplateBirthday);
-        }
-
-        private Template parseTemplate(Template template)
-        {
-            //TODO parsing
-            return template;
+            return oldText
+                .Replace("{{pharmacy_address}}", PharmacyAddress)
+                .Replace("{{pharmacy_name}}", PharmacyName)
+                .Replace("{{pharmacy_phone}}", PharmacyPhone);
         }
 
         public void GetTemplates()
@@ -74,6 +71,7 @@ namespace PPOk_Notifications.Models
             TemplateBirthday = service.GetTemplateById((int) TemplateBirthdayId);
         }
 
+        // -- TEST CODE --
         public void SaveTemplates()
         {
             SQLService service = new SQLService();

@@ -1050,6 +1050,24 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_inactive"]).AsList();
 			}
 		}
+		public List<Notification> GetNotificationsToday() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_today"]).AsList();
+			}
+		}
+		public List<Notification> GetNotificationsFutureDate() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_date"]).AsList();
+			}
+		}
+		public List<Notification> GetNotificationsFutureTime() {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_time"]).AsList();
+			}
+		}
 		#endregion
 
 		#region Get by id
