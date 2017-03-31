@@ -7,7 +7,6 @@ using System.Data;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
@@ -228,6 +227,10 @@ namespace PPOk_Notifications.Controllers
         }
 
         // pharmacy uploading patients
+        public ActionResult Upload()
+        {
+            return View();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Upload(HttpPostedFileBase upload)
@@ -247,49 +250,81 @@ namespace PPOk_Notifications.Controllers
                         {
                             csvTable.Load(csvReader);
                         }
-                        return View(csvTable);
-                        
-                        foreach (DataRow row in csvTable.Rows)
-                        {
-                            
-                            //TODO check if patient exist in the databse already.
-                            //If it does, then check prescriptions for that patients if they are in databse.
-                            //If yes, check for new refills.
-                            //If there is new refills.
-                            //----prescription.prescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
-                            //----Refill refill = new Refill (prescription);
-                            //If there is a new prescription save it to the database.
-                            Prescription prescription = new Prescription();
-                            prescription.PrescriptionName = row["GPIGenericName"].ToString();
-                            prescription.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
-                            prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                            prescription.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
-                            prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
-                            prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                            //SqlService.AddPrescription(prescription);
-                            //If patient doesnt exist in the database, create a new patient and save it in the db along with their prescriptions.
-                            Patient patient = new Patient();
-                            Prescription prescription1 = new Prescription();
-                            patient.PersonCode = int.Parse(row["PersonCode"].ToString());
-                            patient.FirstName = row["PatientFirstName"].ToString();
-                            patient.LastName = row["PatientLastName"].ToString();
-                            patient.Phone = row["Phone"].ToString();
-                            patient.Email = row["Email"].ToString();
-                            prescription.PrescriptionName = row["GPIGenericName"].ToString();
-                            prescription.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
-                            prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                            prescription.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
-                            prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
-                            prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                            Refill refill = new Refill(prescription);
-                            //SqlService.AddPatient(patient);
-                            //SqlService.AddPrescription(prescription);
-                            //SqlService.AddRefill(refill);
-                        } 
+                        // return View(csvTable);
+                           foreach (DataRow row in csvTable.Rows)
+                         { 
+                             SQLService ser = new SQLService();
+                             int id = int.Parse(row["PersonCode"].ToString());
+
+                             if (ser.GetPatientById(id) == null)
+                             {
+                                 Patient patient = new Patient();
+                                 Prescription prescription = new Prescription();
+                                 patient.PersonCode = int.Parse(row["PersonCode"].ToString());
+                                 patient.FirstName = row["PatientFirstName"].ToString();
+                                 patient.LastName = row["PatientLastName"].ToString();
+                                 patient.Phone = row["Phone"].ToString();
+                                 patient.Email = row["Email"].ToString();
+                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
+                                 prescription.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                 prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                 prescription.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                 prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                 Refill refill = new Refill(prescription);
+                                 ser.PatientInsert(patient);
+                                 ser.PrescriptionInsert(prescription);
+                                 ser.RefillInsert(refill);
+
+                             }
+                             else if (ser.GetPatientById(id) != null)
+                             {
+                                 Prescription prescription = new Prescription();
+                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+
+                                 if (ser.GetPrescriptionByPatientId(id) == null)
+                                 {
+                                     Prescription prescription1 = new Prescription();
+                                     prescription1.PrescriptionName = row["GPIGenericName"].ToString();
+                                     prescription1.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                     prescription1.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                     prescription1.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                     prescription1.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                     prescription1.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                     Refill refill = new Refill(prescription);
+                                     ser.PrescriptionInsert(prescription1);
+                                     ser.RefillInsert(refill);
+                                 }
+                                 if (ser.GetPrescriptionByPatientId(id) != null)
+                                 {
+                                     Prescription prescription1 = ser.GetPrescriptionByPatientId(id);
+                                     if(prescription1.PrescriptionNumber != int.Parse(row["PrescriptionNumber"].ToString()))
+                                     {
+                                         Prescription prescription2 = new Prescription();
+                                         prescription2.PrescriptionName = row["GPIGenericName"].ToString();
+                                         prescription2.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                         prescription2.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                         prescription2.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                         prescription2.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                         prescription2.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                         Refill refill = new Refill(prescription);
+                                         ser.PrescriptionInsert(prescription1);
+                                         ser.RefillInsert(refill);  
+                                     }
+
+                                     if (prescription1.PrescriptionNumber == int.Parse(row["PrescriptionNumber"].ToString()))
+                                     {
+                                         //Refill refill = 
+                                     }
+                                 }                                
+
+                             }
+
+                         }
+                        RedirectToAction("Upload", "Pharmacy");
                     }
                     else
                     {
-
                         ModelState.AddModelError("File", "This file format is not supported");
                         return View();
                     }

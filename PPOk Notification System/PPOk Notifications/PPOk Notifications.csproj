@@ -714,8 +714,6 @@
     <Content Include="Views\Notification\NotificationList.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Pharmacy\Pharmacy.cshtml" />
-    <Content Include="Views\Pharmacy\Upload.cshtml" />
     <Content Include="Views\PharmacistLogin\Index.cshtml" />
     <Content Include="Views\PharmacistLogin\Success.cshtml" />
     <Content Include="Views\PharmacistLogin\Reset.cshtml" />
@@ -728,6 +726,7 @@
     <Content Include="Views\Notification\NotificationListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />
     <Content Include="Views\Pharmacy\Admin.cshtml" />
+    <Content Include="Views\Pharmacy\Upload.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
