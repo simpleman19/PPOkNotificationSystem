@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 using PPOk_Notifications.Models;
 
@@ -20,9 +19,7 @@ namespace PPOk_Notifications.Controllers {
             pharm.PharmacyPhone = "+19999999999";
             db.PharmacyInsertOrUpdate(pharm);
 
-            var pharmAdmin = new Pharmacist();
-            pharmAdmin.FirstName = "Pharma";
-            Pharmacist.HashPassword(pharmAdmin, "harambe");
+            var pharmAdmin = new PharmacyUser();
 
             return Redirect("/");
         }
@@ -43,11 +40,5 @@ namespace PPOk_Notifications.Controllers {
 			}
 			return debug;
 		}
-
-	    public string InsertFake()
-	    {
-            Pharmacy.FakeDataFill();
-	        return "success";
-	    }
 	}
 }
