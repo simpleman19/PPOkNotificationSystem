@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dapper.Contrib.Extensions;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models
@@ -18,10 +19,10 @@ namespace PPOk_Notifications.Models
         [DisplayName("Template Recall Id")] [Column(Name = "template_recall")] public long TemplateRecallId { get; set; }
         [DisplayName("Template Birthday Id")] [Column(Name = "template_birthday")] public long TemplateBirthdayId { get; set; }
 
-        public Template TemplateRefill;
-        public Template TemplateReady;
-        public Template TemplateRecall;
-        public Template TemplateBirthday;
+        [Computed] public Template TemplateRefill { get; set; }
+        [Computed] public Template TemplateReady { get; set; }
+        [Computed] public Template TemplateRecall { get; set; }
+        [Computed] public Template TemplateBirthday { get; set; }
 
         public Refill CreateRefill(Prescription prescription, Patient patient)
         {
@@ -100,9 +101,20 @@ namespace PPOk_Notifications.Models
             pharmacy.TemplateReady = new Template();
 
             pharmacy.TemplateRefill.PharmacyId = 1;
+            pharmacy.TemplateRefill.TemplateId = 1;
+            pharmacy.TemplateRefill.Fill();
+
             pharmacy.TemplateBirthday.PharmacyId = 1;
+            pharmacy.TemplateBirthday.TemplateId = 2;
+            pharmacy.TemplateBirthday.Fill();
+
             pharmacy.TemplateRecall.PharmacyId = 1;
+            pharmacy.TemplateRecall.TemplateId = 3;
+            pharmacy.TemplateRecall.Fill();
+
             pharmacy.TemplateReady.PharmacyId = 1;
+            pharmacy.TemplateReady.TemplateId = 4;
+            pharmacy.TemplateReady.Fill();
 
             pharmacy.TemplateRefill.TemplateText =
                 "A prescription you have is up for refill at {{pharmacy_name}}. Would you like to refill your prescription? Text back YES";
@@ -121,6 +133,11 @@ namespace PPOk_Notifications.Models
                 "One of your prescriptions has been recalled, please contact your pharmacist at {{pharmacy_phone}} or press 9 to be connected to a pharmacist for more information.";
             pharmacy.TemplateReady.TemplatePhone =
                 "Your prescription is ready at {{pharmacy_name}}! Please call {{pharmacy_phone}} or press 9 to be connected to a pharmacist if you have any questions";
+
+            pharmacy.TemplateRefillId = pharmacy.TemplateRefill.TemplateId;
+            pharmacy.TemplateRecallId = pharmacy.TemplateRecall.TemplateId;
+            pharmacy.TemplateReadyId = pharmacy.TemplateReady.TemplateId;
+            pharmacy.TemplateBirthdayId = pharmacy.TemplateBirthday.TemplateId;
 
             service.PharmacyInsert(pharmacy);
             pharmacy.SaveTemplates();

@@ -211,5 +211,46 @@ namespace PPOk_Notifications.Controllers
             }
             return View();
         }
+
+        public ActionResult Admin()
+        {
+            Pharmacy pharmacy = new SQLService().GetPharmacyById(1);
+            pharmacy.GetTemplates();
+            return View(pharmacy);
+        }
+
+        [HttpPost]
+        public ActionResult Admin(
+            string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
+            string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
+            string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
+            string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
+            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate)
+        {
+            SQLService service = new SQLService();
+            Pharmacy pharmacy = service.GetPharmacyById(1);
+            pharmacy.GetTemplates();
+
+            pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
+            pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
+            pharmacy.TemplateRefill.TemplateEmail = refillEmailTemplate;
+
+            pharmacy.TemplateReady.TemplateText = pickupTextTemplate;
+            pharmacy.TemplateReady.TemplatePhone = pickupPhoneTemplate;
+            pharmacy.TemplateReady.TemplateEmail = pickupEmailTemplate;
+
+            pharmacy.TemplateRecall.TemplateText = recallTextTemplate;
+            pharmacy.TemplateRecall.TemplatePhone = recallPhoneTemplate;
+            pharmacy.TemplateRecall.TemplateEmail = recallEmailTemplate;
+
+            pharmacy.TemplateBirthday.TemplateText = birthdayTextTemplate;
+            pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
+            pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
+
+            service.PharmacyUpdate(pharmacy);
+            pharmacy.SaveTemplates();
+
+            return Redirect("/Pharmacy/Admin");
+        }
     }
 }
