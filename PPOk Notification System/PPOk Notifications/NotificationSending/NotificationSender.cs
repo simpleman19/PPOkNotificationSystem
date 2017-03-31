@@ -53,7 +53,7 @@ namespace PPOk_Notifications.NotificationSending
             return true;
         }
 
-        public static void SentRecalls(List<Notification> notifications)
+        public static void SendRecalls(List<Notification> notifications)
         {
             var db = new SQLService();
             foreach (Notification n in notifications)
