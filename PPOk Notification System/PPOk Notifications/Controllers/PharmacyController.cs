@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
@@ -48,6 +49,7 @@ namespace PPOk_Notifications.Controllers
                         
                         foreach (DataRow row in csvTable.Rows)
                         {
+                            
                             //TODO check if patient exist in the databse already.
                             //If it does, then check prescriptions for that patients if they are in databse.
                             //If yes, check for new refills.
