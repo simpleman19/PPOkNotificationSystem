@@ -23,78 +23,30 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult PharmacistListView()
-        {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", param);
-            }
-            else
-            {
-                return View();
-            }
-        }
         [HttpGet]
         public ActionResult PharmacistListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.PharmacyUser> param = new List<PPOk_Notifications.Models.PharmacyUser>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            List<PPOk_Notifications.Models.PharmacyUser> filtered = new List<PPOk_Notifications.Models.PharmacyUser>();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.Email.ToString().Contains(searchString) ||
-                        item.FirstName.ToString().Contains(searchString) ||
-                        item.LastName.ToString().Contains(searchString) ||
-                        item.Phone.ToString().Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", filtered);
-            }
-            else
-            {
-                return View(filtered);
-            }
+            SQLService db = new SQLService();
+            var pharms = db.GetPharmacistsActive();
+            return View(pharms);
         }
+
         public ActionResult AddPharmacist(long id)
         {
-
             SQLService database = new SQLService();
             Pharmacist pharmy = new Pharmacist();
 
             if (id != 0)
                 pharmy = database.GetPharmacistById((int)id);
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("AddPharmacist", pharmy);
-            }
-            else
-            {
-                return View(pharmy);
-            }
+            return View(pharmy);
         }
+
         public ActionResult EditPharmacist(long id)
         {
-            return Redirect("Pharmacy/AddPharmacist"  + id);
+            return Redirect("Pharmacy/AddPharmacist" + id);
         }
+
         public ActionResult DeletePharmacist(long id)
         {
             var db = new SQLService();
@@ -102,54 +54,11 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
         
-        [HttpPost]
-        public ActionResult RefillListView()
-        {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
-
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("RefillListView", param);
-            }
-            else
-            {
-                return View(param);
-            }
-        }
         [HttpGet]
         public ActionResult RefillListView(string searchString)
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Refill> param = new List<PPOk_Notifications.Models.Refill>();
-        
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-        
-            List<PPOk_Notifications.Models.Refill> filtered = new List<PPOk_Notifications.Models.Refill>();
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.PrescriptionId.ToString().Contains(searchString) ||
-                        item.RefillId.ToString().Contains(searchString)) {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("RefillListView", filtered);
-            }
-            else
-            {
-                return View(filtered);
-            }
-
+            return View();
         }
 
         public ActionResult ToggleComplete(long id)
