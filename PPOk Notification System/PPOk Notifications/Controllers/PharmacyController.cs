@@ -29,6 +29,7 @@ namespace PPOk_Notifications.Controllers
             SQLService db = new SQLService();
             // FIXME: Key not in dictionary var pharms = db.GetPharmacistsActive();
             var pharms = new List<PharmacyUser>();
+            
             return View(pharms);
         }
 

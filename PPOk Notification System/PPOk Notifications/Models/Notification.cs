@@ -119,6 +119,7 @@ namespace PPOk_Notifications.Models
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             Random rand = new Random();
             test.NotificationId = rand.Next(1000, 10000000);
+            test.PatientId = rand.Next(100, 10000);
             return test;
         }
 
@@ -126,6 +127,7 @@ namespace PPOk_Notifications.Models
         {
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             test.NotificationId = rand.Next(1000, 10000000);
+            test.PatientId = rand.Next(100, 10000);
             return test;
         }
     }
