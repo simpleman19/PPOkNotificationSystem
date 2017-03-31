@@ -1,10 +1,8 @@
-﻿@using System.Data;
+﻿
+@model System.Data.DataTable
+@using System.Data;
 
-@{
-    ViewBag.Title = "Upload";
-}
-
-<h2>Pharmacy</h2>
+<h2>Upload File</h2>
 
 @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

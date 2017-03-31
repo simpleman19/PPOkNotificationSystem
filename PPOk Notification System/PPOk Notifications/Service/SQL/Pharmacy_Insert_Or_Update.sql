@@ -24,10 +24,10 @@ VALUES
 	@PharmacyName,
 	@PharmacyPhone,
 	@PharmacyAddress,
-	@TemplateRefill.TemplateId,
-	@TemplateReady.TemplateId,
-	@TemplateRecall.TemplateId,
-	@TemplateBirthday.TemplateId,
+	@TemplateRefillId,
+	@TemplateReadyId,
+	@TemplateRecallId,
+	@TemplateBirthdayId,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[pharmacy] OFF
@@ -39,9 +39,9 @@ SET
 	[pharmacy_name] = @PharmacyName, 
 	[pharmacy_phone] = @PharmacyPhone, 
 	[pharmacy_address] = @PharmacyAddress, 
-	[template_refill] = @TemplateRefill.TemplateId, 
-	[template_ready] = @TemplateReady.TemplateId, 
-	[template_recall] = @TemplateRecall.TemplateId, 
-	[template_birthday] = @TemplateBirthday.TemplateId
+	[template_refill] = @TemplateRefillId, 
+	[template_ready] = @TemplateReadyId, 
+	[template_recall] = @TemplateRecallId, 
+	[template_birthday] = @TemplateBirthdayId
 WHERE [pharmacy].[pharmacy_id] = @PharmacyId
 END
