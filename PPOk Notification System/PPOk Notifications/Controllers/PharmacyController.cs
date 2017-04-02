@@ -24,6 +24,14 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+
+
+        /// //////////////////////////////////////////////////////////
+        /// Pharmacists
+        /// //////////////////////////////////////////////////////////
+
+
+
         //[HttpPost]
         public ActionResult PharmacistListView()
         {
@@ -110,6 +118,13 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
 
+
+
+        /// //////////////////////////////////////////////////////////
+        /// Refills
+        /// //////////////////////////////////////////////////////////
+
+
         //[HttpPost]
         public ActionResult RefillListView()
         {
@@ -160,20 +175,23 @@ namespace PPOk_Notifications.Controllers
             }
 
         }*/
-
         public ActionResult ToggleComplete(long id)
         {
             var db = new SQLService();
             db.GetRefillById((int)id).Refilled = !db.GetRefillById((int)id).Refilled;
             return Redirect("/Pharmacy/RefillListView");
         }
-
         public ActionResult SendNotification(long id)
         {
             // TODO
             return View();
         }
 
+
+
+        /// //////////////////////////////////////////////////////////
+        /// Patients
+        /// //////////////////////////////////////////////////////////
 
         //[HttpPost]
         public ActionResult PatientListView()
@@ -217,10 +235,29 @@ namespace PPOk_Notifications.Controllers
             }
         }
         */
-        public ActionResult AddPatient()
+        [HttpPost]
+        public ActionResult SavePatient(Patient m, int page = 0)
         {
-            // TODO: Will need a view or modal for this
-            return View();
+            // if id's are default, get actual id's for the (new) patient
+            // use sql to save patient to db
+            return Redirect("/Pharmacy/PatientListView");
+        }
+        public ActionResult AddPatient(long id = 0)
+        {
+            SQLService database = new SQLService();
+            Patient patient = new Patient();
+
+            if (id != 0)
+                patient = database.GetPatientById((int)id);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("AddPharmacist", patient);
+            }
+            else
+            {
+                return View(patient);
+            }
         }
         public ActionResult CycleMethod(long id)
         {
@@ -231,7 +268,13 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PatientListView");
         }
 
+
+
+
+
         // pharmacy uploading patients
+        // from csv
+
         public ActionResult Upload()
         {
             return View();

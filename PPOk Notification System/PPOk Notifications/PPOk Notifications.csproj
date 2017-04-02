@@ -783,6 +783,8 @@
     <Content Include="Views\Pharmacy\Upload.cshtml" />
     <Content Include="Views\TwilioResponse\Index.cshtml" />
     <Content Include="Views\Pharmacy\UploadRecalls.cshtml" />
+    <Content Include="Views\Pharmacy\AddPharmacist.cshtml" />
+    <Content Include="Views\Pharmacy\AddPatient.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
