@@ -1,5 +1,5 @@
 ﻿@using PPOk_Notifications.Controllers
-@model PharmacistLoginController.ResetResults?
+@model LoginController.ResetResults?
 
 @{
     ViewBag.Title = "Password Reset";
@@ -11,13 +11,13 @@
             <h2 style="margin-bottom:20px; margin-top:40px;">Password Reset</h2>
             @switch (Model)
             {
-                case PharmacistLoginController.ResetResults.UserNotFound:
+                case LoginController.ResetResults.UserNotFound:
                     <p>User not found.</p>
                     break;
-                case PharmacistLoginController.ResetResults.PasswordNotSet:
+                case LoginController.ResetResults.PasswordNotSet:
                     <p>No password was provided.</p>
                     break;
-                case PharmacistLoginController.ResetResults.PasswordsDontMatch:
+                case LoginController.ResetResults.PasswordsDontMatch:
                     <p>The given password and confirmation password did not match each other.</p>
                     break;
                 case null:

@@ -1,5 +1,5 @@
 ﻿@using PPOk_Notifications.Controllers
-@model PharmacistLoginController.LoginResult?
+@model LoginController.LoginResult?
 
 @{
     ViewBag.Title = "Login";
@@ -25,15 +25,15 @@
                 if (Model != null)
                 {
                     <div style="margin-top: 5px;">
-                        @switch (Model)
+                    @switch (Model)
                     {
-                        case PharmacistLoginController.LoginResult.WrongPassword:
+                        case LoginController.LoginResult.WrongPassword:
                                 <span style="color: red;">Incorrect password.</span>
                                 break;
-                            case PharmacistLoginController.LoginResult.UserNotFound:
+                            case LoginController.LoginResult.UserNotFound:
                                 <span style="color: red;">User not found.</span>
                                 break;
-                            case PharmacistLoginController.LoginResult.PasswordNotSet:
+                            case LoginController.LoginResult.PasswordNotSet:
                                 <span style="color: red;">No password is set for this user.</span>
                                 break;
                             default:
@@ -46,7 +46,7 @@
                     <input type="submit" value="Login" class="btn btn-default" />
                 </div>
 
-                <a href="/PharmacistLogin/ResetRequest">Reset Password</a>
+                <a href="/Login/ResetRequest">Reset Password</a>
             }
         </div>
     </div>
