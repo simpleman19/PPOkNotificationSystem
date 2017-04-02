@@ -14,8 +14,8 @@ VALUES
 ( 
 	@PharmacyId, 
 	@UserId, 
-	@PatientDob, 
-	@PatientPhone, 
+	@DateOfBirth, 
+	@Phone, 
 	@PreferencePhone, 
 	@PreferenceText, 
 	@PreferenceEmail, 
