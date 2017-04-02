@@ -74,7 +74,14 @@ namespace PPOk_Notifications.Controllers
             return View(filtered);
         }
         */
-        public ActionResult AddPharmacist(long id)
+        [HttpPost]
+        public ActionResult SavePharmacist(Pharmacist m, int page = 0)
+        {
+            // if id's are default, get actual id's for the (new) pharmacist
+            // use sql to save pharmacist to db
+            return Redirect("/Pharmacy/PhamacistListView");
+        }
+        public ActionResult AddPharmacist(long id = 0)
         {
 
             SQLService database = new SQLService();

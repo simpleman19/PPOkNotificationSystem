@@ -39,7 +39,8 @@ namespace PPOk_Notifications.Controllers
         public ActionResult NotificationList()
         {
             var db = new SQLService();
-            List<Notification> notifications = db.GetNotificationsActive();
+            List<Notification> notifications = new List<Notification>();
+            // sql error --> db.GetNotificationsActive();
             if (notifications.Count == 0)
             {
                 Notification n = null;
@@ -47,10 +48,10 @@ namespace PPOk_Notifications.Controllers
                 for (int i = 0; i < 100; i++)
                 {
                     n = Notification.GetTestNotification(rand);
-                    db.NotificationInsert(n);
+                    // sql error ---> db.NotificationInsert(n);
                     notifications.Add(n);
                 }
-                notifications = db.GetNotificationsActive();
+                // sql error ---> notifications = db.GetNotificationsActive();
             }
             return View(notifications);
         }
