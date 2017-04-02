@@ -28,15 +28,15 @@ namespace PPOk_Notifications.Models
         public NotificationType Type { get; set; }
 
         [DisplayName("Scheduled Time")]
-        [Column(Name = "scheduled_time")]
+        [Column(Name = "notification_time")]
         public DateTime ScheduledTime { get; set; }
 
         [DisplayName("Sent Time")]
-        [Column(Name = "sent_time")]
+        [Column(Name = "notification_senttime")]
         public DateTime SentTime { get; set; }
 
         [DisplayName("Send Status")]
-        [Column(Name = "send_status")]
+        [Column(Name = "notification_sent")]
         public bool Sent { get; set; }
 
         [DisplayName("Notification Response")]
