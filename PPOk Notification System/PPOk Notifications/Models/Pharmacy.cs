@@ -82,7 +82,7 @@ namespace PPOk_Notifications.Models
             service.TemplateInsertOrUpdate(TemplateBirthday);
         }
 
-        public static void FakeDataFill()
+        public static long FakeDataFill()
         {
             SQLService service = new SQLService();
             service.Rebuild();
@@ -137,8 +137,9 @@ namespace PPOk_Notifications.Models
             pharmacy.TemplateReadyId = pharmacy.TemplateReady.TemplateId;
             pharmacy.TemplateBirthdayId = pharmacy.TemplateBirthday.TemplateId;
 
-            service.PharmacyInsert(pharmacy);
+            var pharmID = service.PharmacyInsert(pharmacy);
             pharmacy.SaveTemplates();
+            return pharmID;
         }
     }
 }
