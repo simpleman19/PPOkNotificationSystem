@@ -739,7 +739,7 @@ namespace PPOk_Notifications.Service {
 		public void PatientInsert(Patient patient) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
-				db.Execute(ScriptService.Scripts["patient_insert"], patient);
+			db.Execute(ScriptService.Scripts["patient_insert"], patient);
 			}
 		}
 

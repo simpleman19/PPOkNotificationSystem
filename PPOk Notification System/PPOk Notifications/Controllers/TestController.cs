@@ -27,12 +27,8 @@ namespace PPOk_Notifications.Controllers
             Pharmacist.HashPassword(pharmAdmin, "harambe");
             pharmAdmin.Email = "test@test.com";
             pharmAdmin.PharmacyId = pharmacies[0].PharmacyId;
-            pharmAdmin.UserId = 1;
-             if (db.GetUserById(1) == null)
-            {
-                db.UserInsert(pharmAdmin);
-            }
-
+            long id = db.UserInsert(pharmAdmin);
+            pharmAdmin.UserId = id;
             db.PharmacistInsert(pharmAdmin);
 
             return Redirect("/");
