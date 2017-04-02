@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PharmacyController.cs" />
@@ -571,8 +572,14 @@
     <Content Include="Service\SQL\Database_Drop.sql" />
     <Content Include="Service\SQL\EmailOTP_Disable.sql" />
     <Content Include="Service\SQL\EmailOTP_Enable.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetById_Active.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetById.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetAll_Inactive.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetAll_Active.sql" />
     <Content Include="Service\SQL\Login_Disable.sql" />
     <Content Include="Service\SQL\Login_Enable.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetAll.sql" />
     <Content Include="Service\SQL\Login_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\Login_GetAll_Active.sql" />
     <Content Include="Service\SQL\Login_GetById_Inactive.sql" />
@@ -776,6 +783,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Email\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

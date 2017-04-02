@@ -4,7 +4,7 @@ GO
 CREATE TABLE [PPOK].[dbo].[user] 
 ( 
 	[user_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
-	[user_type] char, 
+	[user_type] varchar(2), 
 	[user_fname] varchar(64) NOT NULL, 
 	[user_lname] varchar(64) NOT NULL, 
 	[user_email] varchar(255),
