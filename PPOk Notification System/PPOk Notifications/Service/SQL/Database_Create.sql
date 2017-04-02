@@ -91,7 +91,7 @@ CREATE TABLE [PPOK].[dbo].[notification]
 	[notification_type] int NOT NULL, 
 	[notification_sent] bit NOT NULL, 
 	[notification_time] datetime NOT NULL, 
-	[notification_senttime] datetime NOT NULL, 
+	[notification_senttime] datetime, 
 	[notification_message] varchar(512), 
 	[notification_response] varchar(255), 
 	[object_active] bit NOT NULL

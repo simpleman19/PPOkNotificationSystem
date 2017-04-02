@@ -201,6 +201,7 @@
     <Compile Include="Models\Prescription.cs" />
     <Compile Include="Models\Refill.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Service\EmailService.cs" />
     <Compile Include="Service\MappingService.cs" />
     <Compile Include="Service\ScriptService.cs" />
     <Compile Include="Service\SQLService.cs" />
@@ -696,6 +697,9 @@
     <Content Include="Service\SQL\Pharmacy_GetAll.sql" />
     <Content Include="Service\SQL\User_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\User_GetAll_Active.sql" />
+    <Content Include="Service\SQL\User_GetByPhone_Inactive.sql" />
+    <Content Include="Service\SQL\User_GetByPhone_Active.sql" />
+    <Content Include="Service\SQL\User_GetByPhone.sql" />
     <Content Include="Service\SQL\User_GetByEmail_Inactive.sql" />
     <Content Include="Service\SQL\Login_GetById.sql" />
     <Content Include="Service\SQL\Pharmacy_GetById.sql" />

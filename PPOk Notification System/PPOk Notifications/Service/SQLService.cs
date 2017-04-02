@@ -156,6 +156,27 @@ namespace PPOk_Notifications.Service {
 		}
 		#endregion
 
+		#region Get by phone number
+		public User GetUserByPhone(string user_phone) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+				return db.Query<User>(ScriptService.Scripts["user_getbyphone"], new { user_phone = user_phone }).FirstOrDefault();
+			}
+		}
+		public User GetUserByPhoneActive(string user_phone) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+				return db.Query<User>(ScriptService.Scripts["user_getbyphone_active"], new { user_phone = user_phone }).FirstOrDefault();
+			}
+		}
+		public User GetUserByPhoneInactive(string user_phone) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+				return db.Query<User>(ScriptService.Scripts["user_getbyphone_inactive"], new { user_phone = user_phone }).FirstOrDefault();
+			}
+		}
+		#endregion
+
 		#region Insert
 		public long UserInsert(User user) {
 			using (var db = connect()) {
