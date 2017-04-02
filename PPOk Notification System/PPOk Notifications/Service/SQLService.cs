@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
@@ -156,10 +157,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public int UserInsert(User user) {
+		public long UserInsert(User user) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
-				return db.Query<int>(ScriptService.Scripts["user_insert"], user).Single();
+				return db.Query<long>(ScriptService.Scripts["user_insert"], user).Single();
 			}
 		}
 		public void UserInsertOrUpdate(User user) {
