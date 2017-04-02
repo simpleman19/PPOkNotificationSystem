@@ -216,6 +216,7 @@ namespace PPOk_Notifications.Controllers
                                 var dateNow = DateTime.Now;
                                 patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
+                                patient.PharmacyId = 1;
                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
@@ -229,6 +230,7 @@ namespace PPOk_Notifications.Controllers
                                 prescription.PatientId = patient.PatientId;
                                 ser.PrescriptionInsert(prescription);
                                 Refill refill = new Refill(prescription);
+                                refill.RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2);
                                 ser.RefillInsert(refill);
 
                             }
