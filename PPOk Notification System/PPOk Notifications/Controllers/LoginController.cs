@@ -6,7 +6,7 @@ using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class PharmacistLoginController : Controller
+    public class LoginController : Controller
     {
         // GET: PharmacistLogin
         public ActionResult Index()
@@ -58,7 +58,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult ResetRequest(string email)
         {
             // TODO: Send email with reset token instead
-            return RedirectToAction("Reset", "PharmacistLogin", new { email = email});
+            return RedirectToAction("Reset", "Login", new { email = email});
         }
 
         public ActionResult Reset(string email)
