@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
@@ -18,22 +15,15 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Index(string email, string password)
         {
             // TODO get user from database
-            var user = GetUser(email);
+            var user = GetUser();
             if (user == null)
             {
-                return View(LoginResult.UserNotFound);
+                return View(false);
             }
 
-            if (user.PasswordHash == null)
+            if (!user.CheckPassword(password))
             {
-                return View(LoginResult.PasswordNotSet);
-            }
-
-            var hash = HashPassword(user, password);
-
-            if (!ArraysAreEqual(user.PasswordHash, hash))
-            {
-                return View(LoginResult.WrongPassword);
+                return View(false);
             }
             Session["user_id"] = user.UserId;
             return RedirectToAction("Success");
@@ -76,7 +66,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Reset(string email, string password, string confirm_password)
         {
             // TODO add reset token (which is sent to them in the email link)
-            var user = GetUser(email);
+            var user = GetUser();
 
             if (user == null)
             {
@@ -93,16 +83,9 @@ namespace PPOk_Notifications.Controllers
                 return RedirectToAction("ResetResult", ResetResults.PasswordsDontMatch);
             }
 
-            user.PasswordHash = HashPassword(user, password);
+            user.SetPassword(password);
 
             return RedirectToAction("ResetResult");
-        }
-
-        public enum LoginResult
-        {
-            WrongPassword,
-            UserNotFound,
-            PasswordNotSet
         }
 
         public enum ResetResults
@@ -112,54 +95,10 @@ namespace PPOk_Notifications.Controllers
             PasswordsDontMatch
         }
 
-        private Pharmacist GetUser(string email)
+        private Login GetUser()
         {
             // TODO get user from database
-            var user = new Pharmacist();
-            user.Email = email;
-
-            return user;
-        }
-
-        private bool ArraysAreEqual(byte[] firstArray, byte[] secondArray)
-        {
-            if (firstArray == null || secondArray == null)
-            {
-                return false;
-            }
-
-            if (firstArray.Length != secondArray.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < firstArray.Length; i++)
-            {
-                if (firstArray[i] != secondArray[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private byte[] HashPassword(Pharmacist user, string password)
-        {
-            if (user.Salt == null)
-            {
-                user.GenerateSalt();
-            }
-
-            var saltedPassword = Encoding.UTF8.GetBytes(Convert.ToBase64String(user.Salt) + password);
-
-            byte[] hash;
-            using (var sha = new SHA512Managed())
-            {
-                hash = sha.ComputeHash(saltedPassword);
-            }
-
-            return hash;
+            return new Login();
         }
     }
 }

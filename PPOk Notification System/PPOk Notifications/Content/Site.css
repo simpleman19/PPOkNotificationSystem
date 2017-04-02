@@ -1,4 +1,14 @@
-﻿body {
+﻿.site-body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.site-content {
+    flex: 1;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }

@@ -36,42 +36,44 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("PPOk Notifier", "Index", "PharmacistLogin", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (pharmacist || pharmAdmin)
-                    {
-                        <li><a href="~/Pharmacy/RefillListView">Refills</a></li>
-                        <li><a href="~/Notification/NotificationList">Notifications</a></li>
-                    }
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    @if (pharmAdmin)
-                    {
-                        <li><a href="~/Pharmacy/Admin">Admin</a></li>
-                    }
-                    @if (!loggedIn)
-                    {
-                        <li><a href="~/PharmacistLogin/">Login</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="~/PharmacistLogin/Logout">Logout</a></li>
-                    }
-                </ul>
-            </div>
+<body class="site-body">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("PPOk Notifier", "Index", "Login", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (pharmacist || pharmAdmin)
+                {
+                    <li><a href="~/Pharmacy/RefillListView">Refills</a></li>
+                    <li><a href="~/Notification/NotificationList">Notifications</a></li>
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (pharmAdmin)
+                {
+                    <li><a href="~/Pharmacy/Admin">Admin</a></li>
+                }
+                @if (!loggedIn)
+                {
+                    <li><a href="~/PharmacistLogin/">Login</a></li>
+                }
+                else
+                {
+                    <li><a href="~/PharmacistLogin/Logout">Logout</a></li>
+                }
+            </ul>
         </div>
     </div>
+</div>
+
+<div class="site-content container body-content">
     @if (loggedIn)
     {
         <div class="row">
@@ -82,16 +84,16 @@
             </div>
         </div>
     }
+    @RenderBody()
+</div>
+<div class="body-content">
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - PPOk Notification Scheduler</p>
+    </footer>
+</div>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - PPOk Notification Scheduler</p>
-        </footer>
-    </div>
-
-    @if (loggedIn)
+@if (loggedIn)
     {
     <!-- Modal for upload -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
