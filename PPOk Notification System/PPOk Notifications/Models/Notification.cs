@@ -33,7 +33,7 @@ namespace PPOk_Notifications.Models
 
         [DisplayName("Sent Time")]
         [Column(Name = "notification_senttime")]
-        public DateTime SentTime { get; set; }
+        public DateTime? SentTime { get; set; }
 
         [DisplayName("Send Status")]
         [Column(Name = "notification_sent")]
@@ -55,7 +55,7 @@ namespace PPOk_Notifications.Models
             PatientId = patientId;
             Type = type;
             ScheduledTime = dateTime;
-            SentTime = DateTime.MinValue;
+            SentTime = null;
         }
 
         public Notification(DateTime dateTime, long patientId, NotificationType type, String message)
@@ -65,7 +65,7 @@ namespace PPOk_Notifications.Models
             Type = type;
             ScheduledTime = dateTime;
             NotificationMessage = message;
-            SentTime = DateTime.MinValue;
+            SentTime = null;
         }
 
         public Notification(Refill refill, NotificationType type)
@@ -81,7 +81,7 @@ namespace PPOk_Notifications.Models
             //Make database call to get patient id from prescription id
             //patientId = database.getPrescription(prescriptionID);
             Sent = false;
-            SentTime = DateTime.MinValue;
+            SentTime = null;
         }
 
         public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type)
@@ -125,7 +125,6 @@ namespace PPOk_Notifications.Models
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             Random rand = new Random();
             test.NotificationId = rand.Next(1000, 10000000);
-            test.PatientId = rand.Next(100, 10000);
             return test;
         }
 
@@ -134,7 +133,6 @@ namespace PPOk_Notifications.Models
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
             test.SentTime = DateTime.Now;
             test.NotificationId = rand.Next(1000, 10000000);
-            test.PatientId = rand.Next(100, 10000);
             return test;
         }
     }
