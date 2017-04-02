@@ -4,13 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Text;
 using System.Security.Cryptography;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models {
-    public class Pharmacist : User
-    {
+    public class Pharmacist : User {
 
-        public long PharmacyId { get; set; }
-        public bool IsAdmin { get; set; }
+	    [Column(Name = "pharmacist_id")]
+		public long PharmacistId { get; set; }
+
+		[Column(Name = "pharmacy_id")]
+		public long PharmacyId { get; set; }
+
+		[Column(Name = "pharmacist_admin")]
+		public bool IsAdmin { get; set; }
+
         public byte[] PasswordHash { get; set; }
         public byte[] Salt { get; set; }
 
