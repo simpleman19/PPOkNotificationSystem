@@ -27,12 +27,35 @@ namespace PPOk_Notifications.Controllers
             Pharmacist.HashPassword(pharmAdmin, "harambe");
             pharmAdmin.Email = "test@test.com";
             pharmAdmin.PharmacyId = pharmacies[0].PharmacyId;
+            pharmAdmin.UserId = 1;
+             if (db.GetUserById(1) == null)
+            {
+                db.UserInsert(pharmAdmin);
+            }
 
             db.PharmacistInsert(pharmAdmin);
 
             return Redirect("/");
         }
 
+        public string AddFakePatient()
+        {
+            var db = new SQLService();
+
+            var pat = new Patient();
+            pat.ContactMethod = Patient.PrimaryContactMethod.Text;
+            pat.FirstName = "John";
+            pat.LastName = "Doe";
+            pat.PersonCode = 1;
+            pat.DateOfBirth = System.DateTime.Now;
+            pat.Phone = "+19999999999";
+            pat.PharmacyId = 1;
+            pat.PreferedContactTime = System.DateTime.Now;
+            db.UserInsert(pat);
+            db.PatientInsert(pat);
+
+            return "success";
+        }
         public string Reset()
         {
             SQLService sql = new SQLService();

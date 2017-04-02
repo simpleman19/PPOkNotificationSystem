@@ -2,8 +2,7 @@
 SET
 	[pharmacy_id] = @PharmacyId, 
 	[user_id] = @UserId, 
-	[patient_dob] = @PatientDob, 
-	[patient_phone] = @PatientPhone, 
+	[patient_dob] = @DateOfBirth, 
 	[preference_phone] = @PreferencePhone, 
 	[preference_text] = @PreferenceText, 
 	[preference_email] = @PreferenceEmail, 

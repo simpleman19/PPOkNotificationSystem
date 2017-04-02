@@ -8,6 +8,7 @@ CREATE TABLE [PPOK].[dbo].[user]
 	[user_fname] varchar(64) NOT NULL, 
 	[user_lname] varchar(64) NOT NULL, 
 	[user_email] varchar(255),
+	[user_phone] varchar(10) NOT NULL,
 	[object_active] bit NOT NULL
 )
 GO
@@ -50,10 +51,10 @@ GO
 CREATE TABLE [PPOK].[dbo].[patient] 
 ( 
 	[patient_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
+	[person_code] varchar(32) NOT NULL, 
 	[pharmacy_id] bigint FOREIGN KEY REFERENCES [pharmacy]([pharmacy_id]) NOT NULL, 
 	[user_id] bigint FOREIGN KEY REFERENCES [user]([user_id]) NOT NULL, 
-	[patient_dob] date NOT NULL, 
-	[patient_phone] varchar(10) NOT NULL, 
+	[patient_dob] date NOT NULL,
 	[preference_phone] int NOT NULL, 
 	[preference_text] int NOT NULL, 
 	[preference_email] int NOT NULL, 
@@ -90,10 +91,10 @@ CREATE TABLE [PPOK].[dbo].[notification]
 	[notification_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
 	[patient_id] bigint FOREIGN KEY REFERENCES [patient]([patient_id]) NOT NULL, 
 	[notification_type] int NOT NULL, 
-	[scheduled_time] datetime NOT NULL,
-	[sent_time] datetime,
-	[send_status] bit NOT NULL,
-	[notification_message] varchar(255),
+	[notification_sent] bit NOT NULL, 
+	[notification_time] datetime NOT NULL, 
+	[notification_senttime] datetime NOT NULL, 
+	[notification_message] varchar(512), 
 	[notification_response] varchar(255), 
 	[object_active] bit NOT NULL
 )

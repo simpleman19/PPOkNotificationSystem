@@ -4,13 +4,15 @@
 	[user_fname],
 	[user_lname],
 	[user_email],
+	[user_phone],
 	[object_active]
 )
 VALUES
 (
-	@UserType,
-	@UserFname,
-	@UserLname,
-	@UserEmail,
+	@Type,
+	@FirstName,
+	@LastName,
+	@Email,
+	@Phone,
 	1
 )

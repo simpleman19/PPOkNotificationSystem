@@ -13,15 +13,17 @@ INSERT INTO [PPOK].[dbo].[user]
 	[user_fname],
 	[user_lname],
 	[user_email],
+	[user_phone],
 	[object_active]
 )
 VALUES
 (
 	@UserId,
-	@UserType,
-	@UserFname,
-	@UserLname,
-	@UserEmail,
+	@Type,
+	@Firstname,
+	@Lastname,
+	@Email,
+	@Phone,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[user] OFF

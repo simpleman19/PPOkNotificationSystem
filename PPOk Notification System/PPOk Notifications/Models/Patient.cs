@@ -16,7 +16,7 @@ namespace PPOk_Notifications.Models
         [Column(Name = "person_code")]
         public int PersonCode { get; set; }
         [Column(Name = "pharmacy_id")]
-        public long PharacyId { get; set; }
+        public long PharmacyId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime PreferedContactTime { get; set; }
         public bool SendBirthdayMessage { get; set; }
@@ -25,6 +25,11 @@ namespace PPOk_Notifications.Models
         [DisplayName("Contact Method")]
         [Column(Name = "contact_method")]
         public PrimaryContactMethod ContactMethod { get; set; }
+
+        public Patient()
+        {
+            this.Type = UserType.Patient;
+        }
 
         public enum PrimaryContactMethod
         {
@@ -44,7 +49,7 @@ namespace PPOk_Notifications.Models
             var p = new Patient();
             p.FirstName = "Tom";
             p.LastName = "Doe";
-            p.IdNumber = 123;
+            p.UserId = 123;
             p.Phone = "+19999999999";
             return p;
         }

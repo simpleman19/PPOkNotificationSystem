@@ -43,39 +43,7 @@ textarea {
     padding-right: 30px;
 }
 
-/* Pharmacy Admin page */
-.template-container-parent {
-    margin: auto;
-    width: 90%;
-}
-
-.template-container {
-    width: 100%;
-    text-align: center;
-}
-
-.template-container textarea {
-    resize: none;
-    width: 100%;
+.message-template {
     height: 200px;
-}
-
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-.center {
-    display: inline-block;
-    margin: 0 auto;
-}
-
-.template-item {
-    text-align: left;
-    margin-right: 1.5%;
-    margin-left: 1.5%;
-    width: 30%;
+    min-width: 100%;
 }
