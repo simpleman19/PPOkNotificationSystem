@@ -12,15 +12,21 @@ INSERT INTO [PPOK].[dbo].[notification]
 	[patient_id], 
 	[notification_type], 
 	[notification_time],
-	[notification_response],
+	[notification_sent],
+	[notification_senttime],
+	[notification_message],
+	[notification_response], 
 	[object_active]
 )
 VALUES
-( 
+(
 	@NotificationId,
 	@PatientId, 
-	@Type, 
-	@NotificationTime,
+	@Type,
+	@ScheduledTime,
+	@Sent,
+	@SentTime,
+	@NotificationMessage,
 	@NotificationResponse,
 	1
 )
@@ -32,7 +38,10 @@ UPDATE [PPOK].[dbo].[notification]
 SET
 	[patient_id] = @PatientId, 
 	[notification_type] = @Type, 
-	[notification_time] = @NotificationTime,
+	[notification_time] = @ScheduledTime,
+	[notification_sent] = @Sent,
+	[notification_senttime] = @SentTime,
+	[notification_message] = @NotificationMessage,
 	[notification_response] = @NotificationResponse
 WHERE [notification].[notification_id] = @NotificationId
 END

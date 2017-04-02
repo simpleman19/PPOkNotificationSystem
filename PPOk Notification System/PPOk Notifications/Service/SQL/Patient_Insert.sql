@@ -17,4 +17,4 @@ VALUES
 	@ContactMethod, 
 	@PreferedContactTime, 
 	1
-)
+SELECT CAST(SCOPE_IDENTITY() as bigint)
