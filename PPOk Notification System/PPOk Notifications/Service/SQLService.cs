@@ -156,10 +156,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void UserInsert(User user) {
+		public int UserInsert(User user) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
-				db.Execute(ScriptService.Scripts["user_insert"], user);
+				return db.Query<int>(ScriptService.Scripts["user_insert"], user).Single();
 			}
 		}
 		public void UserInsertOrUpdate(User user) {
