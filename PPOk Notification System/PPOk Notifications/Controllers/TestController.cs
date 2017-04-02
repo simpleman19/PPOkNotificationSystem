@@ -14,7 +14,7 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        public ActionResult AddFakeLogin()
+        public string AddFakeLogin()
         {
             var db = new SQLService();
 
@@ -41,7 +41,7 @@ namespace PPOk_Notifications.Controllers
 
             db.PharmacistInsert(pharmAdmin);
 
-            return Redirect("/");
+            return "sucess";
         }
 
         public string AddFakePatient()
@@ -87,6 +87,8 @@ namespace PPOk_Notifications.Controllers
         public string InsertFake()
         {
             Pharmacy.FakeDataFill();
+            this.AddFakeLogin();
+            this.AddFakePatient();
             return "success";
         }
     }
