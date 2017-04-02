@@ -2,6 +2,6 @@
 SET
 	[prescription_id] = @PrescriptionId, 
 	[refill_date] = @RefillDate, 
-	[refill_filled] = @RefillFilled
+	[refill_filled] = @Refilled
 WHERE [refill].[refill_id] = @RefillId
 	AND	[refill].[object_active] = 0

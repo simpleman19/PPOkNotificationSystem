@@ -9,7 +9,7 @@ VALUES
 (
 	@PrescriptionId, 
 	@RefillDate, 
-	@RefillFilled, 
+	@Refilled, 
 	1
 )
 SELECT CAST(SCOPE_IDENTITY() as bigint)

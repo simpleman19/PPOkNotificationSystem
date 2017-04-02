@@ -17,7 +17,7 @@ VALUES
 (
 	@PrescriptionId, 
 	@RefillDate, 
-	@RefillFilled, 
+	@Refilled, 
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[refill] OFF
@@ -28,6 +28,6 @@ UPDATE [PPOK].[dbo].[refill]
 SET
 	[prescription_id] = @PrescriptionId, 
 	[refill_date] = @RefillDate, 
-	[refill_filled] = @RefillFilled
+	[refill_filled] = @Refilled
 WHERE [refill].[refill_id] = @RefillId
 END
