@@ -26,6 +26,11 @@ namespace PPOk_Notifications.Models
         [Column(Name = "contact_method")]
         public PrimaryContactMethod ContactMethod { get; set; }
 
+        public Patient()
+        {
+            this.Type = UserType.Patient;
+        }
+
         public enum PrimaryContactMethod
         {
             Text,
@@ -44,7 +49,7 @@ namespace PPOk_Notifications.Models
             var p = new Patient();
             p.FirstName = "Tom";
             p.LastName = "Doe";
-            p.IdNumber = 123;
+            p.UserId = 123;
             p.Phone = "+19999999999";
             return p;
         }

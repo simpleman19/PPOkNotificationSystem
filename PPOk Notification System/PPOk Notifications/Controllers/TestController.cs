@@ -27,7 +27,7 @@ namespace PPOk_Notifications.Controllers
             Pharmacist.HashPassword(pharmAdmin, "harambe");
             pharmAdmin.Email = "test@test.com";
             pharmAdmin.PharmacyId = pharmacies[0].PharmacyId;
-
+            //db.UserInsert(pharmAdmin);
             db.PharmacistInsert(pharmAdmin);
 
             return Redirect("/");
@@ -45,6 +45,7 @@ namespace PPOk_Notifications.Controllers
             pat.Phone = "+19999999999";
             pat.PharmacyId = 1;
             pat.PreferedContactTime = System.DateTime.Now;
+            db.UserInsert(pat);
             db.PatientInsert(pat);
 
             return "success";
