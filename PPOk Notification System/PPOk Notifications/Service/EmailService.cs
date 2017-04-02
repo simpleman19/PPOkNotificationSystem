@@ -35,7 +35,7 @@ namespace PPOk_Notifications.Service
                 {
                     var credential = new NetworkCredential
                     {
-                        UserName = "bibletreeproject@gmail.com",    //TESTING ACCOUNT
+                        UserName = "bibletreeproject@gmail.com", //TESTING ACCOUNT
                         Password = "kMbCiz2GsNsU"
                     };
                     smtp.Credentials = credential;

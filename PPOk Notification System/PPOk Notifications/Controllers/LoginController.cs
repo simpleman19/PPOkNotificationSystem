@@ -30,6 +30,12 @@ namespace PPOk_Notifications.Controllers
             return RedirectToAction("Success");
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Success()
         {
             return View();
