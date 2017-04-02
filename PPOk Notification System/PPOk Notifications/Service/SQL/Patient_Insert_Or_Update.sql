@@ -9,6 +9,7 @@ SET IDENTITY_INSERT [PPOK].[dbo].[patient] ON
 INSERT INTO [PPOK].[dbo].[patient]
 (
 	[patient_id],
+	[person_code],
 	[pharmacy_id], 
 	[user_id], 
 	[patient_dob], 
@@ -19,6 +20,7 @@ INSERT INTO [PPOK].[dbo].[patient]
 VALUES
 ( 
 	@PatientId,
+	@PersonCode,
 	@PharmacyId, 
 	@UserId, 
 	@DateOfBirth, 

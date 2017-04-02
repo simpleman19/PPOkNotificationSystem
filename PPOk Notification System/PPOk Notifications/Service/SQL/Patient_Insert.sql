@@ -1,5 +1,6 @@
 ﻿INSERT INTO [PPOK].[dbo].[patient]
 (
+	[person_code],
 	[pharmacy_id], 
 	[user_id], 
 	[patient_dob], 
@@ -9,6 +10,7 @@
 )
 VALUES
 ( 
+	@PersonCode,
 	@PharmacyId, 
 	@UserId, 
 	@DateOfBirth, 
