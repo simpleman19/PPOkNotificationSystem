@@ -8,7 +8,7 @@ CREATE TABLE [PPOK].[dbo].[user]
 	[user_fname] varchar(64) NOT NULL, 
 	[user_lname] varchar(64) NOT NULL, 
 	[user_email] varchar(255),
-	[user_phone] varchar(10) NOT NULL,
+	[user_phone] varchar(12) NOT NULL,
 	[object_active] bit NOT NULL
 )
 GO
