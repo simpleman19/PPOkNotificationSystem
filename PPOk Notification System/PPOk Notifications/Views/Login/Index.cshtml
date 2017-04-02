@@ -1,5 +1,4 @@
-﻿@using PPOk_Notifications.Controllers
-@model LoginController.LoginResult?
+﻿@model bool?
 
 @{
     ViewBag.Title = "Login";
@@ -25,19 +24,8 @@
                 if (Model != null)
                 {
                     <div style="margin-top: 5px;">
-                    @switch (Model)
-                    {
-                        case LoginController.LoginResult.WrongPassword:
-                                <span style="color: red;">Incorrect password.</span>
-                                break;
-                            case LoginController.LoginResult.UserNotFound:
-                                <span style="color: red;">User not found.</span>
-                                break;
-                            case LoginController.LoginResult.PasswordNotSet:
-                                <span style="color: red;">No password is set for this user.</span>
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
+                        @if (Model == false){
+                            <span style="color: red;">Incorrect password.</span>
                         }
                     </div>
                 }
