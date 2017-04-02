@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using PPOk_Notifications.Models;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
@@ -15,7 +16,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Index(string email, string password)
         {
             // TODO get user from database
-            var user = GetUser();
+            var user = GetLogin(email);
             if (user == null)
             {
                 return View(false);
@@ -66,7 +67,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Reset(string email, string password, string confirm_password)
         {
             // TODO add reset token (which is sent to them in the email link)
-            var user = GetUser();
+            var user = GetLogin(email);
 
             if (user == null)
             {
@@ -95,10 +96,15 @@ namespace PPOk_Notifications.Controllers
             PasswordsDontMatch
         }
 
-        private Login GetUser()
+        private Login GetLogin(string email)
         {
-            // TODO get user from database
-            return new Login();
+            var user = new SQLService().GetUserByEmail(email);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new SQLService().GetLoginByUserId(user.UserId);
         }
     }
 }

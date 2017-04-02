@@ -27,7 +27,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult PharmacistListView()
         {
             SQLService serv = new SQLService();
-            IEnumerable<PharmacyUser> param = new List<PharmacyUser>();
+            IEnumerable<Pharmacist> param = new List<Pharmacist>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
 

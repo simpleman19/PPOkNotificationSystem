@@ -85,12 +85,12 @@ namespace PPOk_Notifications.Controllers
             //    pharmacy = database.GetPharmacyById(id);
 
             // FIXME: phamacyuser vs pharmacist
-            List<Models.PharmacyUser> pharmacists = new List<Models.PharmacyUser>();//database.GetPharmacists();
-            Models.PharmacyUser admin = new Models.PharmacyUser();
+            List<Models.Pharmacist> pharmacists = new List<Models.Pharmacist>();//database.GetPharmacists();
+            Models.Pharmacist admin = new Models.Pharmacist();
             admin.IsAdmin = true;
             foreach (var pharmacist in pharmacists) { if (pharmacist.IsAdmin && pharmacist.PharmacyId == pharmacy.PharmacyId) { admin = pharmacist; } }
 
-            System.Tuple<Models.Pharmacy, Models.PharmacyUser> param = new System.Tuple<Models.Pharmacy, Models.PharmacyUser>(pharmacy, admin);
+            System.Tuple<Models.Pharmacy, Models.Pharmacist> param = new System.Tuple<Models.Pharmacy, Models.Pharmacist>(pharmacy, admin);
 
             if (Request.IsAjaxRequest())
             {
@@ -103,7 +103,7 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
-        public void PharmacyModificationView(System.Tuple<Models.Pharmacy, Models.PharmacyUser> pharmacyAndAdmin)
+        public void PharmacyModificationView(System.Tuple<Models.Pharmacy, Models.Pharmacist> pharmacyAndAdmin)
         {
             SQLService database = new SQLService();
         }

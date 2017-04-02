@@ -1,14 +1,30 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Text;
+using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models {
 	public class Login {
 
-		public long LoginId { get; set; }
-		public long UserId { get; set; }
+        [DisplayName("Login ID")]
+        [Column(Name = "login_id")]
+        public long LoginId { get; set; }
+
+        [DisplayName("USer ID")]
+        [Column(Name = "user_id")]
+        public long UserId { get; set; }
+
+        [DisplayName("Login Hash")]
+        [Column(Name = "login_hash")]
         public byte[] LoginHash { get; set; }
+
+        [DisplayName("Login Salt")]
+        [Column(Name = "login_salt")]
         public byte[] LoginSalt { get; set; }
+
+        [DisplayName("Login Token")]
+        [Column(Name = "login_token")]
         public string LoginToken { get; set; }
 
 	    public Login GetLogin(string email)
@@ -20,7 +36,8 @@ namespace PPOk_Notifications.Models {
 	    public void SetPassword(string password)
 	    {
 	        LoginHash = HashPassword(password);
-	    }
+            new SQLService().LoginUpdate(this);
+        }
 
 	    public bool CheckPassword(string password)
 	    {

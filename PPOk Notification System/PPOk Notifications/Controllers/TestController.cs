@@ -19,16 +19,26 @@ namespace PPOk_Notifications.Controllers
             var db = new SQLService();
 
             var pharmacies = db.GetPharmacies();
+            var pharmAdmin = new Pharmacist
+            {
+                FirstName = "Pharma",
+                LastName = "cist",
+                Phone = "+19999999993",
+                Email = "test@test.com",
+                PharmacyId = pharmacies[0].PharmacyId,
+                UserId = 1
+            };
+            db.UserInsert(pharmAdmin);
 
-            var pharmAdmin = new Pharmacist();
-            pharmAdmin.FirstName = "Pharma";
-            pharmAdmin.LastName = "cist";
-            pharmAdmin.Phone = "+19999999993";
-            Pharmacist.HashPassword(pharmAdmin, "harambe");
-            pharmAdmin.Email = "test@test.com";
-            pharmAdmin.PharmacyId = pharmacies[0].PharmacyId;
-            long id = db.UserInsert(pharmAdmin);
-            pharmAdmin.UserId = id;
+            var login = new Login
+            {
+                LoginId = 1,
+                UserId = pharmAdmin.UserId,
+                LoginToken = ""
+            };
+            login.SetPassword("harambe");
+            db.LoginInsert(login);
+
             db.PharmacistInsert(pharmAdmin);
 
             return Redirect("/");

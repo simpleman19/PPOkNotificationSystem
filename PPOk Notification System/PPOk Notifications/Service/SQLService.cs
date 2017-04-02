@@ -277,7 +277,7 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public Login GetLoginByUserId(long  user_id) {
+		public Login GetLoginByUserId(long user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
