@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 @{
-    bool loggedIn = false;
-    bool pharmacist = false;
-    bool pharmAdmin = false;
+    bool loggedIn = true;
+    bool pharmacist = true;
+    bool pharmAdmin = true;
     bool ppokAdmin = false;
 
     var db = new PPOk_Notifications.Service.SQLService();
@@ -32,6 +32,7 @@
     <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 </head>
@@ -81,7 +82,6 @@
             </div>
         </div>
     }
-    </div>
 
     <div class="container body-content">
         @RenderBody()
@@ -91,13 +91,10 @@
         </footer>
     </div>
 
-
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
     @if (loggedIn)
     {
     <!-- Modal for upload -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

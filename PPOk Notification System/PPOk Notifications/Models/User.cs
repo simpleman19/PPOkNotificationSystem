@@ -19,5 +19,10 @@ namespace PPOk_Notifications.Models
 		[Column(Name = "object_active")] public bool Enabled { get; set; }
 
 		public Login UserLogin { get; set; }
+
+        public string GetFullName()
+        {
+            return LastName + ", " + FirstName;
+        }
     }
 }

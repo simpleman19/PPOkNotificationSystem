@@ -55,6 +55,7 @@ namespace PPOk_Notifications.Models
             PatientId = patientId;
             Type = type;
             ScheduledTime = dateTime;
+            SentTime = DateTime.MinValue;
         }
 
         public Notification(DateTime dateTime, long patientId, NotificationType type, String message)
@@ -64,6 +65,7 @@ namespace PPOk_Notifications.Models
             Type = type;
             ScheduledTime = dateTime;
             NotificationMessage = message;
+            SentTime = DateTime.MinValue;
         }
 
         public Notification(Refill refill, NotificationType type)
@@ -79,6 +81,7 @@ namespace PPOk_Notifications.Models
             //Make database call to get patient id from prescription id
             //patientId = database.getPrescription(prescriptionID);
             Sent = false;
+            SentTime = DateTime.MinValue;
         }
 
         public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type)
@@ -129,6 +132,7 @@ namespace PPOk_Notifications.Models
         public static Notification GetTestNotification(Random rand)
         {
             Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
+            test.SentTime = DateTime.Now;
             test.NotificationId = rand.Next(1000, 10000000);
             test.PatientId = rand.Next(100, 10000);
             return test;

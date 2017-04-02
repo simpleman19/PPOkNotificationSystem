@@ -2,15 +2,19 @@
 (
 	[patient_id], 
 	[notification_type], 
-	[notification_time],
-	[notification_response],
+	[scheduled_time],
+	[send_status],
+	[notification_message],
+	[notification_response], 
 	[object_active]
 )
 VALUES
-( 
+(
 	@PatientId, 
-	@Type, 
-	@NotificationTime,
+	@Type,
+	@ScheduledTime,
+	@Sent,
+	@NotificationMessage,
 	@NotificationResponse,
 	1
 )

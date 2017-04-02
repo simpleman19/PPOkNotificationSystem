@@ -813,19 +813,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Prescription GetPrescriptionById(int prescription_id) {
+		public Prescription GetPrescriptionById(long prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public Prescription GetPrescriptionByIdActive(int prescription_id) {
+		public Prescription GetPrescriptionByIdActive(long prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid_active"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public Prescription GetPrescriptionByIdInactive(int prescription_id) {
+		public Prescription GetPrescriptionByIdInactive(long prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbyid_inactive"], new { prescription_id = prescription_id }).FirstOrDefault();

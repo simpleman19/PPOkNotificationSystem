@@ -47,7 +47,7 @@ namespace PPOk_Notifications.Controllers
                 for (int i = 0; i < 100; i++)
                 {
                     n = Notification.GetTestNotification(rand);
-                    db.NotificationInsertOrUpdate(n);
+                    db.NotificationInsert(n);
                     notifications.Add(n);
                 }
                 notifications = db.GetNotificationsActive();

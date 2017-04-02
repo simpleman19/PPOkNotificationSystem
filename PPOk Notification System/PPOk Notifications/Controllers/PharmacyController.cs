@@ -174,14 +174,7 @@ namespace PPOk_Notifications.Controllers
             SQLService serv = new SQLService();
             //((List<Patient>)param).AddRange(serv.GetPatients());
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PatientListView", param);
-            }
-            else
-            {
-                return View(param);
-            }
+            return View(param);
         }
         /*      99.99% sure this won't be used in any capacity given new search method
         [HttpGet]
@@ -249,6 +242,7 @@ namespace PPOk_Notifications.Controllers
                     {
                         Stream stream = upload.InputStream;
                         DataTable csvTable = new DataTable();
+                        SQLService ser = new SQLService();
                         using (CsvReader csvReader =
                             new CsvReader(new StreamReader(stream), true))
                         {
@@ -257,7 +251,6 @@ namespace PPOk_Notifications.Controllers
                         // return View(csvTable);
                            foreach (DataRow row in csvTable.Rows)
                          { 
-                             SQLService ser = new SQLService();
                              int id = int.Parse(row["PersonCode"].ToString());
 
                              if (ser.GetPatientById(id) == null)
@@ -270,15 +263,16 @@ namespace PPOk_Notifications.Controllers
                                  patient.Phone = row["Phone"].ToString();
                                  patient.Email = row["Email"].ToString();
                                  prescription.PrescriptionName = row["GPIGenericName"].ToString();
-                                 prescription.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
+                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
                                  prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                                 prescription.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                 prescription.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
                                  prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                  prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                 Refill refill = new Refill(prescription);
                                  ser.PatientInsert(patient);
                                  ser.PrescriptionInsert(prescription);
-                                 ser.RefillInsert(refill);
+                                Refill refill = new Refill(prescription);
+                                ser.RefillInsert(refill);
 
                              }
                              else if (ser.GetPatientById(id) != null)

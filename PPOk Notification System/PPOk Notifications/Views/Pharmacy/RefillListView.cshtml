@@ -1,13 +1,16 @@
-﻿@model IEnumerable<PPOk_Notifications.Models.Refill>
+﻿@using PPOk_Notifications.Service
+@using PPOk_Notifications.Models
+@model IEnumerable<PPOk_Notifications.Models.Refill>
 
 @{
+    SQLService db = new SQLService();
     ViewBag.Title = "Refill List";
 }
 
 <h2>List of Refills</h2>
 
 <p>
-    Complete Refills Indicated in Green
+    Unfilled Refills will show in Red and Completed Refills will be shown in Green
 </p>
 
 
@@ -15,13 +18,13 @@
     <thead>
         <tr>
             <th>
-                refill_id
+                Patient Name
             </th>
             <th>
-                prescription_id
+                @Html.DisplayNameFor(model => model.PrescriptionId)
             </th>
             <th>
-                refill_date
+                @Html.DisplayNameFor(model => model.RefillDate)
             </th>
             <th></th>
         </tr>
@@ -29,10 +32,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-            string style = item.Refilled == true ? "background-color:#d0fd07" : null;
+            string style = item.Refilled == true ? "background-color:#00ff00" : "background-color:#ff0000";
             <tr style="@style">
                 <td>
-                    @Html.DisplayFor(modelItem => item.RefillId)
+                    @db.GetPatientById(db.GetPrescriptionById(item.PrescriptionId).PatientId).GetFullName();
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PrescriptionId)

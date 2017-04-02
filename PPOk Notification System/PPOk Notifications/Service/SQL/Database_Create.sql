@@ -90,7 +90,10 @@ CREATE TABLE [PPOK].[dbo].[notification]
 	[notification_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
 	[patient_id] bigint FOREIGN KEY REFERENCES [patient]([patient_id]) NOT NULL, 
 	[notification_type] int NOT NULL, 
-	[notification_time] datetime NOT NULL,
+	[scheduled_time] datetime NOT NULL,
+	[sent_time] datetime,
+	[send_status] bit NOT NULL,
+	[notification_message] varchar(255),
 	[notification_response] varchar(255), 
 	[object_active] bit NOT NULL
 )
