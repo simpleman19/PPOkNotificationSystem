@@ -26,10 +26,10 @@ namespace PPOk_Notifications.Controllers
                 Phone = "+19999999993",
                 Email = "test@test.com",
                 PharmacyId = pharmacies[0].PharmacyId,
-                UserId = 1
+                UserId = 1,
+                Type = Models.User.UserType.Pharmacist
             };
-            db.UserInsert(pharmAdmin);
-
+            pharmAdmin.UserId = db.UserInsert(pharmAdmin);
             var login = new Login
             {
                 LoginId = 1,

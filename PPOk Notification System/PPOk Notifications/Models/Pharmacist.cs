@@ -11,5 +11,10 @@ namespace PPOk_Notifications.Models {
 
 		[Column(Name = "pharmacist_admin")]
 		public bool IsAdmin { get; set; }
+
+        public Pharmacist()
+        {
+            this.Type = UserType.Pharmacist;
+        }
     }
 }
