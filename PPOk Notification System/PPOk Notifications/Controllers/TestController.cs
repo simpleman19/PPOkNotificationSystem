@@ -46,7 +46,7 @@ namespace PPOk_Notifications.Controllers
             pat.ContactMethod = Patient.PrimaryContactMethod.Text;
             pat.FirstName = "John";
             pat.LastName = "Doe";
-            pat.PersonCode = 1;
+            pat.PersonCode = "1";
             pat.DateOfBirth = System.DateTime.Now;
             pat.Phone = "+19999999999";
             pat.PharmacyId = 1;

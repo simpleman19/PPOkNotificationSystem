@@ -257,7 +257,7 @@ namespace PPOk_Notifications.Controllers
                             {
                                 Patient patient = new Patient();
                                 Prescription prescription = new Prescription();
-                                patient.PersonCode = int.Parse(row["PersonCode"].ToString());
+                                patient.PersonCode = row["PersonCode"].ToString();
                                 patient.FirstName = row["PatientFirstName"].ToString();
                                 patient.LastName = row["PatientLastName"].ToString();
                                 patient.Phone = row["Phone"].ToString();
