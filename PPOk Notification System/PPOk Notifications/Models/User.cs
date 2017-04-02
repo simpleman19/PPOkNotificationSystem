@@ -22,9 +22,9 @@ namespace PPOk_Notifications.Models
 
         public enum UserType
         {
-            Pharmacist = 'p',
-            PPOkAdmin = 'a',
-            Patient = 'z'
+            Pharmacist,
+            PPOkAdmin,
+            Patient
         }
 
         public string GetFullName()
