@@ -46,12 +46,13 @@ namespace PPOk_Notifications.Controllers
             pat.ContactMethod = Patient.PrimaryContactMethod.Text;
             pat.FirstName = "John";
             pat.LastName = "Doe";
-            pat.PersonCode = 1;
+            pat.PersonCode = "1";
             pat.DateOfBirth = System.DateTime.Now;
             pat.Phone = "+19999999999";
             pat.PharmacyId = 1;
             pat.PreferedContactTime = System.DateTime.Now;
-            db.UserInsert(pat);
+            long id = db.UserInsert(pat);
+            pat.UserId = id;
             db.PatientInsert(pat);
 
             return "success";

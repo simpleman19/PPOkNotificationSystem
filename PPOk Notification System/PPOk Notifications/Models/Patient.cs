@@ -14,7 +14,7 @@ namespace PPOk_Notifications.Models
         public long PatientId { get; set; }
         [DisplayName("Person Code")]
         [Column(Name = "person_code")]
-        public int PersonCode { get; set; }
+        public string PersonCode { get; set; }
         [Column(Name = "pharmacy_id")]
         public long PharmacyId { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -29,6 +29,9 @@ namespace PPOk_Notifications.Models
         public Patient()
         {
             this.Type = UserType.Patient;
+            this.SendBirthdayMessage = true;
+            this.SendRefillMessage = true;
+            this.ContactMethod = PrimaryContactMethod.Call;
         }
 
         public enum PrimaryContactMethod
