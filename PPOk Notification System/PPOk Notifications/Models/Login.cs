@@ -4,6 +4,8 @@ using System.Text;
 
 namespace PPOk_Notifications.Models {
 	public class Login {
+
+		public long LoginId { get; set; }
 		public long UserId { get; set; }
         public byte[] LoginHash { get; set; }
         public byte[] LoginSalt { get; set; }

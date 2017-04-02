@@ -60,12 +60,12 @@ namespace PPOk_Notifications.Service {
 		#region User Operations
 
 		#region Enable/Disable Operations
-		public void User_Enable(int user_id) {
+		public void User_Enable(long  user_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_enable"], user_id);
 			}
 		}
-		public void User_Disable(int user_id) {
+		public void User_Disable(long  user_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["user_disable"], new {user_id = user_id} );
 			}
@@ -201,12 +201,12 @@ namespace PPOk_Notifications.Service {
 		#region Login Operations
 
 		#region Enable/Disable Operations
-		public void Login_Enable(int login_id) {
+		public void Login_Enable(long  login_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["login_enable"], new { login_id = login_id });
 			}
 		}
-		public void Login_Disable(int login_id) {
+		public void Login_Disable(long  login_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["login_disable"], new { login_id = login_id });
 			}
@@ -235,19 +235,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Login GetLoginById(int login_id) {
+		public Login GetLoginById(long login_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyid"], new { login_id = login_id }).FirstOrDefault();
 			}
 		}
-		public Login GetLoginByIdActive(int login_id) {
+		public Login GetLoginByIdActive(long login_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyid_active"], new { login_id = login_id }).FirstOrDefault();
 			}
 		}
-		public Login GetLoginByIdInactive(int login_id) {
+		public Login GetLoginByIdInactive(long login_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyid_inactive"], new { login_id = login_id }).FirstOrDefault();
@@ -256,19 +256,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public Login GetLoginByUserId(int user_id) {
+		public Login GetLoginByUserId(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Login GetLoginByUserIdActive(int user_id) {
+		public Login GetLoginByUserIdActive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Login GetLoginByUserIdInactive(int user_id) {
+		public Login GetLoginByUserIdInactive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
 				return db.Query<Login>(ScriptService.Scripts["login_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -321,12 +321,12 @@ namespace PPOk_Notifications.Service {
 		#region Pharmacy Operations
 
 		#region Enable/Disable Operations
-		public void Pharmacy_Enable(int pharmacy_id) {
+		public void Pharmacy_Enable(long  pharmacy_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["pharmacy_enable"], new { pharmacy_id = pharmacy_id });
 			}
 		}
-		public void Pharmacy_Disable(int pharmacy_id) {
+		public void Pharmacy_Disable(long  pharmacy_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["pharmacy_disable"], new { pharmacy_id = pharmacy_id });
 			}
@@ -355,19 +355,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Pharmacy GetPharmacyById(int pharmacy_id) {
+		public Pharmacy GetPharmacyById(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
 				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacy GetPharmacyByIdActive(int pharmacy_id) {
+		public Pharmacy GetPharmacyByIdActive(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
 				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid_active"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacy GetPharmacyByIdInactive(int pharmacy_id) {
+		public Pharmacy GetPharmacyByIdInactive(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
 				return db.Query<Pharmacy>(ScriptService.Scripts["pharmacy_getbyid_inactive"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
@@ -420,12 +420,12 @@ namespace PPOk_Notifications.Service {
 		#region Pharmacist Operations
 
 		#region Enable/Disable Operations
-		public void Pharmacist_Enable(int pharmacist_id) {
+		public void Pharmacist_Enable(long  pharmacist_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["pharmacist_enable"], new { pharmacist_id = pharmacist_id });
 			}
 		}
-		public void Pharmacist_Disable(int pharmacist_id) {
+		public void Pharmacist_Disable(long  pharmacist_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["pharmacist_disable"], new { pharmacist_id = pharmacist_id });
 			}
@@ -454,19 +454,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Pharmacist GetPharmacistById(int pharmacist_id) {
+		public Pharmacist GetPharmacistById(long  pharmacist_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacist GetPharmacistByIdActive(int pharmacist_id) {
+		public Pharmacist GetPharmacistByIdActive(long  pharmacist_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_active"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacist GetPharmacistByIdInactive(int pharmacist_id) {
+		public Pharmacist GetPharmacistByIdInactive(long  pharmacist_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_inactive"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
@@ -475,19 +475,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public Pharmacist GetPharmacistByUserId(int user_id) {
+		public Pharmacist GetPharmacistByUserId(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacist GetPharmacistByUserIdActive(int user_id) {
+		public Pharmacist GetPharmacistByUserIdActive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Pharmacist GetPharmacistByUserIdInactive(int user_id) {
+		public Pharmacist GetPharmacistByUserIdInactive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -540,12 +540,12 @@ namespace PPOk_Notifications.Service {
 		#region Template Operations
 
 		#region Enable/Disable Operations
-		public void Template_Enable(int template_id) {
+		public void Template_Enable(long  template_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["template_enable"], new { template_id = template_id });
 			}
 		}
-		public void Template_Disable(int template_id) {
+		public void Template_Disable(long  template_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["template_disable"], new { template_id = template_id });
 			}
@@ -574,19 +574,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Template GetTemplateById(int template_id) {
+		public Template GetTemplateById(long  template_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbyid"], new { template_id = template_id }).FirstOrDefault();
 			}
 		}
-		public Template GetTemplateByIdActive(int template_id) {
+		public Template GetTemplateByIdActive(long  template_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbyid_active"], new { template_id = template_id }).FirstOrDefault();
 			}
 		}
-		public Template GetTemplateByIdInactive(int template_id) {
+		public Template GetTemplateByIdInactive(long  template_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbyid_inactive"], new { template_id = template_id }).FirstOrDefault();
@@ -595,19 +595,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by pharmacy id
-		public Template GetTemplateByUserId(int pharmacy_id) {
+		public Template GetTemplateByUserId(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public Template GetTemplateByUserIdActive(int pharmacy_id) {
+		public Template GetTemplateByUserIdActive(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public Template GetTemplateByUserIdInactive(int pharmacy_id) {
+		public Template GetTemplateByUserIdInactive(long  pharmacy_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
 				return db.Query<Template>(ScriptService.Scripts["template_getbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).FirstOrDefault();
@@ -660,12 +660,12 @@ namespace PPOk_Notifications.Service {
 		#region Patient Operations
 
 		#region Enable/Disable Operations
-		public void Patient_Enable(int patient_id) {
+		public void Patient_Enable(long  patient_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["patient_enable"], new { patient_id = patient_id });
 			}
 		}
-		public void Patient_Disable(int patient_id) {
+		public void Patient_Disable(long  patient_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["patient_disable"], new { patient_id = patient_id });
 			}
@@ -706,7 +706,7 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_active"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public Patient GetPatientByIdInactive(int patient_id) {
+		public Patient GetPatientByIdInactive(long  patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
@@ -715,19 +715,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public Patient GetPatientByUserId(int user_id) {
+		public Patient GetPatientByUserId(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Patient GetPatientByUserIdActive(int user_id) {
+		public Patient GetPatientByUserIdActive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public Patient GetPatientByUserIdInactive(int user_id) {
+		public Patient GetPatientByUserIdInactive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -781,12 +781,12 @@ namespace PPOk_Notifications.Service {
 		#region Prescription Operations
 
 		#region Enable/Disable Operations
-		public void Prescription_Enable(int prescription_id) {
+		public void Prescription_Enable(long  prescription_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["prescription_enable"], new { prescription_id = prescription_id });
 			}
 		}
-		public void Prescription_Disable(int prescription_id) {
+		public void Prescription_Disable(long  prescription_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["prescription_disable"], new { prescription_id = prescription_id });
 			}
@@ -836,19 +836,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by patient id
-		public Prescription GetPrescriptionByPatientId(int patient_id) {
+		public Prescription GetPrescriptionByPatientId(long  patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public Prescription GetPrescriptionByPatientIdActive(int patient_id) {
+		public Prescription GetPrescriptionByPatientIdActive(long  patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid_active"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public Prescription GetPrescriptionByPatientIdInactive(int patient_id) {
+		public Prescription GetPrescriptionByPatientIdInactive(long  patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getbypatientid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
@@ -901,12 +901,12 @@ namespace PPOk_Notifications.Service {
 		#region Refill Operations
 
 		#region Enable/Disable Operations
-		public void Refill_Enable(int refill_id) {
+		public void Refill_Enable(long refill_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["refill_enable"], new { refill_id = refill_id });
 			}
 		}
-		public void Refill_Disable(int refill_id) {
+		public void Refill_Disable(long  refill_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["refill_disable"], new { refill_id = refill_id });
 			}
@@ -935,19 +935,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public Refill GetRefillById(int refill_id) {
+		public Refill GetRefillById(long  refill_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid"], new { refill_id = refill_id }).FirstOrDefault();
 			}
 		}
-		public Refill GetRefillByIdActive(int refill_id) {
+		public Refill GetRefillByIdActive(long  refill_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_active"], new { refill_id = refill_id }).FirstOrDefault();
 			}
 		}
-		public Refill GetRefillByIdInactive(int refill_id) {
+		public Refill GetRefillByIdInactive(long  refill_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_inactive"], new { refill_id = refill_id }).FirstOrDefault();
@@ -956,19 +956,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by prescription id
-		public Refill GetRefillByPrescriptionId(int prescription_id) {
+		public Refill GetRefillByPrescriptionId(long  prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public Refill GetRefillByPrescriptionIdActive(int prescription_id) {
+		public Refill GetRefillByPrescriptionIdActive(long  prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_active"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public Refill GetRefillByPrescriptionIdInactive(int prescription_id) {
+		public Refill GetRefillByPrescriptionIdInactive(long  prescription_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_inactive"], new { prescription_id = prescription_id }).FirstOrDefault();
@@ -1085,7 +1085,7 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getbyid_active"], new { notification_id = notification_id }).FirstOrDefault();
 			}
 		}
-		public Notification GetNotificationByIdInactive(int notification_id) {
+		public Notification GetNotificationByIdInactive(long  notification_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getbyid_inactive"], new { notification_id = notification_id }).FirstOrDefault();
@@ -1160,12 +1160,12 @@ namespace PPOk_Notifications.Service {
 		#region OTP Operations
 
 		#region Enable/Disable Operations
-		public void OTP_Enable(int otp_id) {
+		public void OTP_Enable(long  otp_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["otp_enable"], new { otp_id = otp_id });
 			}
 		}
-		public void OTP_Disable(int otp_id) {
+		public void OTP_Disable(long  otp_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["otp_disable"], new { otp_id = otp_id });
 			}
@@ -1194,19 +1194,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public OTP GetOTPById(int otp_id) {
+		public OTP GetOTPById(long  otp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyid"], new { otp_id = otp_id }).FirstOrDefault();
 			}
 		}
-		public OTP GetOTPByIdActive(int otp_id) {
+		public OTP GetOTPByIdActive(long  otp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyid_active"], new { otp_id = otp_id }).FirstOrDefault();
 			}
 		}
-		public OTP GetOTPByIdInactive(int otp_id) {
+		public OTP GetOTPByIdInactive(long  otp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyid_inactive"], new { otp_id = otp_id }).FirstOrDefault();
@@ -1215,19 +1215,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public OTP GetOTPByUserId(int user_id) {
+		public OTP GetOTPByUserId(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public OTP GetOTPByUserIdActive(int user_id) {
+		public OTP GetOTPByUserIdActive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public OTP GetOTPByUserIdInactive(int user_id) {
+		public OTP GetOTPByUserIdInactive(long  user_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
 				return db.Query<OTP>(ScriptService.Scripts["otp_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -1280,12 +1280,12 @@ namespace PPOk_Notifications.Service {
 		#region EmailOTP Operations
 
 		#region Enable/Disable Operations
-		public void EmailOTP_Enable(int emailotp_id) {
+		public void EmailOTP_Enable(long  emailotp_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["emailotp_enable"], new { emailotp_id = emailotp_id });
 			}
 		}
-		public void EmailOTP_Disable(int emailotp_id) {
+		public void EmailOTP_Disable(long  emailotp_id) {
 			using (var db = connect()) {
 				db.Execute(ScriptService.Scripts["emailotp_disable"], new { emailotp_id = emailotp_id });
 			}
@@ -1314,19 +1314,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public EmailOTP GetEmailOTPById(int emailotp_id) {
+		public EmailOTP GetEmailOTPById(long  emailotp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid"], new { emailotp_id = emailotp_id }).FirstOrDefault();
 			}
 		}
-		public EmailOTP GetEmailOTPByIdActive(int emailotp_id) {
+		public EmailOTP GetEmailOTPByIdActive(long  emailotp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid_active"], new { emailotp_id = emailotp_id }).FirstOrDefault();
 			}
 		}
-		public EmailOTP GetEmailOTPByIdInactive(int emailotp_id) {
+		public EmailOTP GetEmailOTPByIdInactive(long  emailotp_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid_inactive"], new { emailotp_id = emailotp_id }).FirstOrDefault();
@@ -1335,19 +1335,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by notification id
-		public EmailOTP GetEmailOTPByNotificationId(int notification_id) {
+		public EmailOTP GetEmailOTPByNotificationId(long  notification_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid"], new { notification_id = notification_id }).FirstOrDefault();
 			}
 		}
-		public EmailOTP GetEmailOTPByNotificationIdActive(int notification_id) {
+		public EmailOTP GetEmailOTPByNotificationIdActive(long  notification_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid_active"], new { notification_id = notification_id }).FirstOrDefault();
 			}
 		}
-		public EmailOTP GetEmailOTPByNotificationIdInactive(int notification_id) {
+		public EmailOTP GetEmailOTPByNotificationIdInactive(long  notification_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid_inactive"], new { notification_id = notification_id }).FirstOrDefault();
