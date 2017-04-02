@@ -8,6 +8,7 @@ CREATE TABLE [PPOK].[dbo].[user]
 	[user_fname] varchar(64) NOT NULL, 
 	[user_lname] varchar(64) NOT NULL, 
 	[user_email] varchar(255),
+	[user_phone] varchar(10) NOT NULL,
 	[object_active] bit NOT NULL
 )
 GO
@@ -53,8 +54,7 @@ CREATE TABLE [PPOK].[dbo].[patient]
 	[person_code] varchar(32) NOT NULL, 
 	[pharmacy_id] bigint FOREIGN KEY REFERENCES [pharmacy]([pharmacy_id]) NOT NULL, 
 	[user_id] bigint FOREIGN KEY REFERENCES [user]([user_id]) NOT NULL, 
-	[patient_dob] date NOT NULL, 
-	[patient_phone] varchar(10) NOT NULL, 
+	[patient_dob] date NOT NULL,
 	[preference_phone] int NOT NULL, 
 	[preference_text] int NOT NULL, 
 	[preference_email] int NOT NULL, 
