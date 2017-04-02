@@ -29,6 +29,9 @@ namespace PPOk_Notifications.Models
         public Patient()
         {
             this.Type = UserType.Patient;
+            this.SendBirthdayMessage = true;
+            this.SendRefillMessage = true;
+            this.ContactMethod = PrimaryContactMethod.Call;
         }
 
         public enum PrimaryContactMethod

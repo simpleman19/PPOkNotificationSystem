@@ -51,7 +51,8 @@ namespace PPOk_Notifications.Controllers
             pat.Phone = "+19999999999";
             pat.PharmacyId = 1;
             pat.PreferedContactTime = System.DateTime.Now;
-            db.UserInsert(pat);
+            long id = db.UserInsert(pat);
+            pat.UserId = id;
             db.PatientInsert(pat);
 
             return "success";
