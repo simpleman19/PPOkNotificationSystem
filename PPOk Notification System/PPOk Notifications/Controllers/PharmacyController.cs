@@ -212,6 +212,10 @@ namespace PPOk_Notifications.Controllers
                                 patient.LastName = row["PatientLastName"].ToString();
                                 patient.Phone = row["Phone"].ToString();
                                 patient.Email = row["Email"].ToString();
+                                patient.DateOfBirth = DateTime.ParseExact(row["DOB"].ToString(), "yyyymmdd",null);
+                                var dateNow = DateTime.Now;
+                                patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
+                                patient.ContactMethod = Patient.PrimaryContactMethod.Call;
                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
@@ -219,8 +223,10 @@ namespace PPOk_Notifications.Controllers
                                 prescription.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
                                 prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                ser.UserInsert(patient);
-                                ser.PatientInsert(patient);
+                                var ID = ser.UserInsert(patient);
+                                patient.UserId = ID;
+                                patient.PatientId = ser.PatientInsert(patient);
+                                prescription.PatientId = patient.PatientId;
                                 ser.PrescriptionInsert(prescription);
                                 Refill refill = new Refill(prescription);
                                 ser.RefillInsert(refill);
@@ -325,7 +331,7 @@ namespace PPOk_Notifications.Controllers
                             patient.Phone = row["Phone"].ToString();
                             var id =  ser.UserInsert(patient);
                             patient.UserId = id;
-                            //patient.PatientId = ser.PatientInsert(patient);
+                            patient.PatientId = ser.PatientInsert(patient);
                             Notification notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall,"");
                         }
                     }
