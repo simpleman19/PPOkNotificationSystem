@@ -9,6 +9,6 @@ VALUES
 (
 	@UserId,
 	@PharmacyId,
-	@PharmacistAdmin,
+	@IsAdmin,
 	1
 )

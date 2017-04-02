@@ -55,9 +55,7 @@ CREATE TABLE [PPOK].[dbo].[patient]
 	[pharmacy_id] bigint FOREIGN KEY REFERENCES [pharmacy]([pharmacy_id]) NOT NULL, 
 	[user_id] bigint FOREIGN KEY REFERENCES [user]([user_id]) NOT NULL, 
 	[patient_dob] date NOT NULL,
-	[preference_phone] int NOT NULL, 
-	[preference_text] int NOT NULL, 
-	[preference_email] int NOT NULL, 
+	[preference_contact] int NOT NULL, 
 	[preference_time] datetime NOT NULL, 
 	[object_active] bit NOT NULL
 )

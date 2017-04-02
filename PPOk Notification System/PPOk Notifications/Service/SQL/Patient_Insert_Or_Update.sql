@@ -12,9 +12,7 @@ INSERT INTO [PPOK].[dbo].[patient]
 	[pharmacy_id], 
 	[user_id], 
 	[patient_dob], 
-	[preference_phone], 
-	[preference_text], 
-	[preference_email], 
+	[preference_contact], 
 	[preference_time], 
 	[object_active]
 )
@@ -23,11 +21,9 @@ VALUES
 	@PatientId,
 	@PharmacyId, 
 	@UserId, 
-	@@DateOfBirth, 
-	@PreferencePhone, 
-	@PreferenceText, 
-	@PreferenceEmail, 
-	@PreferenceTime, 
+	@DateOfBirth, 
+	@ContactMethod, 
+	@PreferedContactTime, 
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[patient] OFF
@@ -38,11 +34,8 @@ UPDATE [PPOK].[dbo].[patient]
 SET
 	[pharmacy_id] = @PharmacyId, 
 	[user_id] = @UserId, 
-	[patient_dob] = @PatientDob, 
-	[patient_phone] = @PatientPhone, 
-	[preference_phone] = @PreferencePhone, 
-	[preference_text] = @PreferenceText, 
-	[preference_email] = @PreferenceEmail, 
-	[preference_time] = @PreferenceTime
+	[patient_dob] = @DateOfBirth,  
+	[preference_contact] = @ContactMethod, 
+	[preference_time] = @PreferedContactTime
 WHERE [patient].[patient_id] = @PatientId
 END
