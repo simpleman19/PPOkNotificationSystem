@@ -373,9 +373,10 @@ namespace PPOk_Notifications.Controllers
                             patient.FirstName = row["PatientFirstName"].ToString();
                             patient.LastName = row["PatientLastName"].ToString();
                             patient.Phone = row["Phone"].ToString();
-                            ser.UserInsert(patient);
-                            ser.PatientInsert(patient);
-                            Notification notification = new Notification();
+                            var id =  ser.UserInsert(patient);
+                            patient.UserId = id;
+                            //patient.PatientId = ser.PatientInsert(patient);
+                            Notification notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall,"");
                         }
                     }
                     else
