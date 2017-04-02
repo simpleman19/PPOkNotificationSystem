@@ -93,7 +93,7 @@ namespace PPOk_Notifications.Controllers
         }
         public ActionResult EditPharmacist(long id)
         {
-            return Redirect("Pharmacy/AddPharmacist"  + id);
+            return Redirect("Pharmacy/AddPharmacist" + id);
         }
         public ActionResult DeletePharmacist(long id)
         {
@@ -101,7 +101,7 @@ namespace PPOk_Notifications.Controllers
             db.Pharmacist_Disable((int)id);
             return Redirect("/Pharmacy/PhamacistListView");
         }
-        
+
         //[HttpPost]
         public ActionResult RefillListView()
         {
@@ -165,7 +165,7 @@ namespace PPOk_Notifications.Controllers
             // TODO
             return View();
         }
-        
+
 
         //[HttpPost]
         public ActionResult PatientListView()
@@ -217,8 +217,8 @@ namespace PPOk_Notifications.Controllers
         public ActionResult CycleMethod(long id)
         {
             var db = new SQLService();
-            db.GetPatientById(id).ContactMethod = db.GetPatientById(id).ContactMethod==Patient.PrimaryContactMethod.Call?
-                Patient.PrimaryContactMethod.Email : db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Email?
+            db.GetPatientById(id).ContactMethod = db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
+                Patient.PrimaryContactMethod.Email : db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Email ?
                 Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
             return Redirect("/Pharmacy/PatientListView");
         }
@@ -249,77 +249,134 @@ namespace PPOk_Notifications.Controllers
                             csvTable.Load(csvReader);
                         }
                         // return View(csvTable);
-                           foreach (DataRow row in csvTable.Rows)
-                         { 
-                             int id = int.Parse(row["PersonCode"].ToString());
+                        foreach (DataRow row in csvTable.Rows)
+                        {
+                            int id = int.Parse(row["PersonCode"].ToString());
 
-                             if (ser.GetPatientById(id) == null)
-                             {
-                                 Patient patient = new Patient();
-                                 Prescription prescription = new Prescription();
-                                 patient.PersonCode = int.Parse(row["PersonCode"].ToString());
-                                 patient.FirstName = row["PatientFirstName"].ToString();
-                                 patient.LastName = row["PatientLastName"].ToString();
-                                 patient.Phone = row["Phone"].ToString();
-                                 patient.Email = row["Email"].ToString();
-                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
-                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
-                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
-                                 prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                                 prescription.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
-                                 prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
-                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                 ser.PatientInsert(patient);
-                                 ser.PrescriptionInsert(prescription);
+                            if (ser.GetPatientById(id) == null)
+                            {
+                                Patient patient = new Patient();
+                                Prescription prescription = new Prescription();
+                                patient.PersonCode = int.Parse(row["PersonCode"].ToString());
+                                patient.FirstName = row["PatientFirstName"].ToString();
+                                patient.LastName = row["PatientLastName"].ToString();
+                                patient.Phone = row["Phone"].ToString();
+                                patient.Email = row["Email"].ToString();
+                                prescription.PrescriptionName = row["GPIGenericName"].ToString();
+                                prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
+                                System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
+                                prescription.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                prescription.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
+                                prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                ser.UserInsert(patient);
+                                ser.PatientInsert(patient);
+                                ser.PrescriptionInsert(prescription);
                                 Refill refill = new Refill(prescription);
                                 ser.RefillInsert(refill);
 
-                             }
-                             else if (ser.GetPatientById(id) != null)
-                             {
-                                 Prescription prescription = new Prescription();
-                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                            }
+                            else if (ser.GetPatientById(id) != null)
+                            {
+                                Prescription prescription = new Prescription();
+                                prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
 
-                                 if (ser.GetPrescriptionByPatientId(id) == null)
-                                 {
-                                     Prescription prescription1 = new Prescription();
-                                     prescription1.PrescriptionName = row["GPIGenericName"].ToString();
-                                     prescription1.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
-                                     prescription1.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                                     prescription1.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
-                                     prescription1.PrescriptionUpc = row["NDCUPCHRI"].ToString();
-                                     prescription1.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                     Refill refill = new Refill(prescription);
-                                     ser.PrescriptionInsert(prescription1);
-                                     ser.RefillInsert(refill);
-                                 }
-                                 if (ser.GetPrescriptionByPatientId(id) != null)
-                                 {
-                                     Prescription prescription1 = ser.GetPrescriptionByPatientId(id);
-                                     if(prescription1.PrescriptionNumber != int.Parse(row["PrescriptionNumber"].ToString()))
-                                     {
-                                         Prescription prescription2 = new Prescription();
-                                         prescription2.PrescriptionName = row["GPIGenericName"].ToString();
-                                         prescription2.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
-                                         prescription2.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                                         prescription2.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
-                                         prescription2.PrescriptionUpc = row["NDCUPCHRI"].ToString();
-                                         prescription2.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                         Refill refill = new Refill(prescription);
-                                         ser.PrescriptionInsert(prescription1);
-                                         ser.RefillInsert(refill);  
-                                     }
+                                if (ser.GetPrescriptionByPatientId(id) == null)
+                                {
+                                    Prescription prescription1 = new Prescription();
+                                    prescription1.PrescriptionName = row["GPIGenericName"].ToString();
+                                    prescription1.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                    prescription1.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                    prescription1.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                    prescription1.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                    prescription1.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                    Refill refill = new Refill(prescription);
+                                    ser.PrescriptionInsert(prescription1);
+                                    ser.RefillInsert(refill);
+                                }
+                                if (ser.GetPrescriptionByPatientId(id) != null)
+                                {
+                                    Prescription prescription1 = ser.GetPrescriptionByPatientId(id);
+                                    if (prescription1.PrescriptionNumber != int.Parse(row["PrescriptionNumber"].ToString()))
+                                    {
+                                        Prescription prescription2 = new Prescription();
+                                        prescription2.PrescriptionName = row["GPIGenericName"].ToString();
+                                        prescription2.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                        prescription2.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
+                                        prescription2.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                        prescription2.PrescriptionUpc = row["NDCUPCHRI"].ToString();
+                                        prescription2.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+                                        Refill refill = new Refill(prescription);
+                                        ser.PrescriptionInsert(prescription1);
+                                        ser.RefillInsert(refill);
+                                    }
 
-                                     if (prescription1.PrescriptionNumber == int.Parse(row["PrescriptionNumber"].ToString()))
-                                     {
-                                         //Refill refill = 
-                                     }
-                                 }                                
+                                    if (prescription1.PrescriptionNumber == int.Parse(row["PrescriptionNumber"].ToString()))
+                                    {
+                                        int refills = int.Parse(row["NumberOfRefills"].ToString());
+                                        if (refills > 0)
+                                        {
 
-                             }
+                                            Refill refill = new Refill(prescription1);
+                                        }
+                                    }
+                                }
 
-                         }
+                            }
+
+                        }
                         RedirectToAction("Upload", "Pharmacy");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "This file format is not supported");
+                        return View();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("File", "Please Upload Your file");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult UploadRecalls()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadRecalls(HttpPostedFileBase upload)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+
+                    if (upload.FileName.EndsWith(".csv"))
+                    {
+                        Stream stream = upload.InputStream;
+                        DataTable csvTable = new DataTable();
+                        using (CsvReader csvReader =
+                            new CsvReader(new StreamReader(stream), true))
+                        {
+                            csvTable.Load(csvReader);
+                        }
+                        foreach (DataRow row in csvTable.Rows)
+                        {
+                            SQLService ser = new SQLService();
+                            Patient patient = new Patient();
+                            patient.FirstName = row["PatientFirstName"].ToString();
+                            patient.LastName = row["PatientLastName"].ToString();
+                            patient.Phone = row["Phone"].ToString();
+                            ser.UserInsert(patient);
+                            ser.PatientInsert(patient);
+                            Notification notification = new Notification();
+                        }
                     }
                     else
                     {
