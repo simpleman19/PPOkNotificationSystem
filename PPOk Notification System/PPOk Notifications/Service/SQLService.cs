@@ -277,10 +277,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void LoginInsert(Login login) {
+		public long LoginInsert(Login login) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Login), new ColumnAttributeTypeMapper<Login>());
-				db.Execute(ScriptService.Scripts["login_insert"], login);
+				return db.Query<long>(ScriptService.Scripts["login_insert"], login).Single();
 			}
 		}
 		public void LoginInsertOrUpdate(Login login) {
@@ -376,10 +376,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void PharmacyInsert(Pharmacy pharmacy) {
+		public long PharmacyInsert(Pharmacy pharmacy) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacy), new ColumnAttributeTypeMapper<Pharmacy>());
-				db.Execute(ScriptService.Scripts["pharmacy_insert"], pharmacy);
+				return db.Query<long>(ScriptService.Scripts["pharmacy_insert"], pharmacy).Single();
 			}
 		}
 		public void PharmacyInsertOrUpdate(Pharmacy pharmacy) {
@@ -496,10 +496,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void PharmacistInsert(Pharmacist pharmacist) {
+		public long PharmacistInsert(Pharmacist pharmacist) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
-				db.Execute(ScriptService.Scripts["pharmacist_insert"], pharmacist);
+				return db.Query<long>(ScriptService.Scripts["pharmacist_insert"], pharmacist).Single();
 			}
 		}
 		public void PharmacistInsertOrUpdate(Pharmacist pharmacist) {
@@ -616,10 +616,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void TemplateInsert(Template template) {
+		public long TemplateInsert(Template template) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Template), new ColumnAttributeTypeMapper<Template>());
-				db.Execute(ScriptService.Scripts["template_insert"], template);
+				return db.Query<long>(ScriptService.Scripts["template_insert"], template).Single();
 			}
 		}
 		public void TemplateInsertOrUpdate(Template template) {
@@ -736,10 +736,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void PatientInsert(Patient patient) {
+		public long PatientInsert(Patient patient) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
-			db.Execute(ScriptService.Scripts["patient_insert"], patient);
+				return db.Query<long>(ScriptService.Scripts["patient_insert"], patient).Single();
 			}
 		}
 
@@ -857,10 +857,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void PrescriptionInsert(Prescription prescription) {
+		public long PrescriptionInsert(Prescription prescription) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
-				db.Execute(ScriptService.Scripts["prescription_insert"], prescription);
+				return db.Query<long>(ScriptService.Scripts["prescription_insert"], prescription).Single();
 			}
 		}
 		public void PrescriptionInsertOrUpdate(Prescription prescription) {
@@ -977,10 +977,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void RefillInsert(Refill refill) {
+		public long RefillInsert(Refill refill) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
-				db.Execute(ScriptService.Scripts["refill_insert"], refill);
+				return db.Query<long>(ScriptService.Scripts["refill_insert"], refill).Single();
 			}
 		}
 		public void RefillInsertOrUpdate(Refill refill) {
@@ -1115,10 +1115,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void NotificationInsert(Notification notification) {
+		public long NotificationInsert(Notification notification) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
-				db.Execute(ScriptService.Scripts["notification_insert"], notification);
+				return db.Query<long>(ScriptService.Scripts["notification_insert"], notification).Single();
 			}
 		}
 
@@ -1236,10 +1236,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void OTPInsert(OTP otp) {
+		public long OTPInsert(OTP otp) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
-				db.Execute(ScriptService.Scripts["otp_insert"], otp);
+				return db.Query<long>(ScriptService.Scripts["otp_insert"], otp).Single();
 			}
 		}
 		public void OTPInsertOrUpdate(OTP otp) {
@@ -1356,10 +1356,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public void EmailOTPInsert(EmailOTP emailotp) {
+		public long EmailOTPInsert(EmailOTP emailotp) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
-				db.Execute(ScriptService.Scripts["emailotp_insert"], emailotp);
+				return db.Query<long>(ScriptService.Scripts["emailotp_insert"], emailotp).Single();
 			}
 		}
 		public void EmailOTPInsertOrUpdate(EmailOTP emailotp) {
