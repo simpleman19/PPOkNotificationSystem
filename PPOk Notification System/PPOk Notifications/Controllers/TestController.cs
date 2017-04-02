@@ -18,15 +18,17 @@ namespace PPOk_Notifications.Controllers
         {
             var db = new SQLService();
 
-            var pharm = new Pharmacy();
-            pharm.PharmacyName = "Test Pharmacy";
-            pharm.PharmacyAddress = "An address";
-            pharm.PharmacyPhone = "+19999999999";
-            db.PharmacyInsertOrUpdate(pharm);
+            var pharmacies = db.GetPharmacies();
 
             var pharmAdmin = new Pharmacist();
             pharmAdmin.FirstName = "Pharma";
+            pharmAdmin.LastName = "cist";
+            pharmAdmin.Phone = "+19999999993";
             Pharmacist.HashPassword(pharmAdmin, "harambe");
+            pharmAdmin.Email = "test@test.com";
+            pharmAdmin.PharmacyId = pharmacies[0].PharmacyId;
+
+            db.PharmacistInsert(pharmAdmin);
 
             return Redirect("/");
         }

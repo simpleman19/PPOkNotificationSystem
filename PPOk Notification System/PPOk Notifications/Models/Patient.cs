@@ -15,6 +15,8 @@ namespace PPOk_Notifications.Models
         [DisplayName("Person Code")]
         [Column(Name = "person_code")]
         public int PersonCode { get; set; }
+        [Column(Name = "pharmacy_id")]
+        public long PharacyId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime PreferedContactTime { get; set; }
         public bool SendBirthdayMessage { get; set; }
