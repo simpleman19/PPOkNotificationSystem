@@ -23,7 +23,7 @@ VALUES
 	@PatientId,
 	@PharmacyId, 
 	@UserId, 
-	@PatientDob, 
+	@@DateOfBirth, 
 	@PreferencePhone, 
 	@PreferenceText, 
 	@PreferenceEmail, 
