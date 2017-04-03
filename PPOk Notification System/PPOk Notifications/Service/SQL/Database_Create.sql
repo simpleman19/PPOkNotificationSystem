@@ -80,7 +80,8 @@ CREATE TABLE [PPOK].[dbo].[refill]
 	[prescription_id] bigint FOREIGN KEY REFERENCES [prescription]([prescription_id]) NOT NULL, 
 	[refill_date] datetime,
 	[refill_filled] bit NOT NULL, 
-	[object_active] bit NOT NULL
+	[object_active] bit NOT NULL,
+	[refill_it] bit NOT NULL
 )
 GO
 

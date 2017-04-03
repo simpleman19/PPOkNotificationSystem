@@ -662,6 +662,8 @@
     <Content Include="Service\SQL\Pharmacy_GetById_Active.sql" />
     <Content Include="Service\SQL\Pharmacist_Insert.sql" />
     <Content Include="Service\SQL\Pharmacist_Insert_Or_Update.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId_Inactive.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId_Active.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId.sql" />

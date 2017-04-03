@@ -44,7 +44,10 @@ namespace PPOk_Notifications.Models
 
         public Pharmacy getPharmacy()
         {
-            return new Pharmacy();
+            var db = new SQLService();
+            var pharm = db.GetPharmacyByIdActive(this.PharmacyId);
+            pharm.GetTemplates();
+            return pharm;
         }
 
         public static Patient getTestPatient()

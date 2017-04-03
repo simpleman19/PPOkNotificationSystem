@@ -65,6 +65,15 @@ namespace PPOk_Notifications.NotificationSending
             }
         }
 
+        public static void SendNotification(Notification notification)
+        {
+            var db = new SQLService();
+            Patient pat = db.GetPatientById(notification.PatientId);
+
+            TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+            SendNotification(notification, twilio);
+        }
+
         private void PrepareForSending()
         {
             var db = new SQLService();
@@ -95,7 +104,7 @@ namespace PPOk_Notifications.NotificationSending
                 switch(p.ContactMethod)
                 {
                     case Patient.PrimaryContactMethod.Call:
-                        twilio.MakePhoneCall(n);
+                        twilio.SendTextMessage(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
 

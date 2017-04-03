@@ -42,6 +42,22 @@ namespace PPOk_Notifications.Controllers
             return "sucess \n username: test@test.com \n password: harambe";
         }
 
+        public string AddFakePresRefillNotif(long pid)
+        {
+            var db = new SQLService();
+            var pres = new Prescription();
+            pres.PatientId = pid;
+            pres.PrescriptionName = "Test Prescription";
+            pres.PrescriptionNumber = 12345;
+            pres.PrescriptionRefills = 3;
+            pres.PrescriptionDateFilled = System.DateTime.Now.AddDays(-27);
+            pres.PrescriptionDaysSupply = 30;
+            pres.PrescriptionUpc = "123456789";
+            pres.PrecriptionId = db.PrescriptionInsert(pres);
+            var refill = new Refill(pres);
+            refill.RefillId = db.RefillInsert(refill);
+            return "Sucesss";
+        }
         public string AddFakePatient(long pid)
         {
             var db = new SQLService();
@@ -52,13 +68,13 @@ namespace PPOk_Notifications.Controllers
             pat.LastName = "Doe";
             pat.PersonCode = "1";
             pat.DateOfBirth = System.DateTime.Now;
-            pat.Phone = "+19999999999";
+            pat.Phone = "+18065703539";
             pat.PharmacyId = pid;
             pat.PreferedContactTime = System.DateTime.Now;
             long id = db.UserInsert(pat);
             pat.UserId = id;
-            db.PatientInsert(pat);
-
+            var patId = db.PatientInsert(pat);
+            this.AddFakePresRefillNotif(patId);
             return "success";
         }
         public string Reset()

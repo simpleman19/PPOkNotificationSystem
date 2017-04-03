@@ -6,13 +6,41 @@ using System;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class NotificationController : BaseController
     {
         // GET: Notification
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult CancelNotification(long id)
+        {
+            var db = new SQLService();
+            //db.Notification_Disable(id);
+            return Redirect("/Notification/NotificationListView");
+        }
+
+        public ActionResult SendNotification(long id)
+        {
+            var db = new SQLService();
+            var n = db.GetNotificationById(id);
+            NotificationSending.NotificationSender.SendNotification(n);
+            return Redirect("/Notification/NotificationList");
+        }
+
+        public ActionResult AddNotification()
+        {
+            // TODO: will need a notification input view or model
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("NotificationListView");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult NotificationList()
@@ -23,7 +51,7 @@ namespace PPOk_Notifications.Controllers
             {
                 Notification n = null;
                 Random rand = new Random();
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     n = Notification.GetTestNotification(rand);
                     db.NotificationInsert(n);
@@ -37,7 +65,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult DeleteNotification(long id)
         {
             var db = new SQLService();
-            db.Notification_Disable(id);
+            //db.Notification_Disable(id);
             return Redirect("/Notification/NotificationList");
         }
     }

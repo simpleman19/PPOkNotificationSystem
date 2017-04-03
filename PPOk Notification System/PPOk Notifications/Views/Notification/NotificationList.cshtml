@@ -62,6 +62,7 @@
 
                                 <td>
                                     @Html.ActionLink("Delete", "DeleteNotification", new { id = item.NotificationId })
+                                    @Html.ActionLink("Send Notification", "SendNotification", new { id = item.NotificationId})
                                 </td>
                             </tr>
                         }

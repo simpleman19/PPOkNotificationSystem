@@ -1115,10 +1115,10 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by patient id
-		public Notification GetNotificationByPatientId(long patient_id) {
+		public List<Notification> GetNotificationsByPatientId(long patient_id) {
 			using (var db = connect()) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
-				return db.Query<Notification>(ScriptService.Scripts["notification_getbypatientid"], new { patient_id = patient_id }).FirstOrDefault();
+                return db.Query<Notification>(ScriptService.Scripts["notification_getbypatientid"], new { patient_id = patient_id }).AsList();
 			}
 		}
 		public Notification GetNotificationByPatientIdActive(long patient_id) {
