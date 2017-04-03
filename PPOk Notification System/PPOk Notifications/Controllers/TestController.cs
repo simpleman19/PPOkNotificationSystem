@@ -39,7 +39,24 @@ namespace PPOk_Notifications.Controllers
 
             db.PharmacistInsert(pharmAdmin);
 
-            return "sucess \n username: test@test.com \n password: harambe";
+            User ppokAdmin = new User();
+            ppokAdmin.LastName = "dmin";
+            ppokAdmin.FirstName = "PPOk A";
+            ppokAdmin.Type = Models.User.UserType.PPOkAdmin;
+            ppokAdmin.Phone = "+19999999998";
+            ppokAdmin.Email = "admin@test.com";
+            ppokAdmin.UserId = db.UserInsert(ppokAdmin);
+
+            var login2 = new Login
+            {
+                UserId = ppokAdmin.UserId,
+                LoginToken = ""
+            };
+            login2.SetPassword("harambe");
+
+            db.LoginInsert(login2);
+
+            return "sucess <br/> Pharm: username: test@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
         }
 
         public string AddFakePresRefillNotif(long pid)

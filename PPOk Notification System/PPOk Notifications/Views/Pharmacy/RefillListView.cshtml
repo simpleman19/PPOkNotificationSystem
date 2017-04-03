@@ -41,7 +41,7 @@
             string style = item.Refilled == true ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Refilled);
+                    @Html.DisplayFor(modelItem => item.Refilled)
                 </td>
                 <td>
                     @db.GetPatientById(db.GetPrescriptionById(item.PrescriptionId).PatientId).LoadUserData().GetFullName()

@@ -1,4 +1,5 @@
 ﻿using PPOk_Notifications.Service;
+using PPOk_Notifications.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Web.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class PpokAdminController : Controller
     {
         // GET: Admin
@@ -30,18 +31,11 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PharmacyListView()
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
-            //((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacyListView", param);
-            }
-            else
-            {
-                return View(param);
-            }
+            var db = new SQLService();
+            var pharamcies = db.GetPharmaciesActive();
+            return View(pharamcies);
         }
+
 
         // returned view for adding, editing, or viewing a pharmacy
         public ActionResult PharmacyModificationView(int id)

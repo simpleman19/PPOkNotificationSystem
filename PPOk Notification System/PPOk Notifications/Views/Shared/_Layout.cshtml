@@ -62,6 +62,12 @@
                 {
                     <li><a href="~/Pharmacy/RefillListView">Refills</a></li>
                     <li><a href="~/Notification/NotificationList">Notifications</a></li>
+                    <li><a href="~/Pharmacy/UploadRecalls">Recalls</a></li>
+                    <li><a href="~/Pharmacy/PatientListView">Patients</a></li>
+                }
+                @if (ppokAdmin)
+                {
+                    <li><a href="~/PpokAdmin/PharmacyListView">Pharmacies</a></li>
                 }
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -83,7 +89,7 @@
 </div>
 
 <div class="site-content container body-content">
-    @if (loggedIn)
+    @if (pharmacist)
     {
         <div class="row">
             <div class="col-xs-2 col-xs-offset-10">

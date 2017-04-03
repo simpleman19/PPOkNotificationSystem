@@ -49,7 +49,7 @@ namespace PPOk_Notifications.NotificationSending
             Prescription p = db.GetPrescriptionById(refill.PrescriptionId);
             n.PatientId = p.PatientId;
             System.Diagnostics.Debug.WriteLine(n.PatientId);
-            db.NotificationInsert(n);
+            n.NotificationId = db.NotificationInsert(n);
             var pat = db.GetPatientById(n.PatientId);
             TwilioApi twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(n, twilio);

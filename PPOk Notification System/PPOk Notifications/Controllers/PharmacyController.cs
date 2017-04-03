@@ -123,11 +123,13 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PatientListView()
         {
-            IEnumerable<Patient> param = new List<Patient>();
             SQLService serv = new SQLService();
-            //((List<Patient>)param).AddRange(serv.GetPatients());
-
-            return View(param);
+            var patients = serv.GetPatients();
+            foreach (var p in patients)
+            {
+                p.LoadUserData();
+            }
+            return View(patients);
         }
         [HttpPost]
         public ActionResult SavePatient(Patient m, int page = 0)
@@ -386,8 +388,9 @@ namespace PPOk_Notifications.Controllers
             pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
 
             service.PharmacyUpdate(pharmacy);
+            pharmacy.SaveTemplates();
 
-            return View();
+            return View(pharmacy);
         }
     }
 }

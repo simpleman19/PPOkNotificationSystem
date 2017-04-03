@@ -18,18 +18,27 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Index(string email, string password)
         {
             // TODO get user from database
-            var user = GetLogin(email);
-            if (user == null)
+            var login = GetLogin(email);
+            if (login == null)
             {
                 return View(false);
             }
 
-            if (!user.CheckPassword(password))
+            if (!login.CheckPassword(password))
             {
                 return View(false);
             }
-            Session["user_id"] = user.UserId;
-            return Redirect("/Pharmacy/RefillListView");
+            Session["user_id"] = login.UserId;
+            var db = new SQLService();
+            var user = db.GetUserById(login.UserId);
+            if (user.Type == Models.User.UserType.PPOkAdmin)
+            {
+                return Redirect("/PpokAdmin/PharmacyListView");
+            } else if (user.Type == Models.User.UserType.Pharmacist)
+            {
+                return Redirect("/Pharmacy/RefillListView");
+            }
+            return View(false);
         }
 
         public ActionResult Logout()
