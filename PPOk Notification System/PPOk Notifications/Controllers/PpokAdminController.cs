@@ -41,39 +41,6 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
-        /* 99.9% sure this will not be used in any capacity given new search
-        [HttpGet]
-        public ActionResult PharmacyListView(string searchString)
-        {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            List<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
-            //param.AddRange(serv.GetPharmacies());
-            List<PPOk_Notifications.Models.Pharmacy> filtered = new List<PPOk_Notifications.Models.Pharmacy>();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.PharmacyAddress.ToString().Contains(searchString) ||
-                        item.PharmacyId.ToString().Contains(searchString) ||
-                        item.PharmacyName.ToString().Contains(searchString) ||
-                        item.PharmacyPhone.ToString().Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacyListView", filtered);
-            }
-            else
-            {
-                return View(filtered);
-            }
-        }
-        */
 
         // returned view for adding, editing, or viewing a pharmacy
         public ActionResult PharmacyModificationView(int id)
@@ -81,10 +48,9 @@ namespace PPOk_Notifications.Controllers
             SQLService database = new SQLService();
 
             Models.Pharmacy pharmacy = new Models.Pharmacy();
-            //if (id != 0)
-            //    pharmacy = database.GetPharmacyById(id);
+            if (id != 0)
+                pharmacy = database.GetPharmacyById(id);
 
-            // FIXME: phamacyuser vs pharmacist
             List<Models.PharmacyUser> pharmacists = new List<Models.PharmacyUser>();//database.GetPharmacists();
             Models.PharmacyUser admin = new Models.PharmacyUser();
             admin.IsAdmin = true;
@@ -102,12 +68,6 @@ namespace PPOk_Notifications.Controllers
             }
         }
 
-        [HttpPost]
-        public void PharmacyModificationView(System.Tuple<Models.Pharmacy, Models.PharmacyUser> pharmacyAndAdmin)
-        {
-            SQLService database = new SQLService();
-        }
-
         public ActionResult AddPharmacy()
         {
             return Redirect("PharmacyModificationView/0");
@@ -123,7 +83,7 @@ namespace PPOk_Notifications.Controllers
         public void DeletePharmacy(long id)
         {
             SQLService database = new SQLService();
-            //database.Pharmacy_Disable((int)id);
+            database.Pharmacy_Disable((int)id);
         }
     }
 }

@@ -15,32 +15,10 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        public ActionResult CancelNotification(long id)
-        {
-            var db = new SQLService();
-            //db.Notification_Disable(id);
-            return Redirect("/Notification/NotificationListView");
-        }
-
-
-        public ActionResult AddNotification()
-        {
-            // TODO: will need a notification input view or model
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("NotificationListView");
-            }
-            else
-            {
-                return View();
-            }
-        }
-
         public ActionResult NotificationList()
         {
             var db = new SQLService();
-            List<Notification> notifications = new List<Notification>();
-            // sql error --> db.GetNotificationsActive();
+            List<Notification> notifications = db.GetNotificationsActive();
             if (notifications.Count == 0)
             {
                 Notification n = null;
@@ -48,10 +26,10 @@ namespace PPOk_Notifications.Controllers
                 for (int i = 0; i < 100; i++)
                 {
                     n = Notification.GetTestNotification(rand);
-                    // sql error ---> db.NotificationInsert(n);
+                    db.NotificationInsert(n);
                     notifications.Add(n);
                 }
-                // sql error ---> notifications = db.GetNotificationsActive();
+                notifications = db.GetNotificationsActive();
             }
             return View(notifications);
         }
@@ -59,7 +37,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult DeleteNotification(long id)
         {
             var db = new SQLService();
-            //db.Notification_Disable(id);
+            db.Notification_Disable(id);
             return Redirect("/Notification/NotificationList");
         }
     }
