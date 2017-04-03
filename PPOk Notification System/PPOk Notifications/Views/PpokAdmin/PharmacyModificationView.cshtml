@@ -4,35 +4,6 @@
     ViewBag.Title = "PharmacyModificationView";
 }
 
-
-@*
-
-    <!-- TODO
-         need to display passed in pharmacy, if not show defaults
-         need to modify or return changed fields -->
-
-    <form>
-        <h2>Pharmacy</h2>
-        Name:<br>
-        <input type="text" name="PharmacyName" value="DrugsRus"><br>
-        Address:<br>
-        <input type="text" name="PharmacyAddress" value="9001 Yellow Brick Rd, Emerald City, Wonderland 1248"><br>
-        Phone:<br>
-        <input type="text" name="PharmacyPhone" value="5597658253"><br>
-        <!-- Note Bene: will need to generate id -->
-        <h2>Pharmacy Admin</h2>
-        First Name:<br>
-        <input type="text" name="" value="Wizard"><br>
-        Last Name:<br>
-        <input type="text" name="" value="Oz"><br>
-        Email:<br>
-        <input type="text" name="" value="Oz@Wonderland.idk"><br>
-    </form>
-
-    @Html.ActionLink("Submit", "SubmitPharmacyChanges")
-
-*@
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()

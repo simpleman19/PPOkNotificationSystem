@@ -777,7 +777,6 @@
     <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <Content Include="Views\Pharmacy\PatientListView.cshtml" />
-    <Content Include="Views\Notification\NotificationListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />
     <Content Include="Views\Pharmacy\Admin.cshtml" />
     <Content Include="Views\Pharmacy\Upload.cshtml" />
