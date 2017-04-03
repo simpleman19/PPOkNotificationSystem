@@ -44,6 +44,8 @@ namespace PPOk_Notifications.Models
         {
             Refilled = true;
             NotificationSender.SendFilledNotification(this);
+            var db = new SQLService();
+            db.RefillUpdate(this);
         }
 
         public static Refill getTestRefill()

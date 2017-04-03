@@ -46,6 +46,9 @@ namespace PPOk_Notifications.NotificationSending
         {
             Notification n = new Notification(refill, Notification.NotificationType.Ready);
             var db = new SQLService();
+            Prescription p = db.GetPrescriptionById(refill.PrescriptionId);
+            n.PatientId = p.PatientId;
+            System.Diagnostics.Debug.WriteLine(n.PatientId);
             db.NotificationInsert(n);
             var pat = db.GetPatientById(n.PatientId);
             TwilioApi twilio = new TwilioApi(pat.getPharmacy());

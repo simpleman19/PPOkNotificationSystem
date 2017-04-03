@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class PharmacyController : BaseController
     {
         // GET: Pharmacy
@@ -96,18 +96,16 @@ namespace PPOk_Notifications.Controllers
         public ActionResult RefillListView()
         {
             SQLService serv = new SQLService();
-            IEnumerable<Refill> param = new List<Refill>();
-
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-
-            if (Request.IsAjaxRequest())
+            var refills = serv.GetRefillsActive();
+            List<Refill> ready = new List<Refill>();
+            foreach (var r in refills)
             {
-                return PartialView("RefillListView", Tuple.Create(param, serv));
+                if (r.RefillIt)
+                {
+                    ready.Add(r);
+                }
             }
-            else
-            {
-                return View(param);
-            }
+            return View(refills);
         }
         public ActionResult SetFilled(long id)
         {
