@@ -56,6 +56,7 @@ namespace PPOk_Notifications.Service
 
         public void MakeRecallPhoneCall(Notification notification)
         {
+            /*
             var db = new SQLService();
             Patient p = db.GetPatientById(notification.PatientId);
 
@@ -69,6 +70,8 @@ namespace PPOk_Notifications.Service
 
             }
             //TODO create xmls for phone calls
+            */
+            this.SendTextMessage(notification);
         }
 
 
