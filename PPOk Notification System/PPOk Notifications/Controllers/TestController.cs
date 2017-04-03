@@ -4,7 +4,7 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class TestController : BaseController
     {
         // GET: Debug
@@ -26,6 +26,7 @@ namespace PPOk_Notifications.Controllers
                 Email = "test@test.com",
                 PharmacyId = pharmacies[0].PharmacyId,
                 UserId = 1,
+                IsAdmin = true,
                 Type = Models.User.UserType.Pharmacist
             };
             pharmAdmin.UserId = db.UserInsert(pharmAdmin);
