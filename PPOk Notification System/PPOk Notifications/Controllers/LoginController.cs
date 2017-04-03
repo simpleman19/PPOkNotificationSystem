@@ -29,7 +29,7 @@ namespace PPOk_Notifications.Controllers
                 return View(false);
             }
             Session["user_id"] = user.UserId;
-            return RedirectToAction("Success");
+            return Redirect("/Pharmacy/RefillListView");
         }
 
         public ActionResult Logout()

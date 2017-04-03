@@ -109,7 +109,8 @@ namespace PPOk_Notifications.Models
         {
             notification.Sent = true;
             notification.SentTime = DateTime.Now;
-
+            var db = new SQLService();
+            db.NotificationUpdate(notification);
             return notification;
         }
 
@@ -117,6 +118,8 @@ namespace PPOk_Notifications.Models
         {
             notification.Sent = true;
             notification.SentTime = time;
+            var db = new SQLService();
+            db.NotificationUpdate(notification);
             return notification;
         }
 

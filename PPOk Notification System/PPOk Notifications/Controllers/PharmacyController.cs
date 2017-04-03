@@ -105,7 +105,7 @@ namespace PPOk_Notifications.Controllers
                     ready.Add(r);
                 }
             }
-            return View(refills);
+            return View(ready);
         }
         public ActionResult SetFilled(long id)
         {

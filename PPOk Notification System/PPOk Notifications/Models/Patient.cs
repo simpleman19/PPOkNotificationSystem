@@ -59,5 +59,17 @@ namespace PPOk_Notifications.Models
             p.Phone = "+19999999999";
             return p;
         }
+
+        public Patient LoadUserData()
+        {
+            var db = new SQLService();
+            var user = db.GetUserById(UserId);
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Email = user.Email;
+            Phone = user.Phone;
+            return this;
+        }
     }
+
 }

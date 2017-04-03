@@ -19,6 +19,7 @@ namespace PPOk_Notifications.Models
         [DisplayName("Refill Date")]
         [Column(Name = "refill_date")]
         public DateTime? RefillDate { get; set; }
+        [Column(Name = "refill_filled")]
         public bool Refilled { get; set; }
         [DisplayName("Ready to Refill")]
         [Column(Name = "refill_it")]
@@ -43,6 +44,7 @@ namespace PPOk_Notifications.Models
         public void SetFilled()
         {
             Refilled = true;
+            RefillDate = DateTime.Now;
             NotificationSender.SendFilledNotification(this);
             var db = new SQLService();
             db.RefillUpdate(this);

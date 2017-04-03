@@ -27,8 +27,6 @@ namespace PPOk_Notifications.Service
             var db = new SQLService();
             Patient p = db.GetPatientById(notification.PatientId);
             Template temp = GetTempFromPharmacy(notification.Type);
-            temp = new Template();
-            temp.TemplateText = "Your prescription is ready";
             if (testTwilio)
             {
                 var message = MessageResource.Create(
@@ -77,6 +75,7 @@ namespace PPOk_Notifications.Service
         private Template GetTempFromPharmacy(Notification.NotificationType type)
         {
             Template temp = null;
+            pharmacy.GetTemplates();
             switch (type)
             {
                 case Notification.NotificationType.Refill:
