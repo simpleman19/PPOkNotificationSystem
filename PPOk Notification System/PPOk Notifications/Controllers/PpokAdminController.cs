@@ -1,10 +1,5 @@
 ﻿using PPOk_Notifications.Service;
-using PPOk_Notifications.Models;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Web;
 using System.Web.Mvc;
 using PPOk_Notifications.Filters;
 

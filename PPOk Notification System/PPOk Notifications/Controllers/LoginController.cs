@@ -11,6 +11,16 @@ namespace PPOk_Notifications.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            if (Session[Login.UserIdSession] != null)
+            {
+                long id = (long)Session[Login.UserIdSession];
+                var action = RedirectToProperPage(id);
+                if (action != null)
+                {
+                    return action;
+                }
+            }
+
             return View();
         }
 
@@ -30,9 +40,13 @@ namespace PPOk_Notifications.Controllers
             }
 
             Session[Login.UserIdSession] = login.UserId;
+            return RedirectToProperPage(login.UserId) ?? View(false);
+        }
 
+        private ActionResult RedirectToProperPage(long userId)
+        {
             var db = new SQLService();
-            var user = db.GetUserById(login.UserId);
+            var user = db.GetUserById(userId);
             if (user.Type == Models.User.UserType.PPOkAdmin)
             {
                 return Redirect("/PpokAdmin/PharmacyListView");
@@ -41,7 +55,7 @@ namespace PPOk_Notifications.Controllers
             {
                 return Redirect("/Pharmacy/RefillListView");
             }
-            return View(false);
+            return null;
         }
 
         public ActionResult Logout()
