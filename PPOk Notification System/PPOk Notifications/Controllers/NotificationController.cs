@@ -66,7 +66,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult DeleteNotification(long id)
         {
             var db = new SQLService();
-            //db.Notification_Disable(id);
+            db.Notification_Disable(id);
             return Redirect("/Notification/NotificationList");
         }
     }
