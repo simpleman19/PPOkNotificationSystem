@@ -17,6 +17,11 @@
             if (user.Type == PPOk_Notifications.Models.User.UserType.Pharmacist)
             {
                 pharmacist = true;
+                var pharm = db.GetPharmacistByUserId(user.UserId);
+                if (pharm.IsAdmin)
+                {
+                    pharmAdmin = true;
+                }
             }
         }
 
