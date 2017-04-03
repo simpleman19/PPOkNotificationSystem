@@ -183,7 +183,6 @@ namespace PPOk_Notifications.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Upload(HttpPostedFileBase upload)
         {
-            Console.WriteLine("Ante");
             if (ModelState.IsValid)
             {
 
@@ -200,7 +199,6 @@ namespace PPOk_Notifications.Controllers
                         {
                             csvTable.Load(csvReader);
                         }
-                        Console.WriteLine("Ante");
                         // return View(csvTable);
                         foreach (DataRow row in csvTable.Rows)
                         {
@@ -214,7 +212,7 @@ namespace PPOk_Notifications.Controllers
                                 patient.LastName = row["PatientLastName"].ToString();
                                 patient.Phone = row["Phone"].ToString();
                                 patient.Email = row["Email"].ToString();
-                                patient.DateOfBirth = DateTime.ParseExact(row["DOB"].ToString(), "yyyyMMdd",null);
+                                patient.DateOfBirth = DateTime.ParseExact(row["DOB"].ToString(), "yyyyMMdd", null);
                                 var dateNow = DateTime.Now;
                                 patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
@@ -315,7 +313,7 @@ namespace PPOk_Notifications.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UploadRecalls(HttpPostedFileBase upload)
+        public ActionResult UploadRecalls(HttpPostedFileBase upload, string recallMessage)
         {
             if (ModelState.IsValid)
             {
@@ -339,10 +337,17 @@ namespace PPOk_Notifications.Controllers
                             patient.FirstName = row["PatientFirstName"].ToString();
                             patient.LastName = row["PatientLastName"].ToString();
                             patient.Phone = row["Phone"].ToString();
+                            patient.PharmacyId = 1;
+                            patient.DateOfBirth = DateTime.Now;
+                            patient.Email = "ante@ante.com";
+                            patient.ContactMethod = Patient.PrimaryContactMethod.Call;
+                            patient.PreferedContactTime = DateTime.Now;
+                            patient.PersonCode = row["PersonCode"].ToString();
                             var id =  ser.UserInsert(patient);
                             patient.UserId = id;
                             patient.PatientId = ser.PatientInsert(patient);
-                            Notification notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall,"");
+                            Notification notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall, recallMessage);
+                            ser.NotificationInsert(notification);
                         }
                     }
                     else
