@@ -581,6 +581,9 @@
     <Content Include="Service\SQL\EmailOTP_GetById.sql" />
     <Content Include="Service\SQL\EmailOTP_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\EmailOTP_GetAll_Active.sql" />
+    <Content Include="Service\SQL\EmailOTP_Update_Inactive.sql" />
+    <Content Include="Service\SQL\EmailOTP_Update_Active.sql" />
+    <Content Include="Service\SQL\EmailOTP_Update.sql" />
     <Content Include="Service\SQL\Login_Disable.sql" />
     <Content Include="Service\SQL\Login_Enable.sql" />
     <Content Include="Service\SQL\EmailOTP_GetAll.sql" />
@@ -591,6 +594,8 @@
     <Content Include="Service\SQL\Login_GetByUserId_Inactive.sql" />
     <Content Include="Service\SQL\Login_GetByUserId_Active.sql" />
     <Content Include="Service\SQL\Login_GetByUserId.sql" />
+    <Content Include="Service\SQL\EmailOTP_Insert.sql" />
+    <Content Include="Service\SQL\EmailOTP_Insert_Or_Update.sql" />
     <Content Include="Service\SQL\Login_Update_Inactive.sql" />
     <Content Include="Service\SQL\Login_Update_Active.sql" />
     <Content Include="Service\SQL\Login_Update.sql" />
