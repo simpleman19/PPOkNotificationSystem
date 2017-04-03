@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
+    [Authorize]
     public class PpokAdminController : Controller
     {
         // GET: Admin
