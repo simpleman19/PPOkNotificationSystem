@@ -212,7 +212,7 @@ namespace PPOk_Notifications.Controllers
                                 patient.LastName = row["PatientLastName"].ToString();
                                 patient.Phone = row["Phone"].ToString();
                                 patient.Email = row["Email"].ToString();
-                                patient.DateOfBirth = DateTime.ParseExact(row["DOB"].ToString(), "yyyymmdd",null);
+                                patient.DateOfBirth = DateTime.ParseExact(row["DOB"].ToString(), "yyyyMMdd",null);
                                 var dateNow = DateTime.Now;
                                 patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
@@ -228,7 +228,8 @@ namespace PPOk_Notifications.Controllers
                                 patient.UserId = ID;
                                 patient.PatientId = ser.PatientInsert(patient);
                                 prescription.PatientId = patient.PatientId;
-                                ser.PrescriptionInsert(prescription);
+                                var preid = ser.PrescriptionInsert(prescription);
+                                prescription.PrecriptionId = preid;
                                 Refill refill = new Refill(prescription);
                                 refill.RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2);
                                 ser.RefillInsert(refill);
@@ -243,12 +244,12 @@ namespace PPOk_Notifications.Controllers
                                 {
                                     Prescription prescription1 = new Prescription();
                                     prescription1.PrescriptionName = row["GPIGenericName"].ToString();
-                                    prescription1.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                    prescription1.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                     prescription1.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
                                     prescription1.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
                                     prescription1.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                     prescription1.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
-                                    Refill refill = new Refill(prescription);
+                                    Refill refill = new Refill(prescription1);
                                     ser.PrescriptionInsert(prescription1);
                                     ser.RefillInsert(refill);
                                 }
@@ -259,13 +260,13 @@ namespace PPOk_Notifications.Controllers
                                     {
                                         Prescription prescription2 = new Prescription();
                                         prescription2.PrescriptionName = row["GPIGenericName"].ToString();
-                                        prescription2.PrescriptionDateFilled = DateTime.Parse(row["DateFilled"].ToString());
+                                        prescription2.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                         prescription2.PrescriptionDaysSupply = int.Parse(row["DaysSupply"].ToString());
-                                        prescription2.PrescriptionRefills = int.Parse(row["NumerOfRefills"].ToString());
+                                        prescription2.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
                                         prescription2.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                         prescription2.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
                                         Refill refill = new Refill(prescription);
-                                        ser.PrescriptionInsert(prescription1);
+                                        ser.PrescriptionInsert(prescription2);
                                         ser.RefillInsert(refill);
                                     }
 
