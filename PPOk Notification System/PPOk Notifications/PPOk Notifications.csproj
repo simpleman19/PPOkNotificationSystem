@@ -777,12 +777,13 @@
     <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <Content Include="Views\Pharmacy\PatientListView.cshtml" />
-    <Content Include="Views\Notification\NotificationListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />
     <Content Include="Views\Pharmacy\Admin.cshtml" />
     <Content Include="Views\Pharmacy\Upload.cshtml" />
     <Content Include="Views\TwilioResponse\Index.cshtml" />
     <Content Include="Views\Pharmacy\UploadRecalls.cshtml" />
+    <Content Include="Views\Pharmacy\AddPharmacist.cshtml" />
+    <Content Include="Views\Pharmacy\AddPatient.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

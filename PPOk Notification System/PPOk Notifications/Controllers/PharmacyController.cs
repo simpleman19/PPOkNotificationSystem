@@ -24,6 +24,14 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+
+
+        /// //////////////////////////////////////////////////////////
+        /// Pharmacists
+        /// //////////////////////////////////////////////////////////
+
+
+
         //[HttpPost]
         public ActionResult PharmacistListView()
         {
@@ -41,40 +49,14 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
-        /*              99.9% sure this won't be used given new search
-        [HttpGet]
-        public ActionResult PharmacistListView(string searchString)
+        [HttpPost]
+        public ActionResult SavePharmacist(Pharmacist m, int page = 0)
         {
-            SQLService serv = new SQLService();
-            List<PharmacyUser> param = new List<PharmacyUser>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
-            List<PharmacyUser> filtered = new List<PharmacyUser>();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.Email.Contains(searchString) ||
-                        item.FirstName.Contains(searchString) ||
-                        item.LastName.Contains(searchString) ||
-                        item.Phone.Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", filtered);
-            }
-
-            return View(filtered);
+            // if id's are default, get actual id's for the (new) pharmacist
+            // use sql to save pharmacist to db
+            return Redirect("/Pharmacy/PhamacistListView");
         }
-        */
-        public ActionResult AddPharmacist(long id)
+        public ActionResult AddPharmacist(long id = 0)
         {
 
             SQLService database = new SQLService();
@@ -103,6 +85,13 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PhamacistListView");
         }
 
+
+
+        /// //////////////////////////////////////////////////////////
+        /// Refills
+        /// //////////////////////////////////////////////////////////
+
+
         //[HttpPost]
         public ActionResult RefillListView()
         {
@@ -120,53 +109,18 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
-        /*              99.9% sure this won't be used in any capacity given new search method
-        [HttpGet]
-        public ActionResult RefillListView(string searchString)
-        {
-            SQLService serv = new SQLService();
-            List<Refill> param = new List<Refill>();
-
-            // FIXME: key not found exception in SQL services    ((List<PPOk_Notifications.Models.Refill>)param).AddRange(serv.GetRefills());
-
-            List<Refill> filtered = new List<Refill>();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.PrescriptionId.ToString().Contains(searchString) ||
-                        item.RefillId.ToString().Contains(searchString)) {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("RefillListView", Tuple.Create((IEnumerable<Refill>) filtered, serv));
-            }
-            else
-            {
-                return View(filtered);
-            }
-
-        }*/
-
-        public ActionResult ToggleComplete(long id)
+        public ActionResult SetFilled(long id)
         {
             var db = new SQLService();
-            db.GetRefillById((int)id).Refilled = !db.GetRefillById((int)id).Refilled;
+            db.GetRefillById((int)id).SetFilled();
             return Redirect("/Pharmacy/RefillListView");
         }
 
-        public ActionResult SendNotification(long id)
-        {
-            // TODO
-            return View();
-        }
 
+
+        /// //////////////////////////////////////////////////////////
+        /// Patients
+        /// //////////////////////////////////////////////////////////
 
         //[HttpPost]
         public ActionResult PatientListView()
@@ -177,43 +131,32 @@ namespace PPOk_Notifications.Controllers
 
             return View(param);
         }
-        /*      99.99% sure this won't be used in any capacity given new search method
-        [HttpGet]
-        public ActionResult PatientListView(string searchString)
+        [HttpPost]
+        public ActionResult SavePatient(Patient m, int page = 0)
         {
-            SQLService serv = new SQLService();
-            List<Patient> param = new List<Patient>();
-            List<Patient> filtered = new List<Patient>();
-            //param.AddRange(serv.GetPatients());
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                foreach (var item in param)
-                {
-                    if (item.FirstName.Contains(searchString) ||
-                        item.LastName.Contains(searchString) ||
-                        item.PatientId.ToString().Contains(searchString) ||
-                        item.Phone.Contains(searchString))
-                    {
-                        filtered.Add(item);
-                    }
-                }
-            }
-            else { filtered = param; }
+            // if id's are default, get actual id's for the (new) patient
+            // use sql to save patient to db
+            return Redirect("/Pharmacy/PatientListView");
+        }
+//        public ActionResult DeletePatient() { }
+  //      public ActionResult DetailsPatient() { }
+    //    public ActionResult EditPatient() { }
+        public ActionResult AddPatient(long id = 0)
+        {
+            SQLService database = new SQLService();
+            Patient patient = new Patient();
+
+            if (id != 0)
+                patient = database.GetPatientById((int)id);
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("PatientListView", Tuple.Create((IEnumerable<Patient>) filtered, serv));
+                return PartialView("AddPharmacist", patient);
             }
             else
             {
-                return View(filtered);
+                return View(patient);
             }
-        }
-        */
-        public ActionResult AddPatient()
-        {
-            // TODO: Will need a view or modal for this
-            return View();
         }
         public ActionResult CycleMethod(long id)
         {
@@ -224,7 +167,13 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/PatientListView");
         }
 
+
+
+
+
         // pharmacy uploading patients
+        // from csv
+
         public ActionResult Upload()
         {
             return View();

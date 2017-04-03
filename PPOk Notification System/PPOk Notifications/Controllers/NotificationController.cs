@@ -15,27 +15,6 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        public ActionResult CancelNotification(long id)
-        {
-            var db = new SQLService();
-            //db.Notification_Disable(id);
-            return Redirect("/Notification/NotificationListView");
-        }
-
-
-        public ActionResult AddNotification()
-        {
-            // TODO: will need a notification input view or model
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("NotificationListView");
-            }
-            else
-            {
-                return View();
-            }
-        }
-
         public ActionResult NotificationList()
         {
             var db = new SQLService();
@@ -58,7 +37,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult DeleteNotification(long id)
         {
             var db = new SQLService();
-            //db.Notification_Disable(id);
+            db.Notification_Disable(id);
             return Redirect("/Notification/NotificationList");
         }
     }
