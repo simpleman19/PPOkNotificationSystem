@@ -183,6 +183,7 @@ namespace PPOk_Notifications.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Upload(HttpPostedFileBase upload)
         {
+            Console.WriteLine("Ante");
             if (ModelState.IsValid)
             {
 
@@ -199,15 +200,15 @@ namespace PPOk_Notifications.Controllers
                         {
                             csvTable.Load(csvReader);
                         }
+                        Console.WriteLine("Ante");
                         // return View(csvTable);
                         foreach (DataRow row in csvTable.Rows)
                         {
-                            int id = int.Parse(row["PersonCode"].ToString());
+                            //int id = int.Parse(row["PersonCode"].ToString());
 
-                            if (ser.GetPatientById(id) == null)
-                            {
+                           // if (ser.GetPatientById(id) == null)
+                            //{
                                 Patient patient = new Patient();
-                                Prescription prescription = new Prescription();
                                 patient.PersonCode = row["PersonCode"].ToString();
                                 patient.FirstName = row["PatientFirstName"].ToString();
                                 patient.LastName = row["PatientLastName"].ToString();
@@ -218,6 +219,8 @@ namespace PPOk_Notifications.Controllers
                                 patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
                                 patient.PharmacyId = 1;
+
+                                Prescription prescription = new Prescription();
                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
@@ -225,18 +228,21 @@ namespace PPOk_Notifications.Controllers
                                 prescription.PrescriptionRefills = int.Parse(row["NumberOfRefills"].ToString());
                                 prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
+
                                 var ID = ser.UserInsert(patient);
                                 patient.UserId = ID;
                                 patient.PatientId = ser.PatientInsert(patient);
+                                ser.PatientInsert(patient);
                                 prescription.PatientId = patient.PatientId;
                                 var preid = ser.PrescriptionInsert(prescription);
                                 prescription.PrecriptionId = preid;
+                                ser.PrescriptionInsert(prescription);
                                 Refill refill = new Refill(prescription);
                                 refill.RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2);
                                 ser.RefillInsert(refill);
 
-                            }
-                            else if (ser.GetPatientById(id) != null)
+                            //}
+                           /* else if (ser.GetPatientById(id) != null)
                             {
                                 Prescription prescription = new Prescription();
                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
@@ -282,7 +288,7 @@ namespace PPOk_Notifications.Controllers
                                     }
                                 }
 
-                            }
+                            }*/
 
                         }
                         RedirectToAction("Upload", "Pharmacy");
