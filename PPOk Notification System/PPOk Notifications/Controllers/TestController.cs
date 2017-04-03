@@ -13,18 +13,16 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        public string AddFakeLogin()
+        public string AddFakeLogin(long pid)
         {
             var db = new SQLService();
-
-            var pharmacies = db.GetPharmacies();
             var pharmAdmin = new Pharmacist
             {
                 FirstName = "Pharma",
                 LastName = "cist",
                 Phone = "+19999999993",
                 Email = "test@test.com",
-                PharmacyId = pharmacies[0].PharmacyId,
+                PharmacyId = pid,
                 UserId = 1,
                 IsAdmin = true,
                 Type = Models.User.UserType.Pharmacist
@@ -41,10 +39,10 @@ namespace PPOk_Notifications.Controllers
 
             db.PharmacistInsert(pharmAdmin);
 
-            return "sucess";
+            return "sucess \n username: test@test.com \n password: harambe";
         }
 
-        public string AddFakePatient()
+        public string AddFakePatient(long pid)
         {
             var db = new SQLService();
 
@@ -55,7 +53,7 @@ namespace PPOk_Notifications.Controllers
             pat.PersonCode = "1";
             pat.DateOfBirth = System.DateTime.Now;
             pat.Phone = "+19999999999";
-            pat.PharmacyId = 1;
+            pat.PharmacyId = pid;
             pat.PreferedContactTime = System.DateTime.Now;
             long id = db.UserInsert(pat);
             pat.UserId = id;
@@ -86,10 +84,19 @@ namespace PPOk_Notifications.Controllers
 
         public string InsertFake()
         {
-            Pharmacy.FakeDataFill();
-            this.AddFakeLogin();
-            this.AddFakePatient();
-            return "success";
+            string output = "";
+            var pharmID = Pharmacy.FakeDataFill();
+            output += "\n" + this.AddFakeLogin(pharmID);
+            output += "\n" + this.AddFakePatient(pharmID);
+            return output;
+        }
+
+        public string ResetAndInsert()
+        {
+            string output = "";
+            output += "\n" + this.Reset();
+            output += "\n" + this.InsertFake();
+            return output;
         }
     }
 }
