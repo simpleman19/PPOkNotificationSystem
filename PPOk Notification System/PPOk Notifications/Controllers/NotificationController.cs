@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using PPOk_Notifications.Models;
-using System.Collections.Generic;
 using PPOk_Notifications.Service;
 using System;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class NotificationController : Controller
+    [Authorize]
+    public class NotificationController : BaseController
     {
         // GET: Notification
         public ActionResult Index()

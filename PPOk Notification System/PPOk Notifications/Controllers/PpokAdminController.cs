@@ -1,14 +1,11 @@
 ﻿using PPOk_Notifications.Service;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class PpokAdminController : Controller
+    [Authorize]
+    public class PpokAdminController : BaseController
     {
         // GET: Admin
         public ActionResult Index()

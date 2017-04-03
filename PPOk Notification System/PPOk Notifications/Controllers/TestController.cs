@@ -1,12 +1,11 @@
-﻿
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
-using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class TestController : Controller
+    [Authorize]
+    public class TestController : BaseController
     {
         // GET: Debug
         public ActionResult Index()

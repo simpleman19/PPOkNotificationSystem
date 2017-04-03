@@ -10,7 +10,8 @@ using System.Web.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class PharmacyController : Controller
+    [Authorize]
+    public class PharmacyController : BaseController
     {
         // GET: Pharmacy
         public ActionResult Index()

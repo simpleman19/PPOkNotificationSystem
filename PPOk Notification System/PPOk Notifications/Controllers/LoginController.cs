@@ -4,15 +4,17 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class LoginController : Controller
+    [Authorize]
+    public class LoginController : BaseController
     {
-        // GET: PharmacistLogin
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Index(string email, string password)
         {
             // TODO get user from database

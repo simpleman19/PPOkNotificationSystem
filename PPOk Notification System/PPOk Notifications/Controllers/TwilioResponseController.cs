@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PPOk_Notifications.Service;
 using Twilio.TwiML;
 using Twilio.AspNet.Mvc;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class TwilioResponseController : Controller
+    [Authorize]
+    public class TwilioResponseController : BaseController
     {
         // GET: Twilio
         public ActionResult Index()
