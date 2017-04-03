@@ -190,13 +190,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EmailController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TwilioResponseController.cs" />
+    <Compile Include="Filters\AuthenticateAttribute.cs" />
     <Compile Include="Models\EmailOTP.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OTP.cs" />
@@ -799,7 +799,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Base\" />
     <Folder Include="Views\Email\" />
   </ItemGroup>
   <PropertyGroup>

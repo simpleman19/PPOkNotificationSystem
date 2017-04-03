@@ -6,10 +6,11 @@ using System.Data;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using PPOk_Notifications.Filters;
 
 namespace PPOk_Notifications.Controllers
 {
-    [AllowAnonymous]
+    [Authenticate]
     public class PpokAdminController : Controller
     {
         // GET: Admin

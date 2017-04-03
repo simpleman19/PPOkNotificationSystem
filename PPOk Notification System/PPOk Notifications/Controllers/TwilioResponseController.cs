@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using PPOk_Notifications.Filters;
 using PPOk_Notifications.Service;
 using Twilio.TwiML;
 using Twilio.AspNet.Mvc;
@@ -6,8 +7,7 @@ using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
-    [AllowAnonymous]
-    public class TwilioResponseController : BaseController
+    public class TwilioResponseController : Controller
     {
         // GET: Twilio
         public ActionResult Index()

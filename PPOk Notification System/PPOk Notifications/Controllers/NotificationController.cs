@@ -3,11 +3,12 @@ using System.Web.Mvc;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 using System;
+using PPOk_Notifications.Filters;
 
 namespace PPOk_Notifications.Controllers
 {
-    [AllowAnonymous]
-    public class NotificationController : BaseController
+    [Authenticate]
+    public class NotificationController : Controller
     {
         // GET: Notification
         public ActionResult Index()

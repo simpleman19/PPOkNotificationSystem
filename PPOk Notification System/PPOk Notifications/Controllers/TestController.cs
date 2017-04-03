@@ -4,8 +4,7 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [AllowAnonymous]
-    public class TestController : BaseController
+    public class TestController : Controller
     {
         // GET: Debug
         public ActionResult Index()

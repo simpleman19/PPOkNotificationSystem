@@ -1,11 +1,12 @@
 ﻿using System.Web.Mvc;
+using PPOk_Notifications.Filters;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
-    public class LoginController : BaseController
+    [Authenticate]
+    public class LoginController : Controller
     {
         [AllowAnonymous]
         public ActionResult Index()
@@ -17,8 +18,7 @@ namespace PPOk_Notifications.Controllers
         [AllowAnonymous]
         public ActionResult Index(string email, string password)
         {
-            // TODO get user from database
-            var login = GetLogin(email);
+            var login = Login.GetLogin(email);
             if (login == null)
             {
                 return View(false);
@@ -28,13 +28,16 @@ namespace PPOk_Notifications.Controllers
             {
                 return View(false);
             }
-            Session["user_id"] = login.UserId;
+
+            Session[Login.UserIdSession] = login.UserId;
+
             var db = new SQLService();
             var user = db.GetUserById(login.UserId);
             if (user.Type == Models.User.UserType.PPOkAdmin)
             {
                 return Redirect("/PpokAdmin/PharmacyListView");
-            } else if (user.Type == Models.User.UserType.Pharmacist)
+            }
+            if (user.Type == Models.User.UserType.Pharmacist)
             {
                 return Redirect("/Pharmacy/RefillListView");
             }
@@ -84,7 +87,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Reset(string email, string password, string confirm_password)
         {
             // TODO add reset token (which is sent to them in the email link)
-            var user = GetLogin(email);
+            var user = Login.GetLogin(email);
 
             if (user == null)
             {
@@ -111,17 +114,6 @@ namespace PPOk_Notifications.Controllers
             UserNotFound,
             PasswordNotSet,
             PasswordsDontMatch
-        }
-
-        private Login GetLogin(string email)
-        {
-            var user = new SQLService().GetUserByEmail(email);
-            if (user == null)
-            {
-                return null;
-            }
-
-            return new SQLService().GetLoginByUserId(user.UserId);
         }
     }
 }
