@@ -130,5 +130,8 @@ namespace PPOk_Notifications.Controllers
             output += "\n" + this.InsertFake();
             return output;
         }
-    }
+		public string GetRandomOTP() {
+			return OTPService.GenerateOtp();
+		}
+	}
 }

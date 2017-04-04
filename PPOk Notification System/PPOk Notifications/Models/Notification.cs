@@ -12,7 +12,8 @@ namespace PPOk_Notifications.Models
             Refill,
             Ready,
             Recall,
-            Birthday            
+            Birthday,
+			Reset
         };
 
         [DisplayName("Notification ID")]

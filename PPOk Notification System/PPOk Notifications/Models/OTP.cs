@@ -7,15 +7,15 @@ namespace PPOk_Notifications.Models
     {
 
 		[Column(Name = "otp_id")]
-		public long OtpId { get; set; }
+		public long Id { get; set; }
 
 		[Column(Name = "user_id")]
 		public long UserId { get; set; }
 
 		[Column(Name = "otp_time")]
-		public DateTime TimeStamp { get; set; }
+		public DateTime Time { get; set; }
 
 		[Column(Name = "otp_code")]
-		public string OtpCode { get; set; }
+		public string Code { get; set; }
     }
 }

@@ -208,6 +208,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Service\EmailService.cs" />
     <Compile Include="Service\MappingService.cs" />
+    <Compile Include="Service\OTPService.cs" />
     <Compile Include="Service\ScriptService.cs" />
     <Compile Include="Service\SQLService.cs" />
     <Compile Include="Service\TwilioApi.cs" />
@@ -573,6 +574,7 @@
     <Content Include="Scripts\responsive-tabs.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Service\EmailHTML\ready.html" />
+    <Content Include="Service\EmailHTML\reset.html" />
     <Content Include="Service\EmailHTML\refill.html" />
     <Content Include="Service\EmailHTML\recall.html" />
     <Content Include="Service\EmailHTML\birthday.html" />

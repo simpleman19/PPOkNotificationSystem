@@ -8,7 +8,7 @@ namespace PPOk_Notifications.Models {
 	public class EmailOTP {
 
 		[Column(Name = "emailotp_id")]
-		public long EmailOtpId { get; set; }
+		public long Id { get; set; }
 
 		[Column(Name = "notification_id")]
 		public long NotificationId { get; set; }
@@ -17,6 +17,6 @@ namespace PPOk_Notifications.Models {
 		public DateTime Time { get; set; }
 
 		[Column(Name = "emailotp_code")]
-		public string EmailOtpCode { get; set; }
+		public string Code { get; set; }
 	}
 }
