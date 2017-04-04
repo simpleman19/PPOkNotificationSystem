@@ -572,6 +572,11 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\responsive-tabs.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Service\EmailHTML\ready.html" />
+    <Content Include="Service\EmailHTML\refill.html" />
+    <Content Include="Service\EmailHTML\recall.html" />
+    <Content Include="Service\EmailHTML\birthday.html" />
+    <Content Include="Service\EmailHTML\template.html" />
     <Content Include="Service\SQL\blank.sql" />
     <Content Include="Service\SQL\Database_Create.sql" />
     <Content Include="Service\SQL\Database_Drop.sql" />
@@ -799,6 +804,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Email\" />
   </ItemGroup>
   <PropertyGroup>

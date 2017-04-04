@@ -14,8 +14,8 @@ namespace PPOk_Notifications.Service {
 		 *     Primary Database Handling
 		 */
 		#region Connection
-		private readonly string _connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=PPOK;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-		private readonly string _noDatabaseConnection = @"Data Source=.\SQLEXPRESS;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+		private readonly string _connectionString = ConfigurationManager.AppSettings["SqlConnectionString"];
+		private readonly string _noDatabaseConnection = ConfigurationManager.AppSettings["SqlConnectionStringNoCatalog"];
 
 		private IDbConnection connect() => new SqlConnection(_connectionString);
 
