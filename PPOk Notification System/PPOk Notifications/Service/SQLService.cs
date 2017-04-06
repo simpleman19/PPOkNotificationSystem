@@ -1376,6 +1376,15 @@ namespace PPOk_Notifications.Service {
 		}
 		#endregion
 
+		#region Get by code
+		public EmailOTP GetEmailOTPByCode(string emailotp_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
+				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode"], new { emailotp_code = emailotp_code }).FirstOrDefault();
+			}
+		}
+		#endregion
+
 		#region Insert
 		public long EmailOTPInsert(EmailOTP emailotp) {
 			using (var db = connect()) {
