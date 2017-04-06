@@ -9,21 +9,29 @@ namespace PPOk_Notifications.Models
     [Serializable, DisplayName("Patient")]
     public class Patient : User
     {
-        [DisplayName("Patient ID")]
         [Column(Name = "patient_id")]
         public long PatientId { get; set; }
-        [DisplayName("Person Code")]
+
         [Column(Name = "person_code")]
         public string PersonCode { get; set; }
+
         [Column(Name = "pharmacy_id")]
         public long PharmacyId { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime PreferedContactTime { get; set; }
-        public bool SendBirthdayMessage { get; set; }
-        public bool SendRefillMessage { get; set; }
-        public OTP Otp { get; set; }
-        [DisplayName("Contact Method")]
-        [Column(Name = "contact_method")]
+
+		[Column(Name = "patient_dob")]
+		public DateTime DateOfBirth { get; set; }
+
+		[Column(Name = "preference_time")]
+		public DateTime PreferedContactTime { get; set; }
+
+		public bool SendBirthdayMessage { get; set; }
+
+		public bool SendRefillMessage { get; set; }
+
+		[Column(Name = "object_active")]
+		public bool object_active { get; set; }
+
+        [Column(Name = "preference_contact")]
         public PrimaryContactMethod ContactMethod { get; set; }
 
         public Patient()

@@ -18,5 +18,7 @@ namespace PPOk_Notifications.Models {
 
 		[Column(Name = "emailotp_code")]
 		public string Code { get; set; }
+
+		public bool object_active { get; set; }
 	}
 }

@@ -584,6 +584,8 @@
     <Content Include="Service\SQL\Database_Drop.sql" />
     <Content Include="Service\SQL\EmailOTP_Disable.sql" />
     <Content Include="Service\SQL\EmailOTP_Enable.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetByCode_Inactive.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetByCode_Active.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByCode.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByNotificationId_Inactive.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByNotificationId_Active.sql" />

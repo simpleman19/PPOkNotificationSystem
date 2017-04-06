@@ -1383,6 +1383,18 @@ namespace PPOk_Notifications.Service {
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode"], new { emailotp_code = emailotp_code }).FirstOrDefault();
 			}
 		}
+		public EmailOTP GetEmailOTPByCodeActive(string emailotp_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
+				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode_active"], new { emailotp_code = emailotp_code }).FirstOrDefault();
+			}
+		}
+		public EmailOTP GetEmailOTPByCodeInactive(string emailotp_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
+				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode_inactive"], new { emailotp_code = emailotp_code }).FirstOrDefault();
+			}
+		}
 		#endregion
 
 		#region Insert

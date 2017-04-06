@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -16,8 +17,34 @@ namespace PPOk_Notifications.Controllers {
 
 		public ActionResult Unsubscribe() {
 			SQLService db = new SQLService();
-			RouteData.Values["otp"].ToString();
-			return Redirect("/Email/BadLink");
+			EmailOTP otp = null;
+			Patient patient = null;
+			Notification notification = null;
+			try {
+				otp = db.GetEmailOTPByCode(RouteData.Values["otp"].ToString());
+				patient = db.GetPatientById(Convert.ToInt64(RouteData.Values["patientid"]));
+				notification = db.GetNotificationById(otp.NotificationId);
+
+				if (otp.object_active) {
+					if (patient.object_active && notification.PatientId == patient.PatientId) {
+						patient.ContactMethod = Patient.PrimaryContactMethod.OptOut;
+						db.PatientUpdate(patient);
+
+						notification.NotificationResponse = "Unsubscribe";
+						db.NotificationUpdate(notification);
+
+						db.EmailOTP_Disable(otp.Id);
+
+						return Redirect("/Email/UnsubscribeSuccess");
+					} else {
+						return Redirect("/Email/UnsubscribeFailure");
+					}
+				} else {
+					return Redirect("/Email/ExpiredOtp");
+				}
+			} catch (Exception) {
+				return Redirect("/Email/BadLink");
+			}
 		}
 
 		public ActionResult Reset() { 
