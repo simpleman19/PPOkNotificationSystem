@@ -2,5 +2,5 @@
 SET
 	[notification_id] = @NotificationId, 
 	[emailotp_time] = @Time, 
-	[emailotp_code] = @EmailOtpCode
+	[emailotp_code] = @Code
 WHERE [emailotp].[emailotp_id] = @EmailOtpId

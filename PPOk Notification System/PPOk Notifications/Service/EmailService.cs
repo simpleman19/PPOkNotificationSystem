@@ -22,7 +22,7 @@ namespace PPOk_Notifications.Service {
 
 					smtp.Send(message);
 				}
-			} catch (Exception e) {
+			} catch (Exception) {
 				return false;
 			}
 			return true;
@@ -36,10 +36,17 @@ namespace PPOk_Notifications.Service {
 			var message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email));
 			message.From = new MailAddress(ConfigurationManager.AppSettings["SendEmailAddress"]);
-			var body = EmailHtmlLoader.TemplateHtml;
+			var body = EmailHtmlLoader.ResetHtml;
+
+			//Replace sentinels in email with personalized data
 			message.Subject = "PPOK notifcications: Password reset";
 			body = body.Replace("{{Email}}", user.Email);
 			body = body.Replace("{{FirstName}}", user.FirstName);
+
+			//Set up links
+			body = body.Replace("{{OtpCode}}", "");
+			body = body.Replace("{{UserId}}", user.UserId.ToString());
+			body = body.Replace("{{ResetLink}}", "http://localhost:50082/email/reset");
 
 			message.Body = body;
 			message.IsBodyHtml = true;
@@ -89,6 +96,7 @@ namespace PPOk_Notifications.Service {
 				message.Subject = "Unknown Notification Type";
 			}
 
+			//Set contact reason message
 			var reason = "You are receiving this email because ";
 			if (notification.Type == Notification.NotificationType.Recall) {
 				reason += "this is a mandatory email from your pharmacy. " +
@@ -99,11 +107,11 @@ namespace PPOk_Notifications.Service {
 				          " from all future emails, please click the button below or contact" +
 				          " your pharmacist at "+pharmacy.PharmacyPhone+".";
 			}
+			body = body.Replace("{{ContactReason}}", reason);
 
 			//Replace html template placeholder with renderbody
 			body = body.Replace("{{EmailBody}}", content);
 			body = body.Replace("{{EmailTitle}}", emailtitle);
-
 			body = body.Replace("{{MessageText}}", notification.NotificationMessage);
 
 			//Replace sentinels in email with personalized data
@@ -119,6 +127,12 @@ namespace PPOk_Notifications.Service {
 			body = body.Replace("{{DOBLong}}", patient.DateOfBirth.ToLongDateString());
 			body = body.Replace("{{ContactTimeShort}}", patient.PreferedContactTime.ToShortTimeString());
 			body = body.Replace("{{ContactTimeLong}}", patient.PreferedContactTime.ToLongTimeString());
+
+			//Set up links
+			body = body.Replace("{{OtpCode}}", OTPService.GenerateEmailOtp(notification).Code);
+			body = body.Replace("{{PatientId}}", patient.PatientId.ToString());
+			body = body.Replace("{{RespondLink}}", "http://localhost:50082/email/respond");
+			body = body.Replace("{{UnsubscribeLink}}", "http://localhost:50082/email/unsubscribe");
 
 			message.Body = body;
 			message.IsBodyHtml = true;

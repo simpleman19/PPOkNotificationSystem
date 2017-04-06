@@ -33,7 +33,7 @@ namespace PPOk_Notifications.Service {
 			return otp;
 		}
 
-		private static string RandomString(int size) {
+		public static string RandomString(int size) {
 			const string allowedChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			Random random = new Random();
 			string otp = "";

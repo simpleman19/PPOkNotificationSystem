@@ -797,6 +797,16 @@
     <Content Include="Views\Pharmacy\UploadRecalls.cshtml" />
     <Content Include="Views\Pharmacy\AddPharmacist.cshtml" />
     <Content Include="Views\Pharmacy\AddPatient.cshtml" />
+    <Content Include="Views\Email\EmailResponseLayout.cshtml" />
+    <Content Include="Views\Email\UnsubscribeFailure.cshtml" />
+    <Content Include="Views\Email\UnsubscribeSuccess.cshtml" />
+    <Content Include="Views\Email\RefillFailure.cshtml" />
+    <Content Include="Views\Email\RefillSuccess.cshtml" />
+    <Content Include="Views\Email\ResetSuccess.cshtml" />
+    <Content Include="Views\Email\ResetFailure.cshtml" />
+    <Content Include="Views\Email\BadLink.cshtml" />
+    <Content Include="Views\Email\ExpiredOtp.cshtml" />
+    <Content Include="Views\Email\UnknownOtp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -807,7 +817,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Email\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

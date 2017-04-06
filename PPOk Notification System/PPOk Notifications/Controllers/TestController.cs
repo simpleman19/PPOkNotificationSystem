@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
@@ -130,8 +131,47 @@ namespace PPOk_Notifications.Controllers
             output += "\n" + this.InsertFake();
             return output;
         }
+
 		public string GetRandomOTP() {
-			return OTPService.GenerateOtp();
+			return OTPService.RandomString(64);
 		}
+
+	    public string SendTestEmail() {
+
+			SQLService db = new SQLService();
+
+			User u = new User();
+			Patient p = new Patient();
+			Notification n = new Notification();
+
+		    u.Email = "destarianon@gmail.com";
+		    u.FirstName = "Test";
+		    u.LastName = "User";
+		    u.Phone = "+14055555555";
+		    u.UserId = db.UserInsert(u);
+
+		    p.UserId = u.UserId;
+		    p.PharmacyId = 1;
+			p.DateOfBirth = DateTime.Now;
+			p.PreferedContactTime = DateTime.Now;
+			p.ContactMethod = Patient.PrimaryContactMethod.Email;
+		    p.PersonCode = "0";
+		    p.SendBirthdayMessage = true;
+		    p.SendRefillMessage = true;
+			p.PatientId = db.PatientInsert(p);
+
+			n.PatientId = p.PatientId;
+			n.Type = Notification.NotificationType.Refill;
+			n.NotificationMessage = "This is a test email for a refill";
+			n.ScheduledTime = DateTime.Now;
+		    n.SentTime = null;
+		    n.Sent = false;
+		    n.NotificationId = db.NotificationInsert(n);
+
+		    EmailService.SendNotification(n);
+		    EmailService.SendReset(u);
+
+		    return ("Sent an notification and reset email to test account");
+	    }
 	}
 }
