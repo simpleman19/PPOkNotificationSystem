@@ -175,7 +175,11 @@
 					</table>
 					<table width="640" border="0" cellspacing="0" cellpadding="20" bgcolor="#2a8e9d" class="100p">
 						<tr>
-							<td align="center" style="font-size:22px; color:#FFFFFF;"><font face="'Roboto', Arial, sans-serif">Hello {{FirstName}}! You requested a password reset for your account at {{Email}}. If you did not request a password reset, please ignore this email.</font></td>
+							<td align="center" style="font-size: 22px; color: #FFFFFF;">
+								<font face="'Roboto', Arial, sans-serif">
+									Hello {{FirstName}}! You requested a password reset for your account at <a href="##" style="color: #2a8e9d; text-decoration: none;">{{Email}}</a>. If you did not request a password reset, please ignore this email.
+								</font>
+							</td>
 						</tr>
 					</table>
 					<table width="640" border="0" cellspacing="0" cellpadding="0" bgcolor="#b2d6db" class="100p" height="1">
@@ -188,7 +192,7 @@
 					<table width="640" border="0" cellspacing="0" cellpadding="20" bgcolor="#ffffff" class="100p">
 						<tr>
 							<td align="center" style="font-size:16px; color:#848484;">
-								<font face="'Roboto', Arial, sans-serif"><span style="color:#2a8e9d; font-size:16px;">You may also use the following link, if the button above does not work for you:</br>{{ResetLink}}/{{UserId}}/{{OtpCode}}</span><br />
+								<font face="'Roboto', Arial, sans-serif"><span style="color:#2a8e9d; font-size:16px;">You may also use the following link, if the button above does not work for you:<br/><a href="{{ResetLink}}/{{UserId}}/{{OtpCode}}" style="color: #2a8e9d; text-decoration: none;">{{ResetLink}}/{{UserId}}/{{OtpCode}}</a></span></font><br />
 							</td>
 						</tr>
 					</table>

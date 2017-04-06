@@ -23,7 +23,7 @@ namespace PPOk_Notifications.Controllers
             var db = new SQLService();
 
             System.Diagnostics.Debug.WriteLine("SMS Response" + " " + Request["from"] + " " +  Request["body"]);
-            if (Request["body"] == "Yes")
+            if (Request["body"].ToLower() == "yes")
             {
                 User user = db.GetUserByPhoneActive(Request["from"]);
                 Patient pat = db.GetPatientByUserIdActive(user.UserId);

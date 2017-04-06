@@ -138,13 +138,15 @@ namespace PPOk_Notifications.Controllers
 
 	    public string SendTestEmail() {
 
-			SQLService db = new SQLService();
+			var db = new SQLService();
 
-			User u = new User();
-			Patient p = new Patient();
-			Notification n = new Notification();
+			var u = new User();
+			var p = new Patient();
+			var n = new Notification();
+			var pr = new Prescription();
+			var r = new Refill();
 
-		    u.Email = "destarianon@gmail.com";
+		    u.Email = "test@test.com"; // PUT YOUR EMAIL HERE TO TEST
 		    u.FirstName = "Test";
 		    u.LastName = "User";
 		    u.Phone = "+14055555555";
@@ -160,6 +162,21 @@ namespace PPOk_Notifications.Controllers
 		    p.SendRefillMessage = true;
 			p.PatientId = db.PatientInsert(p);
 
+		    pr.PatientId = p.PatientId;
+		    pr.PrescriptionDaysSupply = 30;
+		    pr.PrescriptionRefills = 3;
+		    pr.PrescriptionName = "Tylenol";
+		    pr.PrescriptionNumber = 1;
+		    pr.PrescriptionUpc = "ABC123";
+			pr.PrescriptionDateFilled = DateTime.Now;
+		    pr.PrecriptionId = db.PrescriptionInsert(pr);
+
+		    r.RefillIt = false;
+		    r.PrescriptionId = pr.PrecriptionId;
+		    r.Refilled = false;
+			r.RefillDate = DateTime.Now;
+		    r.RefillId = db.RefillInsert(r);
+
 			n.PatientId = p.PatientId;
 			n.Type = Notification.NotificationType.Refill;
 			n.NotificationMessage = "This is a test email for a refill";
@@ -167,6 +184,7 @@ namespace PPOk_Notifications.Controllers
 		    n.SentTime = null;
 		    n.Sent = false;
 		    n.NotificationId = db.NotificationInsert(n);
+
 
 		    EmailService.SendNotification(n);
 		    EmailService.SendReset(u);

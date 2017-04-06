@@ -19,6 +19,19 @@ namespace PPOk_Notifications.Models {
 		[Column(Name = "emailotp_code")]
 		public string Code { get; set; }
 
+		[Column(Name = "object_active")]
 		public bool object_active { get; set; }
+
+		public bool IsActive() {
+			var db = new SQLService();
+			if (object_active) {
+				if ((Time - DateTime.Now).TotalDays < 7) {
+					return true;
+				} else {
+					db.EmailOTP_Disable(Id);
+				}
+			}
+			return false;
+		}
 	}
 }
