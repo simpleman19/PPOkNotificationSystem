@@ -377,10 +377,16 @@ namespace PPOk_Notifications.Controllers
             string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
             string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
             string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
-            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate)
+            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
+            string pharmacyName, string pharmacyPhone, string pharmacyAddress)
         {
             SQLService service = new SQLService();
             Pharmacy pharmacy = service.GetPharmacyById(1);
+
+            pharmacy.PharmacyName = pharmacyName;
+            pharmacy.PharmacyPhone = pharmacyPhone;
+            pharmacy.PharmacyAddress = pharmacyAddress;
+
             pharmacy.GetTemplates();
 
             pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
