@@ -82,64 +82,80 @@ namespace PPOk_Notifications.Models
             service.TemplateInsertOrUpdate(TemplateBirthday);
         }
 
+        public void SaveNewTemplates()
+        {
+            SQLService service = new SQLService();
+
+            TemplateRefillId = service.TemplateInsert(TemplateRefill);
+            TemplateRecallId = service.TemplateInsert(TemplateRecall);
+            TemplateReadyId = service.TemplateInsert(TemplateReady);
+            TemplateBirthdayId = service.TemplateInsert(TemplateBirthday);
+        }
+
         public static long FakeDataFill()
         {
             SQLService service = new SQLService();
-            service.Rebuild();
            
             Pharmacy pharmacy = new Pharmacy();
-            pharmacy.PharmacyId = 1L;
             pharmacy.PharmacyAddress = "Some Pharmacy\nSome Address\nSome City, OK 73008";
             pharmacy.PharmacyName = "Fake Pharmacy";
             pharmacy.PharmacyPhone = "555-5555";
 
-            pharmacy.TemplateRefill = new Template();
-            pharmacy.TemplateBirthday = new Template();
-            pharmacy.TemplateRecall = new Template();
-            pharmacy.TemplateReady = new Template();
+            pharmacy.PharmacyId = service.PharmacyInsert(pharmacy);
 
-            pharmacy.TemplateRefill.PharmacyId = 1;
-            pharmacy.TemplateRefill.TemplateId = 1;
-            pharmacy.TemplateRefill.Fill();
+            pharmacy.InsertDefaultTemplateData();
 
-            pharmacy.TemplateBirthday.PharmacyId = 1;
-            pharmacy.TemplateBirthday.TemplateId = 2;
-            pharmacy.TemplateBirthday.Fill();
+            pharmacy.SaveNewTemplates();
+            service.PharmacyInsertOrUpdate(pharmacy);
 
-            pharmacy.TemplateRecall.PharmacyId = 1;
-            pharmacy.TemplateRecall.TemplateId = 3;
-            pharmacy.TemplateRecall.Fill();
+            return pharmacy.PharmacyId;
+        }
 
-            pharmacy.TemplateReady.PharmacyId = 1;
-            pharmacy.TemplateReady.TemplateId = 4;
-            pharmacy.TemplateReady.Fill();
+        public void Fill()
+        {
+            PharmacyAddress = "";
+            PharmacyName = "";
+            PharmacyPhone = "";
+        }
 
-            pharmacy.TemplateRefill.TemplateText =
+        public void InsertDefaultTemplateData()
+        {
+
+            TemplateRefill = new Template();
+            TemplateBirthday = new Template();
+            TemplateRecall = new Template();
+            TemplateReady = new Template();
+
+            TemplateRefill.PharmacyId = PharmacyId;
+            TemplateRefill.Fill();
+
+            TemplateBirthday.PharmacyId = PharmacyId;
+            TemplateBirthday.Fill();
+
+            TemplateRecall.PharmacyId = PharmacyId;
+            TemplateRecall.Fill();
+
+            TemplateReady.PharmacyId = PharmacyId;
+            TemplateReady.Fill();
+
+            TemplateRefill.TemplateText =
                 "A prescription you have is up for refill at {{pharmacy_name}}. Would you like to refill your prescription? Text back YES";
-            pharmacy.TemplateBirthday.TemplateText =
+            TemplateBirthday.TemplateText =
                 "Happy Birthday from {{pharmacy_name}}! Text back STOP to disable birthday notifications, or STOPALL to disable all notifications.";
-            pharmacy.TemplateRecall.TemplateText =
+            TemplateRecall.TemplateText =
                 "One of your prescriptions has been recalled, please contact your pharmacist at {{pharmacy_phone}} for more information.";
-            pharmacy.TemplateReady.TemplateText =
+            TemplateReady.TemplateText =
                 "Your prescription is ready at {{pharmacy_name}}! Please call {{pharmacy_phone}} if you have any questions.";
 
-            pharmacy.TemplateRefill.TemplatePhone =
+            TemplateRefill.TemplatePhone =
                "A prescription you have is up for refill at {{pharmacy_name}} Would you like to refill your prescription? Press 1 for Yes, Press 9 to be connected to a pharmacist";
-            pharmacy.TemplateBirthday.TemplatePhone =
+            TemplateBirthday.TemplatePhone =
                 "Happy Birthday from {{pharmacy_name}}! …(Pause)... If you would like to no longer receive these notifications press 2.";
-            pharmacy.TemplateRecall.TemplatePhone =
+            TemplateRecall.TemplatePhone =
                 "One of your prescriptions has been recalled, please contact your pharmacist at {{pharmacy_phone}} or press 9 to be connected to a pharmacist for more information.";
-            pharmacy.TemplateReady.TemplatePhone =
+            TemplateReady.TemplatePhone =
                 "Your prescription is ready at {{pharmacy_name}}! Please call {{pharmacy_phone}} or press 9 to be connected to a pharmacist if you have any questions";
 
-            pharmacy.TemplateRefillId = pharmacy.TemplateRefill.TemplateId;
-            pharmacy.TemplateRecallId = pharmacy.TemplateRecall.TemplateId;
-            pharmacy.TemplateReadyId = pharmacy.TemplateReady.TemplateId;
-            pharmacy.TemplateBirthdayId = pharmacy.TemplateBirthday.TemplateId;
-
-            var pharmID = service.PharmacyInsert(pharmacy);
-            pharmacy.SaveTemplates();
-            return pharmID;
         }
     }
 }

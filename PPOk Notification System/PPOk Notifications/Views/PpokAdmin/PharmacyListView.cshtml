@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="~/browser_components/datatables/css/dataTables.bootstrap.css">
 
 <p>
-    @Html.ActionLink("Add New", "AddPharmacy")
+    @Html.ActionLink("Add New", "AddorEditPharmacy")
 </p>
 
 <table class="table" id="pharmacy_list">
@@ -43,7 +43,7 @@
                 </td>
                 <td> 
                     <!-- TODO support these links -->
-                    @Html.ActionLink("Edit", "EditPharmacy", new {  id = item.PharmacyId  }) |
+                    @Html.ActionLink("Edit", "AddorEditPharmacy", new {  id = item.PharmacyId  }) |
                     @Html.ActionLink("View", "ViewPharmacy", new { id = item.PharmacyId }) |
                     @Html.ActionLink("Delete", "DeletePharmacy", new { id = item.PharmacyId })
                 </td>

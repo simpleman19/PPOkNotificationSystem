@@ -366,8 +366,11 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult Admin()
         {
-            Pharmacy pharmacy = new SQLService().GetPharmacyById(1);
+            var db = new SQLService();
+            long id = db.GetPharmacistByUserId((long)Session[Login.UserIdSession]).PharmacyId;
+            Pharmacy pharmacy = db.GetPharmacyById(id);
             pharmacy.GetTemplates();
+
             return View(pharmacy);
         }
 
@@ -378,16 +381,15 @@ namespace PPOk_Notifications.Controllers
             string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
             string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
             string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
-            string pharmacyName, string pharmacyPhone, string pharmacyAddress)
+            string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId)
         {
             SQLService service = new SQLService();
-            Pharmacy pharmacy = service.GetPharmacyById(1);
+            Pharmacy pharmacy = service.GetPharmacyById(pharmacyId);
+            pharmacy.GetTemplates();
 
             pharmacy.PharmacyName = pharmacyName;
             pharmacy.PharmacyPhone = pharmacyPhone;
             pharmacy.PharmacyAddress = pharmacyAddress;
-
-            pharmacy.GetTemplates();
 
             pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
             pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
@@ -407,6 +409,7 @@ namespace PPOk_Notifications.Controllers
 
             service.PharmacyUpdate(pharmacy);
             pharmacy.SaveTemplates();
+
 
             return View(pharmacy);
         }

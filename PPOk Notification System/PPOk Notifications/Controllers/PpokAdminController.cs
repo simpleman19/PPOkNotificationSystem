@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using PPOk_Notifications.Filters;
+using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
@@ -11,14 +12,7 @@ namespace PPOk_Notifications.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("Index");
-            }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
         // returned view for seeing a list of pharmacies
@@ -32,49 +26,85 @@ namespace PPOk_Notifications.Controllers
             return View(pharamcies);
         }
 
-
-        // returned view for adding, editing, or viewing a pharmacy
-        public ActionResult PharmacyModificationView(int id)
+        public ActionResult AddorEditPharmacy(long id = 0)
         {
-            SQLService database = new SQLService();
-
-            Models.Pharmacy pharmacy = new Models.Pharmacy();
-            if (id != 0)
-                pharmacy = database.GetPharmacyById(id);
-
-            List<Models.Pharmacist> pharmacists = database.GetPharmacists();
-            Models.Pharmacist admin = new Models.Pharmacist();
-            admin.IsAdmin = true;
-            foreach (var pharmacist in pharmacists) { if (pharmacist.IsAdmin && pharmacist.PharmacyId == pharmacy.PharmacyId) { admin = pharmacist; } }
-
-            System.Tuple<Models.Pharmacy, Models.Pharmacist> param = new System.Tuple<Models.Pharmacy, Models.Pharmacist>(pharmacy, admin);
-
-            if (Request.IsAjaxRequest())
+            var db = new SQLService();
+            Pharmacy pharmacy = db.GetPharmacyById(id);
+            if (pharmacy == null)
             {
-                return PartialView("PharmacyModificationView", param);
+                pharmacy = new Pharmacy();
+                pharmacy.InsertDefaultTemplateData();
             }
             else
             {
-                return View(param);
+                pharmacy.GetTemplates();
             }
+
+            return View("~/Views/Pharmacy/Admin.cshtml", pharmacy);
         }
 
-        public ActionResult AddPharmacy()
+        [HttpPost]
+        public ActionResult AddorEditPharmacy(
+            string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
+            string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
+            string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
+            string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
+            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
+            string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId )
         {
-            return Redirect("PharmacyModificationView/0");
+            SQLService service = new SQLService();
+            Pharmacy pharmacy;
+            if (pharmacyId != 0)
+            {
+                pharmacy = service.GetPharmacyById(pharmacyId);
+                pharmacy.GetTemplates();
+            }
+            else
+            {
+                pharmacy = new Pharmacy();
+                pharmacy.Fill();
+                pharmacy.PharmacyId = service.PharmacyInsert(pharmacy);
+                pharmacy.InsertDefaultTemplateData();
+                pharmacy.SaveNewTemplates();
+            }
+
+            pharmacy.PharmacyName = pharmacyName;
+            pharmacy.PharmacyPhone = pharmacyPhone;
+            pharmacy.PharmacyAddress = pharmacyAddress;
+
+            pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
+            pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
+            pharmacy.TemplateRefill.TemplateEmail = refillEmailTemplate;
+
+            pharmacy.TemplateReady.TemplateText = pickupTextTemplate;
+            pharmacy.TemplateReady.TemplatePhone = pickupPhoneTemplate;
+            pharmacy.TemplateReady.TemplateEmail = pickupEmailTemplate;
+
+            pharmacy.TemplateRecall.TemplateText = recallTextTemplate;
+            pharmacy.TemplateRecall.TemplatePhone = recallPhoneTemplate;
+            pharmacy.TemplateRecall.TemplateEmail = recallEmailTemplate;
+
+            pharmacy.TemplateBirthday.TemplateText = birthdayTextTemplate;
+            pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
+            pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
+
+            service.PharmacyUpdate(pharmacy);
+            pharmacy.SaveTemplates();
+
+            return Redirect("/PpokAdmin/PharmacyListView");
         }
-        public ActionResult EditPharmacy(long id)
-        {
-            return Redirect("PharmacyModificationView/" + id.ToString());
-        }
+
+
         public ActionResult ViewPharmacy(long id)
         {
             return Redirect("PharmacyModificationView/" + id.ToString());
         }
-        public void DeletePharmacy(long id)
+
+        public ActionResult DeletePharmacy(long id)
         {
             SQLService database = new SQLService();
-            database.Pharmacy_Disable((int)id);
+            database.Pharmacy_Disable(id);
+            return Redirect("/PpokAdmin/PharmacyListView");
         }
     }
 }
