@@ -13,7 +13,7 @@ namespace PPOk_Notifications.Controllers
         {
             if (Session[Login.UserIdSession] != null)
             {
-                long id = (long)Session[Login.UserIdSession];
+                var id = (long)Session[Login.UserIdSession];
                 var action = RedirectToProperPage(id);
                 if (action != null)
                 {

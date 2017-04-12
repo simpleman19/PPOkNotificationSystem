@@ -60,7 +60,7 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult AddPharmacist(long id = 0)
         {
-            Pharmacist pharmy = new Pharmacist();
+            var pharmy = new Pharmacist();
 
             if (id != 0)
                 pharmy = DatabasePharmacistService.GetById((int)id);
@@ -97,7 +97,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult RefillListView()
         {
             var refills = DatabaseRefillService.GetAllActive();
-            List<Refill> ready = new List<Refill>();
+            var ready = new List<Refill>();
             foreach (var r in refills)
             {
                 if (r.RefillIt)

@@ -28,16 +28,16 @@ namespace PPOk_Notifications.Controllers {
 
 						DatabaseEmailOtpService.Disable(otp.Id);
 
-						return Redirect("/Email/RefillSuccess");
+						return RefillSuccess();
 					} else {
-						return Redirect("/Email/RefillFailure");
+						return RefillFailure();
 					}
 				} else {
-					return Redirect("/Email/ExpiredOtp");
+					return ExpiredOtp();
 				}
 
 			} catch (Exception) {
-			    return Redirect("/Email/BadLink");
+			    return BadLink();
 		    }
 			
 	    }
@@ -59,21 +59,21 @@ namespace PPOk_Notifications.Controllers {
 
 						DatabaseEmailOtpService.Disable(otp.Id);
 
-						return Redirect("/Email/UnsubscribeSuccess");
+						return UnsubscribeSuccess();
 					} else {
-						return Redirect("/Email/UnsubscribeFailure");
+						return UnsubscribeFailure();
 					}
 				} else {
-					return Redirect("/Email/ExpiredOtp");
+					return ExpiredOtp();
 				}
 			} catch (Exception) {
-				return Redirect("/Email/BadLink");
+				return BadLink();
 			}
 		}
 
-		public ActionResult Reset() { 
-			
-			return Redirect("/Email/ResetSuccess");
+		public ActionResult Reset() {
+			//TODO perform actual reset operations
+			return ResetSuccess();
 		}
 
 		//View Returns

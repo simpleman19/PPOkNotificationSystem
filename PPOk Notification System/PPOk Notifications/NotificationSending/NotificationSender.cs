@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web;
 using System.Web.Hosting;
 using System.IO;
@@ -44,44 +45,44 @@ namespace PPOk_Notifications.NotificationSending
 
         public static bool SendFilledNotification(Refill refill)
         {
-            Notification n = new Notification(refill, Notification.NotificationType.Ready);
-            Prescription p = DatabasePrescriptionService.GetById(refill.PrescriptionId);
+            var n = new Notification(refill, Notification.NotificationType.Ready);
+            var p = DatabasePrescriptionService.GetById(refill.PrescriptionId);
             n.PatientId = p.PatientId;
             System.Diagnostics.Debug.WriteLine(n.PatientId);
             n.NotificationId = DatabaseNotificationService.Insert(n);
             var pat = DatabasePatientService.GetById(n.PatientId);
-            TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+            var twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(n, twilio);
             return true;
         }
 
         public static void SendRecalls(List<Notification> notifications)
         {
-            foreach (Notification n in notifications)
+            foreach (var n in notifications)
             {
-                Patient pat = DatabasePatientService.GetById(n.PatientId);
+                var pat = DatabasePatientService.GetById(n.PatientId);
 
-                TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+                var twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
             }
         }
 
         public static void SendNotification(Notification notification)
         {
-            Patient pat = DatabasePatientService.GetById(notification.PatientId);
+            var pat = DatabasePatientService.GetById(notification.PatientId);
 
-            TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+            var twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(notification, twilio);
         }
 
         private void PrepareForSending()
         {
-            List<Notification> notifications = getNotifications();
-            foreach (Notification n in notifications)
+            var notifications = getNotifications();
+            foreach (var n in notifications)
             {
-                Patient pat = DatabasePatientService.GetById(n.PatientId);
+                var pat = DatabasePatientService.GetById(n.PatientId);
 
-                TwilioApi twilio = new TwilioApi(pat.getPharmacy());
+                var twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
             }
         }
@@ -89,7 +90,7 @@ namespace PPOk_Notifications.NotificationSending
         private static void SendNotification(Notification n, TwilioApi twilio)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
-            Patient p = DatabasePatientService.GetById(n.PatientId);
+            var p = DatabasePatientService.GetById(n.PatientId);
 
             if (n.Type == Notification.NotificationType.Recall)
             {
@@ -124,35 +125,31 @@ namespace PPOk_Notifications.NotificationSending
 
         private List<Notification> getNotifications()
         {
-            List<Notification> list = DatabaseNotificationService.GetAllActive();
+            var list = DatabaseNotificationService.GetAllActive();
             // TODO add birthdays and get not sent but before current datetime
             return list;
         }
 
         private bool CheckIfSend()
         {
-            DateTime? lastDTwhenSent = null;
-            if (File.Exists(_path))
-            {
-                lastDTwhenSent = ReadDateFromFile();
-                if (lastDTwhenSent == null)
+	        if (File.Exists(_path)) {
+	            var lastDTwhenSent = ReadDateFromFile();
+	            if (lastDTwhenSent == null)
                 {
                     WriteDateToFile();
                     PrepareForSending();
                 }
                 else
                 {
-                    TimeSpan span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
-                    if (span.Minutes >= MinsBetweenSending)
-                    {
-                        WriteDateToFile();
-                        PrepareForSending();
-                    }
+                    var span = DateTime.Now.Subtract((DateTime)lastDTwhenSent);
+	                if (span.Minutes < MinsBetweenSending) return true;
+	                WriteDateToFile();
+	                PrepareForSending();
                 }
             } 
             else
             {
-                FileStream fs = new FileStream(_path, FileMode.Create);
+                var fs = new FileStream(_path, FileMode.Create);
                 fs.Close();
             }
             return true;
@@ -160,12 +157,12 @@ namespace PPOk_Notifications.NotificationSending
 
         private bool WriteDateToFile()
         {
-            using (FileStream fs = new FileStream(_path, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(_path, FileMode.OpenOrCreate))
             {
-                using (BinaryWriter writer = new BinaryWriter(fs))
+                using (var writer = new BinaryWriter(fs))
                 {
                     fs.Position = 0;
-                    writer.Write(DateTime.Now.ToString());
+                    writer.Write(DateTime.Now.ToString(CultureInfo.CurrentCulture));
                     writer.Close();
                 }
                 fs.Close();
@@ -176,14 +173,14 @@ namespace PPOk_Notifications.NotificationSending
         private DateTime? ReadDateFromFile()
         {
             DateTime? parsedDateTime = null;
-            using (FileStream fs = new FileStream(_path, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(_path, FileMode.OpenOrCreate))
             {
-                using (BinaryReader reader = new BinaryReader(fs))
+                using (var reader = new BinaryReader(fs))
                 {
                     fs.Position = 0;
                     if (fs.Position < fs.Length)
                     {
-                        string dtString = reader.ReadString();
+                        var dtString = reader.ReadString();
                         parsedDateTime = DateTime.Parse(dtString);
                     }
                 }
