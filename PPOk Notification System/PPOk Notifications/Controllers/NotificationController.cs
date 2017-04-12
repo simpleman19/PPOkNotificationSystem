@@ -18,15 +18,13 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult CancelNotification(long id)
         {
-            var db = new SQLService();
             //db.Notification_Disable(id);
             return Redirect("/Notification/NotificationListView");
         }
 
         public ActionResult SendNotification(long id)
         {
-            var db = new SQLService();
-            var n = db.GetNotificationById(id);
+            var n = DatabaseNotificationService.GetById(id);
             NotificationSending.NotificationSender.SendNotification(n);
             return Redirect("/Notification/NotificationList");
         }
@@ -36,7 +34,7 @@ namespace PPOk_Notifications.Controllers
             // TODO: will need a notification input view or model
             if (Request.IsAjaxRequest())
             {
-                return PartialView("NotificationListView");
+                return PartialView("NotificationList");
             }
             else
             {
@@ -46,8 +44,7 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult NotificationList()
         {
-            var db = new SQLService();
-            List<Notification> notifications = db.GetNotificationsActive();
+            List<Notification> notifications = DatabaseNotificationService.GetAllActive();
             if (notifications.Count == 0)
             {
                 Notification n = null;
@@ -55,18 +52,17 @@ namespace PPOk_Notifications.Controllers
                 for (int i = 0; i < 15; i++)
                 {
                     n = Notification.GetTestNotification(rand);
-                    db.NotificationInsert(n);
+                    DatabaseNotificationService.Insert(n);
                     notifications.Add(n);
                 }
-                notifications = db.GetNotificationsActive();
+                notifications = DatabaseNotificationService.GetAllActive();
             }
             return View(notifications);
         }
 
         public ActionResult DeleteNotification(long id)
         {
-            var db = new SQLService();
-            db.Notification_Disable(id);
+            DatabaseNotificationService.Disable(id);
             return Redirect("/Notification/NotificationList");
         }
     }
