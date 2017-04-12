@@ -7,12 +7,12 @@ namespace PPOk_Notifications.Service {
 	public static class DatabasePharmacistService {
 
 		#region Enable/Disable Operations
-		public static void Pharmacist_Enable(long pharmacist_id) {
+		public static void Enable(long pharmacist_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["pharmacist_enable"], new { pharmacist_id = pharmacist_id });
 			}
 		}
-		public static void Pharmacist_Disable(long pharmacist_id) {
+		public static void Disable(long pharmacist_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["pharmacist_disable"], new { pharmacist_id = pharmacist_id });
 			}
@@ -20,19 +20,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get all
-		public static List<Pharmacist> GetPharmacists() {
+		public static List<Pharmacist> GetAll() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall"]).AsList();
 			}
 		}
-		public static List<Pharmacist> GetPharmacistsActive() {
+		public static List<Pharmacist> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall_active"]).AsList();
 			}
 		}
-		public static List<Pharmacist> GetPharmacistsInactive() {
+		public static List<Pharmacist> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall_inactive"]).AsList();
@@ -41,19 +41,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public static Pharmacist GetPharmacistById(long pharmacist_id) {
+		public static Pharmacist GetById(long pharmacist_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
 			}
 		}
-		public static Pharmacist GetPharmacistByIdActive(long pharmacist_id) {
+		public static Pharmacist GetByIdActive(long pharmacist_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_active"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
 			}
 		}
-		public static Pharmacist GetPharmacistByIdInactive(long pharmacist_id) {
+		public static Pharmacist GetByIdInactive(long pharmacist_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyid_inactive"], new { pharmacist_id = pharmacist_id }).FirstOrDefault();
@@ -62,19 +62,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public static Pharmacist GetPharmacistByUserId(long user_id) {
+		public static Pharmacist GetByUserId(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public static Pharmacist GetPharmacistByUserIdActive(long user_id) {
+		public static Pharmacist GetByUserIdActive(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public static Pharmacist GetPharmacistByUserIdInactive(long user_id) {
+		public static Pharmacist GetByUserIdInactive(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -83,13 +83,13 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public static long PharmacistInsert(Pharmacist pharmacist) {
+		public static long Insert(Pharmacist pharmacist) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<long>(ScriptService.Scripts["pharmacist_insert"], pharmacist).Single();
 			}
 		}
-		public static void PharmacistInsertOrUpdate(Pharmacist pharmacist) {
+		public static void InsertOrUpdate(Pharmacist pharmacist) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				db.Execute(ScriptService.Scripts["pharmacist_insert_or_update"], pharmacist);
@@ -98,19 +98,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Update
-		public static void PharmacistUpdate(Pharmacist pharmacist) {
+		public static void Update(Pharmacist pharmacist) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				db.Execute(ScriptService.Scripts["pharmacist_update"], pharmacist);
 			}
 		}
-		public static void PharmacistUpdateActive(Pharmacist pharmacist) {
+		public static void UpdateActive(Pharmacist pharmacist) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				db.Execute(ScriptService.Scripts["pharmacist_update_active"], pharmacist);
 			}
 		}
-		public static void PharmacistUpdateInactive(Pharmacist pharmacist) {
+		public static void UpdateInactive(Pharmacist pharmacist) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				db.Execute(ScriptService.Scripts["pharmacist_update_inactive"], pharmacist);

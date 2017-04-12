@@ -7,12 +7,12 @@ namespace PPOk_Notifications.Service {
 	public static class DatabaseEmailOtpService {
 
 		#region Enable/Disable Operations
-		public static void EmailOTP_Enable(long emailotp_id) {
+		public static void Enable(long emailotp_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["emailotp_enable"], new { emailotp_id = emailotp_id });
 			}
 		}
-		public static void EmailOTP_Disable(long emailotp_id) {
+		public static void Disable(long emailotp_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["emailotp_disable"], new { emailotp_id = emailotp_id });
 			}
@@ -20,19 +20,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get all
-		public static List<EmailOTP> GetEmailOTPs() {
+		public static List<EmailOTP> GetAll() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getall"]).AsList();
 			}
 		}
-		public static List<EmailOTP> GetEmailOTPsActive() {
+		public static List<EmailOTP> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getall_active"]).AsList();
 			}
 		}
-		public static List<EmailOTP> GetEmailOTPsInactive() {
+		public static List<EmailOTP> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getall_inactive"]).AsList();
@@ -41,19 +41,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public static EmailOTP GetEmailOTPById(long emailotp_id) {
+		public static EmailOTP GetById(long emailotp_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid"], new { emailotp_id = emailotp_id }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByIdActive(long emailotp_id) {
+		public static EmailOTP GetByIdActive(long emailotp_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid_active"], new { emailotp_id = emailotp_id }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByIdInactive(long emailotp_id) {
+		public static EmailOTP GetByIdInactive(long emailotp_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbyid_inactive"], new { emailotp_id = emailotp_id }).FirstOrDefault();
@@ -62,19 +62,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by notification id
-		public static EmailOTP GetEmailOTPByNotificationId(long notification_id) {
+		public static EmailOTP GetByNotificationId(long notification_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid"], new { notification_id = notification_id }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByNotificationIdActive(long notification_id) {
+		public static EmailOTP GetByNotificationIdActive(long notification_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid_active"], new { notification_id = notification_id }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByNotificationIdInactive(long notification_id) {
+		public static EmailOTP GetByNotificationIdInactive(long notification_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbynotificationid_inactive"], new { notification_id = notification_id }).FirstOrDefault();
@@ -83,19 +83,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by code
-		public static EmailOTP GetEmailOTPByCode(string emailotp_code) {
+		public static EmailOTP GetByCode(string emailotp_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode"], new { emailotp_code = emailotp_code }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByCodeActive(string emailotp_code) {
+		public static EmailOTP GetByCodeActive(string emailotp_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode_active"], new { emailotp_code = emailotp_code }).FirstOrDefault();
 			}
 		}
-		public static EmailOTP GetEmailOTPByCodeInactive(string emailotp_code) {
+		public static EmailOTP GetByCodeInactive(string emailotp_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<EmailOTP>(ScriptService.Scripts["emailotp_getbycode_inactive"], new { emailotp_code = emailotp_code }).FirstOrDefault();
@@ -104,13 +104,13 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public static long EmailOTPInsert(EmailOTP emailotp) {
+		public static long Insert(EmailOTP emailotp) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				return db.Query<long>(ScriptService.Scripts["emailotp_insert"], emailotp).Single();
 			}
 		}
-		public static void EmailOTPInsertOrUpdate(EmailOTP emailotp) {
+		public static void InsertOrUpdate(EmailOTP emailotp) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				db.Execute(ScriptService.Scripts["emailotp_insert_or_update"], emailotp);
@@ -119,19 +119,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Update
-		public static void EmailOTPUpdate(EmailOTP emailotp) {
+		public static void Update(EmailOTP emailotp) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				db.Execute(ScriptService.Scripts["emailotp_update"], emailotp);
 			}
 		}
-		public static void EmailOTPUpdateActive(EmailOTP emailotp) {
+		public static void UpdateActive(EmailOTP emailotp) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				db.Execute(ScriptService.Scripts["emailotp_update_active"], emailotp);
 			}
 		}
-		public static void EmailOTPUpdateInactive(EmailOTP emailotp) {
+		public static void UpdateInactive(EmailOTP emailotp) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(EmailOTP), new ColumnAttributeTypeMapper<EmailOTP>());
 				db.Execute(ScriptService.Scripts["emailotp_update_inactive"], emailotp);

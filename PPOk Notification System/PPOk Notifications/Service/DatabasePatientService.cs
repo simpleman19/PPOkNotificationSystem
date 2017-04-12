@@ -7,12 +7,12 @@ namespace PPOk_Notifications.Service {
 	public static class DatabasePatientService {
 
 		#region Enable/Disable Operations
-		public static void Patient_Enable(long patient_id) {
+		public static void Enable(long patient_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["patient_enable"], new { patient_id = patient_id });
 			}
 		}
-		public static void Patient_Disable(long patient_id) {
+		public static void Disable(long patient_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["patient_disable"], new { patient_id = patient_id });
 			}
@@ -20,19 +20,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get all
-		public static List<Patient> GetPatients() {
+		public static List<Patient> GetAll() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall"]).AsList();
 			}
 		}
-		public static List<Patient> GetPatientsActive() {
+		public static List<Patient> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall_active"]).AsList();
 			}
 		}
-		public static List<Patient> GetPatientsInactive() {
+		public static List<Patient> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall_inactive"]).AsList();
@@ -41,19 +41,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public static Patient GetPatientById(long patient_id) {
+		public static Patient GetById(long patient_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByIdActive(long patient_id) {
+		public static Patient GettByIdActive(long patient_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_active"], new { patient_id = patient_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByIdInactive(long patient_id) {
+		public static Patient GetByIdInactive(long patient_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyid_inactive"], new { patient_id = patient_id }).FirstOrDefault();
@@ -62,19 +62,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by user id
-		public static Patient GetPatientByUserId(long user_id) {
+		public static Patient GetByUserId(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByUserIdActive(long user_id) {
+		public static Patient GetByUserIdActive(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_active"], new { user_id = user_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByUserIdInactive(long user_id) {
+		public static Patient GetByUserIdInactive(long user_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbyuserid_inactive"], new { user_id = user_id }).FirstOrDefault();
@@ -83,19 +83,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by person code
-		public static Patient GetPatientByPersonCode(string person_code) {
+		public static Patient GetByPersonCode(string person_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode"], new { person_code = person_code }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByUserPersonCodeActive(string person_code) {
+		public static Patient GetByUserPersonCodeActive(string person_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_active"], new { person_code = person_code }).FirstOrDefault();
 			}
 		}
-		public static Patient GetPatientByUserPersonCodeInactive(string person_code) {
+		public static Patient GetByUserPersonCodeInactive(string person_code) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_inactive"], new { person_code = person_code }).FirstOrDefault();
@@ -104,14 +104,14 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public static long PatientInsert(Patient patient) {
+		public static long Insert(Patient patient) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<long>(ScriptService.Scripts["patient_insert"], patient).Single();
 			}
 		}
 
-		public static void PatientInsertOrUpdate(Patient patient) {
+		public static void InsertOrUpdate(Patient patient) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				db.Execute(ScriptService.Scripts["patient_insert_or_update"], patient);
@@ -120,19 +120,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Update
-		public static void PatientUpdate(Patient patient) {
+		public static void Update(Patient patient) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				db.Execute(ScriptService.Scripts["patient_update"], patient);
 			}
 		}
-		public static void PatientUpdateActive(Patient patient) {
+		public static void UpdateActive(Patient patient) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				db.Execute(ScriptService.Scripts["patient_update_active"], patient);
 			}
 		}
-		public static void PatientUpdateInactive(Patient patient) {
+		public static void UpdateInactive(Patient patient) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				db.Execute(ScriptService.Scripts["patient_update_inactive"], patient);

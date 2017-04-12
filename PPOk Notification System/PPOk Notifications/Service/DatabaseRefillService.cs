@@ -7,12 +7,12 @@ namespace PPOk_Notifications.Service {
 	public static class DatabaseRefillService {
 
 		#region Enable/Disable Operations
-		public static void Refill_Enable(long refill_id) {
+		public static void Enable(long refill_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["refill_enable"], new { refill_id = refill_id });
 			}
 		}
-		public static void Refill_Disable(long refill_id) {
+		public static void Disable(long refill_id) {
 			using (var db = DatabaseService.Connection) {
 				db.Execute(ScriptService.Scripts["refill_disable"], new { refill_id = refill_id });
 			}
@@ -20,19 +20,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get all
-		public static List<Refill> GetRefills() {
+		public static List<Refill> GetAll() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall"]).AsList();
 			}
 		}
-		public static List<Refill> GetRefillsActive() {
+		public static List<Refill> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall_active"]).AsList();
 			}
 		}
-		public static List<Refill> GetRefillsInactive() {
+		public static List<Refill> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall_inactive"]).AsList();
@@ -41,19 +41,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by id
-		public static Refill GetRefillById(long refill_id) {
+		public static Refill GetById(long refill_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid"], new { refill_id = refill_id }).FirstOrDefault();
 			}
 		}
-		public static Refill GetRefillByIdActive(long refill_id) {
+		public static Refill GetByIdActive(long refill_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_active"], new { refill_id = refill_id }).FirstOrDefault();
 			}
 		}
-		public static Refill GetRefillByIdInactive(long refill_id) {
+		public static Refill GetByIdInactive(long refill_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyid_inactive"], new { refill_id = refill_id }).FirstOrDefault();
@@ -62,19 +62,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by prescription id
-		public static Refill GetRefillByPrescriptionId(long prescription_id) {
+		public static Refill GetByPrescriptionId(long prescription_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public static Refill GetRefillByPrescriptionIdActive(long prescription_id) {
+		public static Refill GetByPrescriptionIdActive(long prescription_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_active"], new { prescription_id = prescription_id }).FirstOrDefault();
 			}
 		}
-		public static Refill GetRefillByPrescriptionIdInactive(long prescription_id) {
+		public static Refill GetByPrescriptionIdInactive(long prescription_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getbyprescriptionid_inactive"], new { prescription_id = prescription_id }).FirstOrDefault();
@@ -83,13 +83,13 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Insert
-		public static long RefillInsert(Refill refill) {
+		public static long Insert(Refill refill) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<long>(ScriptService.Scripts["refill_insert"], refill).Single();
 			}
 		}
-		public static void RefillInsertOrUpdate(Refill refill) {
+		public static void InsertOrUpdate(Refill refill) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				db.Execute(ScriptService.Scripts["refill_insert_or_update"], refill);
@@ -98,19 +98,19 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Update
-		public static void RefillUpdate(Refill refill) {
+		public static void Update(Refill refill) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				db.Execute(ScriptService.Scripts["refill_update"], refill);
 			}
 		}
-		public static void RefillUpdateActive(Refill refill) {
+		public static void UpdateActive(Refill refill) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				db.Execute(ScriptService.Scripts["refill_update_active"], refill);
 			}
 		}
-		public static void RefillUpdateInactive(Refill refill) {
+		public static void UpdateInactive(Refill refill) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				db.Execute(ScriptService.Scripts["refill_update_inactive"], refill);
