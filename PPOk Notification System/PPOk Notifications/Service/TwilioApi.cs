@@ -24,9 +24,8 @@ namespace PPOk_Notifications.Service
 
         public void SendTextMessage(Notification notification)
         {
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
-            Template temp = GetTempFromPharmacy(notification.Type);
+            var p = DatabasePatientService.GetById(notification.PatientId);
+            var temp = GetTempFromPharmacy(notification.Type);
             if (testTwilio)
             {
                 var message = MessageResource.Create(
@@ -39,8 +38,7 @@ namespace PPOk_Notifications.Service
 
         public void MakePhoneCall(Notification notification)
         {
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
+            var p = DatabasePatientService.GetById(notification.PatientId);
 
             if (testTwilio)
             {

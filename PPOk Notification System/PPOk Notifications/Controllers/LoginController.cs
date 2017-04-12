@@ -45,8 +45,7 @@ namespace PPOk_Notifications.Controllers
 
         private ActionResult RedirectToProperPage(long userId)
         {
-            var db = new SQLService();
-            var user = db.GetUserById(userId);
+            var user = DatabaseUserService.GetById(userId);
             if (user.Type == Models.User.UserType.PPOkAdmin)
             {
                 return Redirect("/PpokAdmin/PharmacyListView");
