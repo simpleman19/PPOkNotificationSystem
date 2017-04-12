@@ -55,6 +55,9 @@ namespace PPOk_Notifications.Controllers
         {
             // if id's are default, get actual id's for the (new) pharmacist
             // use sql to save pharmacist to db
+
+            // TODO (Incomplete)
+
             return Redirect("/Pharmacy/PhamacistListView");
         }
 
@@ -114,7 +117,7 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Pharmacy/RefillListView");
         }
 
-
+        // TODO     public ActionResult DeleteRefill(long id)
 
         /// //////////////////////////////////////////////////////////
         /// Patients
@@ -136,11 +139,13 @@ namespace PPOk_Notifications.Controllers
         {
             // if id's are default, get actual id's for the (new) patient
             // use sql to save patient to db
+
+            // TODO (Incomplete)
+
             return Redirect("/Pharmacy/PatientListView");
         }
-//        public ActionResult DeletePatient() { }
-  //      public ActionResult DetailsPatient() { }
-    //    public ActionResult EditPatient() { }
+//        TODO      public ActionResult DeletePatient() { }
+//        TODO      public ActionResult EditPatient() { }
 
         public ActionResult AddPatient(long id = 0)
         {
@@ -166,14 +171,9 @@ namespace PPOk_Notifications.Controllers
                 Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
             return Redirect("/Pharmacy/PatientListView");
         }
-
-
-
-
-
+        
         // pharmacy uploading patients
         // from csv
-
         public ActionResult Upload()
         {
             return View();
@@ -362,6 +362,10 @@ namespace PPOk_Notifications.Controllers
             }
             return View();
         }
+
+        /// //////////////////////////////////////////////////////////
+        /// Administrators
+        /// //////////////////////////////////////////////////////////
 
         public ActionResult Admin()
         {

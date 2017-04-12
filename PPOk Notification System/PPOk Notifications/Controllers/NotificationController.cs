@@ -16,12 +16,6 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
-        public ActionResult CancelNotification(long id)
-        {
-            //db.Notification_Disable(id);
-            return Redirect("/Notification/NotificationListView");
-        }
-
         public ActionResult SendNotification(long id)
         {
             var n = DatabaseNotificationService.GetById(id);
@@ -29,18 +23,9 @@ namespace PPOk_Notifications.Controllers
             return Redirect("/Notification/NotificationList");
         }
 
-        public ActionResult AddNotification()
-        {
-            // TODO: will need a notification input view or model
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("NotificationList");
-            }
-            else
-            {
-                return View();
-            }
-        }
+        // to send a recall?
+        // done by 'upload recalls,' leaving out alternative method for now
+        // public ActionResult AddNotification()
 
         public ActionResult NotificationList()
         {

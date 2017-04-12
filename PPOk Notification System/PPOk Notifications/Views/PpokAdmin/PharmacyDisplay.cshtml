@@ -1,7 +1,7 @@
 ﻿@model Tuple< PPOk_Notifications.Models.Pharmacy, PPOk_Notifications.Models.Pharmacist>
 
 @{
-    ViewBag.Title = "PharmacyModificationView";
+    ViewBag.Title = "PharmacyDisplay";
 }
 
 @using (Html.BeginForm())
@@ -12,7 +12,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <h2>Modify Pharmacy</h2>
+        <h2>Pharmacy</h2>
 
         <div class="form-group" style="display: none;">
             @Html.LabelFor(model => model.Item1.PharmacyName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <h2>Modify Admin</h2>
+        <h2>Admin</h2>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Item2.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -64,38 +64,5 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="submit" class="btn btn-default" onclick="submitModifications()" />
-            </div>
-        </div>
     </div>
 }
-
-<script>
-            @functions{
-                public string TokenHeaderValue()
-                {
-                    string cookieToken, formToken;
-                    AntiForgery.GetTokens(null, out cookieToken, out formToken);
-                    return cookieToken + ":" + formToken;
-                }
-            }
-    function submitModifications() {
-        form = "form";
-        action = $(form).attr("action");
-        dataToSend = $(form).serialize();
-        $.ajax({
-            type: "POST",
-            dataType: "html",
-            url: action,
-            headers: {
-                'RequestVerificationToken': '@TokenHeaderValue()'
-            },
-            data: dataToSend,
-            success: function (data) {
-                listBadges();
-            }
-        });
-    }
-</script>
