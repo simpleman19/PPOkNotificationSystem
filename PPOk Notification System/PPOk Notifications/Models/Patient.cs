@@ -67,16 +67,6 @@ namespace PPOk_Notifications.Models
 	        };
 	        return p;
         }
-
-        public Patient LoadUserData()
-        {
-            var user = DatabaseUserService.GetById(UserId);
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            Email = user.Email;
-            Phone = user.Phone;
-            return this;
-        }
     }
 
 }

@@ -159,5 +159,29 @@ namespace PPOk_Notifications.Service {
 			}
 		}
 		#endregion
+
+		#region Custom
+		public static User GetFullById(long user_id) {
+			using (var db = DatabaseService.Connection) {
+
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+				var u = db.Query<User>(ScriptService.Scripts["user_getbyid"], new { user_id = user_id }).FirstOrDefault();
+
+				switch (u.Type) {
+					case User.UserType.Pharmacist: {
+						var hu = DatabasePharmacistService.GetByUserId(u.UserId);
+						hu.LoadUserData();
+						return hu;
+					}
+					case User.UserType.Patient: {
+						var hu = DatabasePatientService.GetByUserId(u.UserId);
+						hu.LoadUserData();
+						return hu;
+					}
+				}
+				return u;
+			}
+		}
+		#endregion
 	}
 }
