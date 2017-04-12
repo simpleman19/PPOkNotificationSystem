@@ -804,7 +804,7 @@
     <Content Include="Views\Login\ResetResult.cshtml" />
     <Content Include="Views\Login\ResetRequest.cshtml" />
     <Content Include="Views\PpokAdmin\PharmacyListView.cshtml" />
-    <Content Include="Views\PpokAdmin\PharmacyModificationView.cshtml" />
+    <Content Include="Views\PpokAdmin\PharmacyDisplay.cshtml" />
     <Content Include="Views\Pharmacy\PharmacistListView.cshtml" />
     <Content Include="Views\Pharmacy\PatientListView.cshtml" />
     <Content Include="Views\Pharmacy\RefillListView.cshtml" />

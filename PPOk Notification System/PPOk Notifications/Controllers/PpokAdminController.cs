@@ -27,7 +27,10 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult AddorEditPharmacy(long id = 0)
         {
+            // TODO     No way to add or edit pharmacy's admin
+
             var pharmacy = DatabasePharmacyService.GetById(id);
+
             if (pharmacy == null)
             {
                 pharmacy = new Pharmacy();
@@ -51,6 +54,7 @@ namespace PPOk_Notifications.Controllers
             string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId )
         {
             Pharmacy pharmacy;
+
             if (pharmacyId != 0)
             {
                 pharmacy = DatabasePharmacyService.GetById(pharmacyId);
@@ -92,9 +96,15 @@ namespace PPOk_Notifications.Controllers
         }
 
 
-        public ActionResult ViewPharmacy(long id)
+        public ActionResult PharmacyDisplay(long id)
         {
-            return Redirect("PharmacyModificationView/" + id.ToString());
+            Pharmacy pharmacy = DatabasePharmacyService.GetById(id);
+            List<Pharmacist> pharmacists = DatabasePharmacistService.GetAll();
+            Pharmacist pharmacist = new Pharmacist();
+            foreach (Pharmacist p in pharmacists) {
+                if (p.Enabled && p.IsAdmin) { pharmacist = p; }
+            }
+            return View( new System.Tuple<Pharmacy, Pharmacist>(pharmacy,pharmacist) );
         }
 
         public ActionResult DeletePharmacy(long id)
