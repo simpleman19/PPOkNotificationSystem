@@ -1,4 +1,4 @@
-﻿INSERT INTO [PPOK].[dbo].[login]
+﻿INSERT INTO [PPOK].[dbo].[emailotp]
 ( 
 	[notification_id], 
 	[emailotp_time], 
@@ -9,7 +9,7 @@ VALUES
 (
 	@NotificationId,
 	@Time,
-	@EmailOtpCode,
+	@Code,
 	1
 )
 SELECT CAST(SCOPE_IDENTITY() as bigint)

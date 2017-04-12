@@ -106,6 +106,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -186,13 +190,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EmailController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PharmacyController.cs" />
     <Compile Include="Controllers\PpokAdminController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TwilioResponseController.cs" />
+    <Compile Include="Filters\AuthenticateAttribute.cs" />
     <Compile Include="Models\EmailOTP.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\OTP.cs" />
@@ -202,11 +206,23 @@
     <Compile Include="Models\Prescription.cs" />
     <Compile Include="Models\Refill.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Service\DatabaseEmailOtpService.cs" />
+    <Compile Include="Service\DatabaseOtpService.cs" />
+    <Compile Include="Service\DatabaseService.cs" />
     <Compile Include="Service\EmailService.cs" />
+    <Compile Include="Service\DatabaseLoginService.cs" />
     <Compile Include="Service\MappingService.cs" />
+    <Compile Include="Service\OTPService.cs" />
+    <Compile Include="Service\DatabaseNotificationService.cs" />
+    <Compile Include="Service\DatabaseRefillService.cs" />
+    <Compile Include="Service\DatabasePrescriptionService.cs" />
+    <Compile Include="Service\DatabaseTemplateService.cs" />
+    <Compile Include="Service\DatabasePatientService.cs" />
+    <Compile Include="Service\DatabasePharmacistService.cs" />
+    <Compile Include="Service\DatabasePharmacyService.cs" />
     <Compile Include="Service\ScriptService.cs" />
-    <Compile Include="Service\SQLService.cs" />
     <Compile Include="Service\TwilioApi.cs" />
+    <Compile Include="Service\DatabaseUserService.cs" />
     <Content Include="browser_components\bootstrap\css\bootstrap-theme.css" />
     <Content Include="browser_components\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="browser_components\bootstrap\css\bootstrap.css" />
@@ -568,11 +584,20 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\responsive-tabs.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Service\EmailHTML\ready.html" />
+    <Content Include="Service\EmailHTML\reset.html" />
+    <Content Include="Service\EmailHTML\refill.html" />
+    <Content Include="Service\EmailHTML\recall.html" />
+    <Content Include="Service\EmailHTML\birthday.html" />
+    <Content Include="Service\EmailHTML\template.html" />
     <Content Include="Service\SQL\blank.sql" />
     <Content Include="Service\SQL\Database_Create.sql" />
     <Content Include="Service\SQL\Database_Drop.sql" />
     <Content Include="Service\SQL\EmailOTP_Disable.sql" />
     <Content Include="Service\SQL\EmailOTP_Enable.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetByCode_Inactive.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetByCode_Active.sql" />
+    <Content Include="Service\SQL\EmailOTP_GetByCode.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByNotificationId_Inactive.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByNotificationId_Active.sql" />
     <Content Include="Service\SQL\EmailOTP_GetByNotificationId.sql" />
@@ -628,6 +653,9 @@
     <Content Include="Service\SQL\Patient_GetById.sql" />
     <Content Include="Service\SQL\Patient_GetById_Active.sql" />
     <Content Include="Service\SQL\Patient_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode_Inactive.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode_Active.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId_Active.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId_Inactive.sql" />
@@ -658,6 +686,8 @@
     <Content Include="Service\SQL\Pharmacy_GetById_Active.sql" />
     <Content Include="Service\SQL\Pharmacist_Insert.sql" />
     <Content Include="Service\SQL\Pharmacist_Insert_Or_Update.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Prescription_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId_Inactive.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId_Active.sql" />
     <Content Include="Service\SQL\Prescription_GetByPatientId.sql" />
@@ -784,6 +814,16 @@
     <Content Include="Views\Pharmacy\UploadRecalls.cshtml" />
     <Content Include="Views\Pharmacy\AddPharmacist.cshtml" />
     <Content Include="Views\Pharmacy\AddPatient.cshtml" />
+    <Content Include="Views\Email\EmailResponseLayout.cshtml" />
+    <Content Include="Views\Email\UnsubscribeFailure.cshtml" />
+    <Content Include="Views\Email\UnsubscribeSuccess.cshtml" />
+    <Content Include="Views\Email\RefillFailure.cshtml" />
+    <Content Include="Views\Email\RefillSuccess.cshtml" />
+    <Content Include="Views\Email\ResetSuccess.cshtml" />
+    <Content Include="Views\Email\ResetFailure.cshtml" />
+    <Content Include="Views\Email\BadLink.cshtml" />
+    <Content Include="Views\Email\ExpiredOtp.cshtml" />
+    <Content Include="Views\Email\UnknownOtp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -793,7 +833,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Email\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <PropertyGroup>

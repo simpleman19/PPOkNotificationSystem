@@ -28,7 +28,7 @@ CREATE TABLE [PPOK].[dbo].[pharmacy]
 ( 
 	[pharmacy_id] bigint PRIMARY KEY IDENTITY(1,1) NOT NULL, 
 	[pharmacy_name] varchar(128) NOT NULL, 
-	[pharmacy_phone] varchar(10) NOT NULL, 
+	[pharmacy_phone] varchar(30) NOT NULL, 
 	[pharmacy_address] varchar(255) NOT NULL, 
 	[template_refill] bigint NOT NULL, 
 	[template_ready] bigint NOT NULL, 
@@ -80,7 +80,8 @@ CREATE TABLE [PPOK].[dbo].[refill]
 	[prescription_id] bigint FOREIGN KEY REFERENCES [prescription]([prescription_id]) NOT NULL, 
 	[refill_date] datetime,
 	[refill_filled] bit NOT NULL, 
-	[object_active] bit NOT NULL
+	[object_active] bit NOT NULL,
+	[refill_refill] bit NOT NULL
 )
 GO
 

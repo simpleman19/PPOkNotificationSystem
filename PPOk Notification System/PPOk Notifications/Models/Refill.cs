@@ -18,8 +18,12 @@ namespace PPOk_Notifications.Models
         public long PrescriptionId { get; set; }
         [DisplayName("Refill Date")]
         [Column(Name = "refill_date")]
-        public DateTime RefillDate { get; set; }
+        public DateTime? RefillDate { get; set; }
+        [Column(Name = "refill_filled")]
         public bool Refilled { get; set; }
+        [DisplayName("Ready to Refill")]
+        [Column(Name = "refill_refill")]
+        public bool RefillIt { get; set; }
 
         public Refill()
         {
@@ -30,25 +34,28 @@ namespace PPOk_Notifications.Models
         {
             PrescriptionId = prescription.PrecriptionId;
             Refilled = false;
+            RefillIt = false;
             var notification = Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
 
-            var db = new SQLService();
-            db.NotificationInsert(notification);
+            DatabaseNotificationService.Insert(notification);
         }
         
         public void SetFilled()
         {
             Refilled = true;
+            RefillDate = DateTime.Now;
             NotificationSender.SendFilledNotification(this);
+            DatabaseRefillService.Update(this);
         }
 
         public static Refill getTestRefill()
         {
-            var refill = new Refill();
-            refill.PrescriptionId = 1123;
-            refill.RefillDate = DateTime.Now;
-            refill.Refilled = false;
-            return refill;
+	        var refill = new Refill {
+		        PrescriptionId = 1123,
+		        RefillDate = DateTime.Now,
+		        Refilled = false
+	        };
+	        return refill;
         }
     }
 }

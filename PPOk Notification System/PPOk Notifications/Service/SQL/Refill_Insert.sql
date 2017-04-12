@@ -2,7 +2,8 @@
 (
 	[prescription_id], 
 	[refill_date], 
-	[refill_filled], 
+	[refill_filled],
+	[refill_refill],
 	[object_active]
 )
 VALUES
@@ -10,6 +11,7 @@ VALUES
 	@PrescriptionId, 
 	@RefillDate, 
 	@Refilled, 
+	@RefillIt,
 	1
 )
 SELECT CAST(SCOPE_IDENTITY() as bigint)

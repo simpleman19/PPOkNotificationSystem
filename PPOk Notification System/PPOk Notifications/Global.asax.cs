@@ -14,6 +14,7 @@ namespace PPOk_Notifications
             AspNetTimer.Start();
 
 			ScriptService.Init();
+			EmailHtmlLoader.Init();
         }
     }
 }

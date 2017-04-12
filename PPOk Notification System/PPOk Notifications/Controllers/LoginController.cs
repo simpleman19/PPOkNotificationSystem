@@ -1,15 +1,26 @@
 ﻿using System.Web.Mvc;
+using PPOk_Notifications.Filters;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
-    public class LoginController : BaseController
+    [Authenticate]
+    public class LoginController : Controller
     {
         [AllowAnonymous]
         public ActionResult Index()
         {
+            if (Session[Login.UserIdSession] != null)
+            {
+                var id = (long)Session[Login.UserIdSession];
+                var action = RedirectToProperPage(id);
+                if (action != null)
+                {
+                    return action;
+                }
+            }
+
             return View();
         }
 
@@ -17,19 +28,33 @@ namespace PPOk_Notifications.Controllers
         [AllowAnonymous]
         public ActionResult Index(string email, string password)
         {
-            // TODO get user from database
-            var user = GetLogin(email);
-            if (user == null)
+            var login = Login.GetLogin(email);
+            if (login == null)
             {
                 return View(false);
             }
 
-            if (!user.CheckPassword(password))
+            if (!login.CheckPassword(password))
             {
                 return View(false);
             }
-            Session["user_id"] = user.UserId;
-            return RedirectToAction("Success");
+
+            Session[Login.UserIdSession] = login.UserId;
+            return RedirectToProperPage(login.UserId) ?? View(false);
+        }
+
+        private ActionResult RedirectToProperPage(long userId)
+        {
+            var user = DatabaseUserService.GetById(userId);
+            if (user.Type == Models.User.UserType.PPOkAdmin)
+            {
+                return Redirect("/PpokAdmin/PharmacyListView");
+            }
+            if (user.Type == Models.User.UserType.Pharmacist)
+            {
+                return Redirect("/Pharmacy/RefillListView");
+            }
+            return null;
         }
 
         public ActionResult Logout()
@@ -75,7 +100,7 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Reset(string email, string password, string confirm_password)
         {
             // TODO add reset token (which is sent to them in the email link)
-            var user = GetLogin(email);
+            var user = Login.GetLogin(email);
 
             if (user == null)
             {
@@ -102,17 +127,6 @@ namespace PPOk_Notifications.Controllers
             UserNotFound,
             PasswordNotSet,
             PasswordsDontMatch
-        }
-
-        private Login GetLogin(string email)
-        {
-            var user = new SQLService().GetUserByEmail(email);
-            if (user == null)
-            {
-                return null;
-            }
-
-            return new SQLService().GetLoginByUserId(user.UserId);
         }
     }
 }

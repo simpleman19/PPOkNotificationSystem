@@ -1,27 +1,18 @@
 ﻿using PPOk_Notifications.Service;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Web;
 using System.Web.Mvc;
+using PPOk_Notifications.Filters;
+using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authorize]
+    [Authenticate]
     public class PpokAdminController : Controller
     {
         // GET: Admin
         public ActionResult Index()
         {
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("Index");
-            }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
         // returned view for seeing a list of pharmacies
@@ -30,61 +21,86 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PharmacyListView()
         {
-            PPOk_Notifications.Service.SQLService serv = new PPOk_Notifications.Service.SQLService();
-            IEnumerable<PPOk_Notifications.Models.Pharmacy> param = new List<PPOk_Notifications.Models.Pharmacy>();
-            //((List<PPOk_Notifications.Models.Pharmacy>)param).AddRange(serv.GetPharmacies());
-            if (Request.IsAjaxRequest())
+            var pharamcies = DatabasePharmacyService.GetAllActive();
+            return View(pharamcies);
+        }
+
+        public ActionResult AddorEditPharmacy(long id = 0)
+        {
+            var pharmacy = DatabasePharmacyService.GetById(id);
+            if (pharmacy == null)
             {
-                return PartialView("PharmacyListView", param);
+                pharmacy = new Pharmacy();
+                pharmacy.InsertDefaultTemplateData();
             }
             else
             {
-                return View(param);
+                pharmacy.GetTemplates();
             }
+
+            return View("~/Views/Pharmacy/Admin.cshtml", pharmacy);
         }
 
-        // returned view for adding, editing, or viewing a pharmacy
-        public ActionResult PharmacyModificationView(int id)
+        [HttpPost]
+        public ActionResult AddorEditPharmacy(
+            string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
+            string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,
+            string recallTextTemplate, string recallPhoneTemplate, string recallEmailTemplate,
+            string birthdayTextTemplate, string birthdayPhoneTemplate, string birthdayEmailTemplate,
+            string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
+            string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId )
         {
-            SQLService database = new SQLService();
-
-            Models.Pharmacy pharmacy = new Models.Pharmacy();
-            if (id != 0)
-                pharmacy = database.GetPharmacyById(id);
-
-            List<Models.Pharmacist> pharmacists = database.GetPharmacists();
-            Models.Pharmacist admin = new Models.Pharmacist();
-            admin.IsAdmin = true;
-            foreach (var pharmacist in pharmacists) { if (pharmacist.IsAdmin && pharmacist.PharmacyId == pharmacy.PharmacyId) { admin = pharmacist; } }
-
-            System.Tuple<Models.Pharmacy, Models.Pharmacist> param = new System.Tuple<Models.Pharmacy, Models.Pharmacist>(pharmacy, admin);
-
-            if (Request.IsAjaxRequest())
+            Pharmacy pharmacy;
+            if (pharmacyId != 0)
             {
-                return PartialView("PharmacyModificationView", param);
+                pharmacy = DatabasePharmacyService.GetById(pharmacyId);
+                pharmacy.GetTemplates();
             }
             else
             {
-                return View(param);
+                pharmacy = new Pharmacy();
+                pharmacy.Fill();
+                pharmacy.PharmacyId = DatabasePharmacyService.Insert(pharmacy);
+                pharmacy.InsertDefaultTemplateData();
+                pharmacy.SaveNewTemplates();
             }
+
+            pharmacy.PharmacyName = pharmacyName;
+            pharmacy.PharmacyPhone = pharmacyPhone;
+            pharmacy.PharmacyAddress = pharmacyAddress;
+
+            pharmacy.TemplateRefill.TemplateText = refillTextTemplate;
+            pharmacy.TemplateRefill.TemplatePhone = refillPhoneTemplate;
+            pharmacy.TemplateRefill.TemplateEmail = refillEmailTemplate;
+
+            pharmacy.TemplateReady.TemplateText = pickupTextTemplate;
+            pharmacy.TemplateReady.TemplatePhone = pickupPhoneTemplate;
+            pharmacy.TemplateReady.TemplateEmail = pickupEmailTemplate;
+
+            pharmacy.TemplateRecall.TemplateText = recallTextTemplate;
+            pharmacy.TemplateRecall.TemplatePhone = recallPhoneTemplate;
+            pharmacy.TemplateRecall.TemplateEmail = recallEmailTemplate;
+
+            pharmacy.TemplateBirthday.TemplateText = birthdayTextTemplate;
+            pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
+            pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
+
+            DatabasePharmacyService.Update(pharmacy);
+            pharmacy.SaveTemplates();
+
+            return Redirect("/PpokAdmin/PharmacyListView");
         }
 
-        public ActionResult AddPharmacy()
-        {
-            return Redirect("PharmacyModificationView/0");
-        }
-        public ActionResult EditPharmacy(long id)
-        {
-            return Redirect("PharmacyModificationView/" + id.ToString());
-        }
+
         public ActionResult ViewPharmacy(long id)
         {
             return Redirect("PharmacyModificationView/" + id.ToString());
         }
-        public void DeletePharmacy(long id)
+
+        public ActionResult DeletePharmacy(long id)
         {
-            SQLService database = new SQLService();
-            database.Pharmacy_Disable((int)id);
+            DatabasePharmacyService.Disable(id);
+            return Redirect("/PpokAdmin/PharmacyListView");
         }
     }
 }

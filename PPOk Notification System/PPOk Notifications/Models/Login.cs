@@ -5,7 +5,9 @@ using System.Text;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Models {
-	public class Login {
+	public class Login
+	{
+	    public static readonly string UserIdSession = "user_id";
 
         [DisplayName("Login ID")]
         [Column(Name = "login_id")]
@@ -27,16 +29,16 @@ namespace PPOk_Notifications.Models {
         [Column(Name = "login_token")]
         public string LoginToken { get; set; }
 
-	    public Login GetLogin(string email)
+	    public static Login GetLogin(string email)
 	    {
-	        // TODO get user from database
-            return new Login();
+            var user = DatabaseUserService.GetByEmail(email);
+            return user == null ? null : DatabaseLoginService.GetByUserId(user.UserId);
 	    }
 
 	    public void SetPassword(string password)
 	    {
 	        LoginHash = HashPassword(password);
-            new SQLService().LoginUpdate(this);
+            DatabaseLoginService.Update(this);
         }
 
 	    public bool CheckPassword(string password)

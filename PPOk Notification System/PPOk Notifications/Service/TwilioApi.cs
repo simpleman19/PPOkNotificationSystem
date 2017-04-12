@@ -14,7 +14,7 @@ namespace PPOk_Notifications.Service
 
         Pharmacy pharmacy;
 
-        bool testTwilio = false;
+        bool testTwilio = true;
 
         public TwilioApi(Pharmacy pharm)
         {
@@ -24,11 +24,8 @@ namespace PPOk_Notifications.Service
 
         public void SendTextMessage(Notification notification)
         {
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
-            Template temp = GetTempFromPharmacy(notification.Type);
-            temp = new Template();
-            temp.TemplateText = "Your prescription is ready";
+            var p = DatabasePatientService.GetById(notification.PatientId);
+            var temp = GetTempFromPharmacy(notification.Type);
             if (testTwilio)
             {
                 var message = MessageResource.Create(
@@ -41,8 +38,7 @@ namespace PPOk_Notifications.Service
 
         public void MakePhoneCall(Notification notification)
         {
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
+            var p = DatabasePatientService.GetById(notification.PatientId);
 
             if (testTwilio)
             {
@@ -58,6 +54,7 @@ namespace PPOk_Notifications.Service
 
         public void MakeRecallPhoneCall(Notification notification)
         {
+            /*
             var db = new SQLService();
             Patient p = db.GetPatientById(notification.PatientId);
 
@@ -71,12 +68,15 @@ namespace PPOk_Notifications.Service
 
             }
             //TODO create xmls for phone calls
+            */
+            this.SendTextMessage(notification);
         }
 
 
         private Template GetTempFromPharmacy(Notification.NotificationType type)
         {
             Template temp = null;
+            pharmacy.GetTemplates();
             switch (type)
             {
                 case Notification.NotificationType.Refill:

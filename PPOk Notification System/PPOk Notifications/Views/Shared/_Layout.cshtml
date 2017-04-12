@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using PPOk_Notifications.Service
+<!DOCTYPE html>
 <html>
 @{
     bool loggedIn = false;
@@ -6,10 +7,9 @@
     bool pharmAdmin = false;
     bool ppokAdmin = false;
 
-    var db = new PPOk_Notifications.Service.SQLService();
     if (Session["user_id"] != null)
     {
-        var user = db.GetUserByIdActive((long)Session["user_id"]);
+        var user = DatabaseUserService.GetByIdActive((long)Session["user_id"]);
         System.Diagnostics.Debug.WriteLine(Session["user_id"] + " " + user.GetFullName());
         if (user != null)
         {
@@ -17,7 +17,7 @@
             if (user.Type == PPOk_Notifications.Models.User.UserType.Pharmacist)
             {
                 pharmacist = true;
-                var pharm = db.GetPharmacistByUserId(user.UserId);
+                var pharm = DatabasePharmacistService.GetByUserId(user.UserId);
                 if (pharm.IsAdmin)
                 {
                     pharmAdmin = true;
@@ -62,6 +62,12 @@
                 {
                     <li><a href="~/Pharmacy/RefillListView">Refills</a></li>
                     <li><a href="~/Notification/NotificationList">Notifications</a></li>
+                    <li><a href="~/Pharmacy/UploadRecalls">Recalls</a></li>
+                    <li><a href="~/Pharmacy/PatientListView">Patients</a></li>
+                }
+                @if (ppokAdmin)
+                {
+                    <li><a href="~/PpokAdmin/PharmacyListView">Pharmacies</a></li>
                 }
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -83,7 +89,7 @@
 </div>
 
 <div class="site-content container body-content">
-    @if (loggedIn)
+    @if (pharmacist)
     {
         <div class="row">
             <div class="col-xs-2 col-xs-offset-10">

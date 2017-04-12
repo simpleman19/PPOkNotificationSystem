@@ -19,7 +19,7 @@ VALUES
 	@EmailOtpId,
 	@NotificationId,
 	@Time,
-	@EmailOtpCode,
+	@Code,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[emailotp] OFF
@@ -30,6 +30,6 @@ UPDATE [PPOK].[dbo].[emailotp]
 SET
 	[notification_id] = @NotificationId, 
 	[emailotp_time] = @Time, 
-	[emailotp_code] = @EmailOtpCode
+	[emailotp_code] = @Code
 WHERE [emailotp].[emailotp_id] = @EmailOtpId
 END

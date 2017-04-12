@@ -10,7 +10,8 @@ INSERT INTO [PPOK].[dbo].[refill]
 (
 	[prescription_id], 
 	[refill_date], 
-	[refill_filled], 
+	[refill_filled],
+	[refill_refill],
 	[object_active]
 )
 VALUES
@@ -18,6 +19,7 @@ VALUES
 	@PrescriptionId, 
 	@RefillDate, 
 	@Refilled, 
+	@RefillIt,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[refill] OFF
@@ -28,6 +30,7 @@ UPDATE [PPOK].[dbo].[refill]
 SET
 	[prescription_id] = @PrescriptionId, 
 	[refill_date] = @RefillDate, 
-	[refill_filled] = @Refilled
+	[refill_filled] = @Refilled,
+	[refill_refill] = @RefillIt
 WHERE [refill].[refill_id] = @RefillId
 END

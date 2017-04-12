@@ -1,23 +1,19 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [AllowAnonymous]
-    public class TestController : BaseController
-    {
+    public class TestController : Controller {
         // GET: Debug
-        public ActionResult Index()
-        {
+        public ActionResult Index() {
             return View();
         }
 
-        public string AddFakeLogin(long pid)
-        {
-            var db = new SQLService();
-            var pharmAdmin = new Pharmacist
-            {
+        public string AddFakeLogin(long pid) {
+            var pharmAdmin = new Pharmacist {
                 FirstName = "Pharma",
                 LastName = "cist",
                 Phone = "+19999999993",
@@ -27,76 +23,155 @@ namespace PPOk_Notifications.Controllers
                 IsAdmin = true,
                 Type = Models.User.UserType.Pharmacist
             };
-            pharmAdmin.UserId = db.UserInsert(pharmAdmin);
-            var login = new Login
-            {
+            pharmAdmin.UserId = DatabaseUserService.Insert(pharmAdmin);
+            var login = new Login {
                 LoginId = 1,
                 UserId = pharmAdmin.UserId,
                 LoginToken = ""
             };
             login.SetPassword("harambe");
-            db.LoginInsert(login);
+            DatabaseLoginService.Insert(login);
 
-            db.PharmacistInsert(pharmAdmin);
+            DatabasePharmacistService.Insert(pharmAdmin);
 
-            return "sucess \n username: test@test.com \n password: harambe";
+	        var ppokAdmin = new User {
+		        LastName = "dmin",
+		        FirstName = "PPOk A",
+		        Type = Models.User.UserType.PPOkAdmin,
+		        Phone = "+19999999998",
+		        Email = "admin@test.com"
+	        };
+	        ppokAdmin.UserId = DatabaseUserService.Insert(ppokAdmin);
+
+            var login2 = new Login {
+                UserId = ppokAdmin.UserId,
+                LoginToken = ""
+            };
+            login2.SetPassword("harambe");
+
+            DatabaseLoginService.Insert(login2);
+
+            return "sucess <br/> Pharm: username: test@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
         }
 
-        public string AddFakePatient(long pid)
-        {
-            var db = new SQLService();
+        public string AddFakePresRefillNotif(long pid) {
+	        var pres = new Prescription {
+		        PatientId = pid,
+		        PrescriptionName = "Test Prescription",
+		        PrescriptionNumber = 12345,
+		        PrescriptionRefills = 3,
+		        PrescriptionDateFilled = System.DateTime.Now.AddDays(-27),
+		        PrescriptionDaysSupply = 30,
+		        PrescriptionUpc = "123456789"
+	        };
+	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
+            var refill = new Refill(pres);
+            refill.RefillId = DatabaseRefillService.Insert(refill);
+            return "Sucesss";
+        }
 
-            var pat = new Patient();
-            pat.ContactMethod = Patient.PrimaryContactMethod.Text;
-            pat.FirstName = "John";
-            pat.LastName = "Doe";
-            pat.PersonCode = "1";
-            pat.DateOfBirth = System.DateTime.Now;
-            pat.Phone = "+19999999999";
-            pat.PharmacyId = pid;
-            pat.PreferedContactTime = System.DateTime.Now;
-            long id = db.UserInsert(pat);
+        public string AddFakePatient(long pid) {
+	        var pat = new Patient {
+		        ContactMethod = Patient.PrimaryContactMethod.Text,
+		        FirstName = "John",
+		        LastName = "Doe",
+		        PersonCode = "1",
+		        DateOfBirth = System.DateTime.Now,
+		        Phone = "+18065703539",
+		        PharmacyId = pid,
+		        PreferedContactTime = System.DateTime.Now
+	        };
+	        var id = DatabaseUserService.Insert(pat);
             pat.UserId = id;
-            db.PatientInsert(pat);
-
+            var patId = DatabasePatientService.Insert(pat);
+            this.AddFakePresRefillNotif(patId);
             return "success";
         }
-        public string Reset()
-        {
-            SQLService sql = new SQLService();
-            string result = sql.Rebuild();
-            return result;
+
+        public string Reset() {
+            var result = DatabaseService.Rebuild();
+	        return result ? "Success" : "Failure";
         }
 
-        public string SqlScripts()
-        {
-            string debug = "";
-            foreach (var key in ScriptService.Scripts.Keys)
-            {
-                debug += key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>";
-            }
-            if (ScriptService.Scripts.Count == 0)
-            {
+        public string SqlScripts() {
+            var debug = ScriptService.Scripts.Keys.Aggregate("", (current, key) => current + (key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>"));
+	        if (ScriptService.Scripts.Count == 0) {
                 debug = "No Scripts Found!";
             }
             return debug;
         }
 
-        public string InsertFake()
-        {
-            string output = "";
+        public string InsertFake() {
+            var output = "";
             var pharmID = Pharmacy.FakeDataFill();
             output += "\n" + this.AddFakeLogin(pharmID);
             output += "\n" + this.AddFakePatient(pharmID);
             return output;
         }
 
-        public string ResetAndInsert()
-        {
-            string output = "";
+        public string ResetAndInsert() {
+            var output = "";
             output += "\n" + this.Reset();
             output += "\n" + this.InsertFake();
             return output;
         }
-    }
+
+		public string GetRandomOTP() {
+			return OTPService.RandomString(64);
+		}
+
+	    public string SendTestEmail() {
+
+			var u = new User();
+			var p = new Patient();
+			var n = new Notification();
+			var pr = new Prescription();
+			var r = new Refill();
+
+		    u.Email = "test@test.com"; // PUT YOUR EMAIL HERE TO TEST
+		    u.FirstName = "Test";
+		    u.LastName = "User";
+		    u.Phone = "+14055555555";
+		    u.UserId = DatabaseUserService.Insert(u);
+
+		    p.UserId = u.UserId;
+		    p.PharmacyId = 1;
+			p.DateOfBirth = DateTime.Now;
+			p.PreferedContactTime = DateTime.Now;
+			p.ContactMethod = Patient.PrimaryContactMethod.Email;
+		    p.PersonCode = "0";
+		    p.SendBirthdayMessage = true;
+		    p.SendRefillMessage = true;
+			p.PatientId = DatabasePatientService.Insert(p);
+
+		    pr.PatientId = p.PatientId;
+		    pr.PrescriptionDaysSupply = 30;
+		    pr.PrescriptionRefills = 3;
+		    pr.PrescriptionName = "Tylenol";
+		    pr.PrescriptionNumber = 1;
+		    pr.PrescriptionUpc = "ABC123";
+			pr.PrescriptionDateFilled = DateTime.Now;
+		    pr.PrecriptionId = DatabasePrescriptionService.Insert(pr);
+
+		    r.RefillIt = false;
+		    r.PrescriptionId = pr.PrecriptionId;
+		    r.Refilled = false;
+			r.RefillDate = DateTime.Now;
+		    r.RefillId = DatabaseRefillService.Insert(r);
+
+			n.PatientId = p.PatientId;
+			n.Type = Notification.NotificationType.Refill;
+			n.NotificationMessage = "This is a test email for a refill";
+			n.ScheduledTime = DateTime.Now;
+		    n.SentTime = null;
+		    n.Sent = false;
+		    n.NotificationId = DatabaseNotificationService.Insert(n);
+
+
+		    EmailService.SendNotification(n);
+		    EmailService.SendReset(u);
+
+		    return ("Sent an notification and reset email to test account");
+	    }
+	}
 }
