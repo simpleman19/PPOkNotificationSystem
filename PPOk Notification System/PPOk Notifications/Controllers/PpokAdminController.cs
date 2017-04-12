@@ -21,15 +21,13 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PharmacyListView()
         {
-            var db = new SQLService();
-            var pharamcies = db.GetPharmaciesActive();
+            var pharamcies = DatabasePharmacyService.GetAllActive();
             return View(pharamcies);
         }
 
         public ActionResult AddorEditPharmacy(long id = 0)
         {
-            var db = new SQLService();
-            Pharmacy pharmacy = db.GetPharmacyById(id);
+            var pharmacy = DatabasePharmacyService.GetById(id);
             if (pharmacy == null)
             {
                 pharmacy = new Pharmacy();
@@ -52,18 +50,17 @@ namespace PPOk_Notifications.Controllers
             string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
             string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId )
         {
-            SQLService service = new SQLService();
             Pharmacy pharmacy;
             if (pharmacyId != 0)
             {
-                pharmacy = service.GetPharmacyById(pharmacyId);
+                pharmacy = DatabasePharmacyService.GetById(pharmacyId);
                 pharmacy.GetTemplates();
             }
             else
             {
                 pharmacy = new Pharmacy();
                 pharmacy.Fill();
-                pharmacy.PharmacyId = service.PharmacyInsert(pharmacy);
+                pharmacy.PharmacyId = DatabasePharmacyService.Insert(pharmacy);
                 pharmacy.InsertDefaultTemplateData();
                 pharmacy.SaveNewTemplates();
             }
@@ -88,7 +85,7 @@ namespace PPOk_Notifications.Controllers
             pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
             pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
 
-            service.PharmacyUpdate(pharmacy);
+            DatabasePharmacyService.Update(pharmacy);
             pharmacy.SaveTemplates();
 
             return Redirect("/PpokAdmin/PharmacyListView");
@@ -102,8 +99,7 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult DeletePharmacy(long id)
         {
-            SQLService database = new SQLService();
-            database.Pharmacy_Disable(id);
+            DatabasePharmacyService.Disable(id);
             return Redirect("/PpokAdmin/PharmacyListView");
         }
     }
