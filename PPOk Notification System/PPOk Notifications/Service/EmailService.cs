@@ -38,13 +38,16 @@ namespace PPOk_Notifications.Service {
 			message.From = new MailAddress(ConfigurationManager.AppSettings["SendEmailAddress"]);
 			var body = EmailHtmlLoader.ResetHtml;
 
+			//Generate OTP code
+			var otp = OTPService.GenerateOtp(user);
+
 			//Replace sentinels in email with personalized data
 			message.Subject = "PPOK notifcications: Password reset";
 			body = body.Replace("{{Email}}", user.Email);
 			body = body.Replace("{{FirstName}}", user.FirstName);
 
 			//Set up links
-			body = body.Replace("{{OtpCode}}", "");
+			body = body.Replace("{{OtpCode}}", otp.Code);
 			body = body.Replace("{{UserId}}", user.UserId.ToString());
 			body = body.Replace("{{ResetLink}}", "http://localhost:50082/email/reset");
 

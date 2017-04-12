@@ -20,5 +20,16 @@ namespace PPOk_Notifications.Models
 
 		[Column(Name = "object_active")]
 		public bool object_active { get; set; }
+
+		public bool IsActive() {
+			if (!object_active) return false;
+			if ((Time - DateTime.Now).TotalDays < 1) {
+				return true;
+			} else {
+				DatabaseOtpService.Disable(Id);
+			}
+			return false;
+		}
+
 	}
 }

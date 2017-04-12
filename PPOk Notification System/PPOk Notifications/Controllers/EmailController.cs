@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Net;
 using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.WebPages;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
@@ -48,8 +44,7 @@ namespace PPOk_Notifications.Controllers {
 				var notification = DatabaseNotificationService.GetById(otp.NotificationId);
 				var patient = DatabasePatientService.GetById(notification.PatientId);
 				
-
-				if (otp.object_active) {
+				if (otp.IsActive()) {
 					if (patient.object_active) {
 						patient.ContactMethod = Patient.PrimaryContactMethod.OptOut;
 						DatabasePatientService.Update(patient);
@@ -72,8 +67,24 @@ namespace PPOk_Notifications.Controllers {
 		}
 
 		public ActionResult Reset() {
-			//TODO perform actual reset operations
-			return ResetSuccess();
+			try {
+				var otp = DatabaseOtpService.GetByCode(RouteData.Values["otp"].ToString());
+				var user = DatabaseUserService.GetById(otp.UserId);
+				var login = DatabaseLoginService.GetByUserId(otp.UserId);
+
+				if (otp.IsActive()) {
+					if (user.Enabled) {
+						DatabaseOtpService.Disable(otp.Id);
+						return View("../Login/Reset",(object)user.Email);
+					} else {
+						return ResetFailure();
+					}
+				} else {
+					return ExpiredOtp();
+				}
+			} catch (Exception) {
+				return BadLink();
+			}
 		}
 
 		//View Returns

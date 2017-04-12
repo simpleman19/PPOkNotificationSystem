@@ -82,6 +82,27 @@ namespace PPOk_Notifications.Service {
 		}
 		#endregion
 
+		#region Get by user id
+		public static OTP GetByCode(string otp_code) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
+				return db.Query<OTP>(ScriptService.Scripts["otp_getbycode"], new { otp_code = otp_code }).FirstOrDefault();
+			}
+		}
+		public static OTP GetByCodeActive(string otp_code) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
+				return db.Query<OTP>(ScriptService.Scripts["otp_getbycode_active"], new { otp_code = otp_code }).FirstOrDefault();
+			}
+		}
+		public static OTP GetByCodeInactive(string otp_code) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(OTP), new ColumnAttributeTypeMapper<OTP>());
+				return db.Query<OTP>(ScriptService.Scripts["otp_getbycode_inactive"], new { otp_code = otp_code }).FirstOrDefault();
+			}
+		}
+		#endregion
+
 		#region Insert
 		public static long Insert(OTP otp) {
 			using (var db = DatabaseService.Connection) {
