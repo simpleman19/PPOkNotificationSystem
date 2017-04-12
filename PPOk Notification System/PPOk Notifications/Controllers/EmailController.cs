@@ -11,23 +11,22 @@ namespace PPOk_Notifications.Controllers {
     public class EmailController : Controller {
 
 	    public ActionResult Respond() {
-			var db = new SQLService();
 		    try {
-			    var otp = db.GetEmailOTPByCode(RouteData.Values["otp"].ToString());
-			    var notification = db.GetNotificationById(otp.NotificationId);
-			    var patient = db.GetPatientById(notification.PatientId);
+			    var otp = DatabaseEmailOtpService.GetByCode(RouteData.Values["otp"].ToString());
+			    var notification = DatabaseNotificationService.GetById(otp.NotificationId);
+			    var patient = DatabasePatientService.GetById(notification.PatientId);
 
 				if (otp.IsActive()) {
 					if (patient.object_active) {
 
 						notification.NotificationResponse = "Refill";
-						db.NotificationUpdate(notification);
+						DatabaseNotificationService.Update(notification);
 
-						Refill refill = db.GetRefillByPrescriptionId(db.GetPrescriptionByPatientId(patient.PatientId).PrecriptionId);
+						var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(patient.PatientId).PrecriptionId);
 						refill.RefillIt = true;
-						db.RefillUpdate(refill);
+						DatabaseRefillService.Update(refill);
 
-						db.EmailOTP_Disable(otp.Id);
+						DatabaseEmailOtpService.Disable(otp.Id);
 
 						return Redirect("/Email/RefillSuccess");
 					} else {
@@ -44,23 +43,21 @@ namespace PPOk_Notifications.Controllers {
 	    }
 
 		public ActionResult Unsubscribe() {
-			var db = new SQLService();
-
 			try {
-				var otp = db.GetEmailOTPByCode(RouteData.Values["otp"].ToString());
-				var notification = db.GetNotificationById(otp.NotificationId);
-				var patient = db.GetPatientById(notification.PatientId);
+				var otp = DatabaseEmailOtpService.GetByCode(RouteData.Values["otp"].ToString());
+				var notification = DatabaseNotificationService.GetById(otp.NotificationId);
+				var patient = DatabasePatientService.GetById(notification.PatientId);
 				
 
 				if (otp.object_active) {
 					if (patient.object_active) {
 						patient.ContactMethod = Patient.PrimaryContactMethod.OptOut;
-						db.PatientUpdate(patient);
+						DatabasePatientService.Update(patient);
 
 						notification.NotificationResponse = "Unsubscribe";
-						db.NotificationUpdate(notification);
+						DatabaseNotificationService.Update(notification);
 
-						db.EmailOTP_Disable(otp.Id);
+						DatabaseEmailOtpService.Disable(otp.Id);
 
 						return Redirect("/Email/UnsubscribeSuccess");
 					} else {
@@ -75,7 +72,6 @@ namespace PPOk_Notifications.Controllers {
 		}
 
 		public ActionResult Reset() { 
-			var db = new SQLService();
 			
 			return Redirect("/Email/ResetSuccess");
 		}

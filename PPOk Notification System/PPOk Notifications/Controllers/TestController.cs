@@ -1,23 +1,19 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using PPOk_Notifications.Models;
 using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    public class TestController : Controller
-    {
+    public class TestController : Controller {
         // GET: Debug
-        public ActionResult Index()
-        {
+        public ActionResult Index() {
             return View();
         }
 
-        public string AddFakeLogin(long pid)
-        {
-            var db = new SQLService();
-            var pharmAdmin = new Pharmacist
-            {
+        public string AddFakeLogin(long pid) {
+            var pharmAdmin = new Pharmacist {
                 FirstName = "Pharma",
                 LastName = "cist",
                 Phone = "+19999999993",
@@ -27,106 +23,94 @@ namespace PPOk_Notifications.Controllers
                 IsAdmin = true,
                 Type = Models.User.UserType.Pharmacist
             };
-            pharmAdmin.UserId = db.UserInsert(pharmAdmin);
-            var login = new Login
-            {
+            pharmAdmin.UserId = DatabaseUserService.Insert(pharmAdmin);
+            var login = new Login {
                 LoginId = 1,
                 UserId = pharmAdmin.UserId,
                 LoginToken = ""
             };
             login.SetPassword("harambe");
-            db.LoginInsert(login);
+            DatabaseLoginService.Insert(login);
 
-            db.PharmacistInsert(pharmAdmin);
+            DatabasePharmacistService.Insert(pharmAdmin);
 
-            User ppokAdmin = new User();
-            ppokAdmin.LastName = "dmin";
-            ppokAdmin.FirstName = "PPOk A";
-            ppokAdmin.Type = Models.User.UserType.PPOkAdmin;
-            ppokAdmin.Phone = "+19999999998";
-            ppokAdmin.Email = "admin@test.com";
-            ppokAdmin.UserId = db.UserInsert(ppokAdmin);
+	        var ppokAdmin = new User {
+		        LastName = "dmin",
+		        FirstName = "PPOk A",
+		        Type = Models.User.UserType.PPOkAdmin,
+		        Phone = "+19999999998",
+		        Email = "admin@test.com"
+	        };
+	        ppokAdmin.UserId = DatabaseUserService.Insert(ppokAdmin);
 
-            var login2 = new Login
-            {
+            var login2 = new Login {
                 UserId = ppokAdmin.UserId,
                 LoginToken = ""
             };
             login2.SetPassword("harambe");
 
-            db.LoginInsert(login2);
+            DatabaseLoginService.Insert(login2);
 
             return "sucess <br/> Pharm: username: test@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
         }
 
-        public string AddFakePresRefillNotif(long pid)
-        {
-            var db = new SQLService();
-            var pres = new Prescription();
-            pres.PatientId = pid;
-            pres.PrescriptionName = "Test Prescription";
-            pres.PrescriptionNumber = 12345;
-            pres.PrescriptionRefills = 3;
-            pres.PrescriptionDateFilled = System.DateTime.Now.AddDays(-27);
-            pres.PrescriptionDaysSupply = 30;
-            pres.PrescriptionUpc = "123456789";
-            pres.PrecriptionId = db.PrescriptionInsert(pres);
+        public string AddFakePresRefillNotif(long pid) {
+	        var pres = new Prescription {
+		        PatientId = pid,
+		        PrescriptionName = "Test Prescription",
+		        PrescriptionNumber = 12345,
+		        PrescriptionRefills = 3,
+		        PrescriptionDateFilled = System.DateTime.Now.AddDays(-27),
+		        PrescriptionDaysSupply = 30,
+		        PrescriptionUpc = "123456789"
+	        };
+	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
             var refill = new Refill(pres);
-            refill.RefillId = db.RefillInsert(refill);
+            refill.RefillId = DatabaseRefillService.Insert(refill);
             return "Sucesss";
         }
-        public string AddFakePatient(long pid)
-        {
-            var db = new SQLService();
 
-            var pat = new Patient();
-            pat.ContactMethod = Patient.PrimaryContactMethod.Text;
-            pat.FirstName = "John";
-            pat.LastName = "Doe";
-            pat.PersonCode = "1";
-            pat.DateOfBirth = System.DateTime.Now;
-            pat.Phone = "+18065703539";
-            pat.PharmacyId = pid;
-            pat.PreferedContactTime = System.DateTime.Now;
-            long id = db.UserInsert(pat);
+        public string AddFakePatient(long pid) {
+	        var pat = new Patient {
+		        ContactMethod = Patient.PrimaryContactMethod.Text,
+		        FirstName = "John",
+		        LastName = "Doe",
+		        PersonCode = "1",
+		        DateOfBirth = System.DateTime.Now,
+		        Phone = "+18065703539",
+		        PharmacyId = pid,
+		        PreferedContactTime = System.DateTime.Now
+	        };
+	        long id = DatabaseUserService.Insert(pat);
             pat.UserId = id;
-            var patId = db.PatientInsert(pat);
+            var patId = DatabasePatientService.Insert(pat);
             this.AddFakePresRefillNotif(patId);
             return "success";
         }
-        public string Reset()
-        {
-            SQLService sql = new SQLService();
-            string result = sql.Rebuild();
-            return result;
+
+        public string Reset() {
+            var result = DatabaseService.Rebuild();
+	        return result ? "Success" : "Failure";
         }
 
-        public string SqlScripts()
-        {
-            string debug = "";
-            foreach (var key in ScriptService.Scripts.Keys)
-            {
-                debug += key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>";
-            }
-            if (ScriptService.Scripts.Count == 0)
-            {
+        public string SqlScripts() {
+            var debug = ScriptService.Scripts.Keys.Aggregate("", (current, key) => current + (key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>"));
+	        if (ScriptService.Scripts.Count == 0) {
                 debug = "No Scripts Found!";
             }
             return debug;
         }
 
-        public string InsertFake()
-        {
-            string output = "";
+        public string InsertFake() {
+            var output = "";
             var pharmID = Pharmacy.FakeDataFill();
             output += "\n" + this.AddFakeLogin(pharmID);
             output += "\n" + this.AddFakePatient(pharmID);
             return output;
         }
 
-        public string ResetAndInsert()
-        {
-            string output = "";
+        public string ResetAndInsert() {
+            var output = "";
             output += "\n" + this.Reset();
             output += "\n" + this.InsertFake();
             return output;
@@ -138,8 +122,6 @@ namespace PPOk_Notifications.Controllers
 
 	    public string SendTestEmail() {
 
-			var db = new SQLService();
-
 			var u = new User();
 			var p = new Patient();
 			var n = new Notification();
@@ -150,7 +132,7 @@ namespace PPOk_Notifications.Controllers
 		    u.FirstName = "Test";
 		    u.LastName = "User";
 		    u.Phone = "+14055555555";
-		    u.UserId = db.UserInsert(u);
+		    u.UserId = DatabaseUserService.Insert(u);
 
 		    p.UserId = u.UserId;
 		    p.PharmacyId = 1;
@@ -160,7 +142,7 @@ namespace PPOk_Notifications.Controllers
 		    p.PersonCode = "0";
 		    p.SendBirthdayMessage = true;
 		    p.SendRefillMessage = true;
-			p.PatientId = db.PatientInsert(p);
+			p.PatientId = DatabasePatientService.Insert(p);
 
 		    pr.PatientId = p.PatientId;
 		    pr.PrescriptionDaysSupply = 30;
@@ -169,13 +151,13 @@ namespace PPOk_Notifications.Controllers
 		    pr.PrescriptionNumber = 1;
 		    pr.PrescriptionUpc = "ABC123";
 			pr.PrescriptionDateFilled = DateTime.Now;
-		    pr.PrecriptionId = db.PrescriptionInsert(pr);
+		    pr.PrecriptionId = DatabasePrescriptionService.Insert(pr);
 
 		    r.RefillIt = false;
 		    r.PrescriptionId = pr.PrecriptionId;
 		    r.Refilled = false;
 			r.RefillDate = DateTime.Now;
-		    r.RefillId = db.RefillInsert(r);
+		    r.RefillId = DatabaseRefillService.Insert(r);
 
 			n.PatientId = p.PatientId;
 			n.Type = Notification.NotificationType.Refill;
@@ -183,7 +165,7 @@ namespace PPOk_Notifications.Controllers
 			n.ScheduledTime = DateTime.Now;
 		    n.SentTime = null;
 		    n.Sent = false;
-		    n.NotificationId = db.NotificationInsert(n);
+		    n.NotificationId = DatabaseNotificationService.Insert(n);
 
 
 		    EmailService.SendNotification(n);
