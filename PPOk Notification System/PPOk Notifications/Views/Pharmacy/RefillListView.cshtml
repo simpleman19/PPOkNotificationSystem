@@ -3,7 +3,6 @@
 @model IEnumerable<PPOk_Notifications.Models.Refill>
 
 @{
-    SQLService db = new SQLService();
     ViewBag.Title = "Refill List";
 }
 
@@ -44,13 +43,13 @@
                     @Html.DisplayFor(modelItem => item.Refilled)
                 </td>
                 <td>
-                    @db.GetPatientById(db.GetPrescriptionById(item.PrescriptionId).PatientId).LoadUserData().GetFullName()
+                    @DatabasePatientService.GetById(DatabasePrescriptionService.GetById(item.PrescriptionId).PatientId).LoadUserData().GetFullName()
                 </td>
                 <td>
-                    @db.GetPrescriptionById(item.PrescriptionId).PrescriptionName
+                    @DatabasePrescriptionService.GetById(item.PrescriptionId).PrescriptionName
                 </td>
                 <td>
-                    @db.GetPrescriptionById(item.PrescriptionId).PrescriptionUpc
+                    @DatabasePrescriptionService.GetById(item.PrescriptionId).PrescriptionUpc
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RefillDate)

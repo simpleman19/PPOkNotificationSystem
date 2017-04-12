@@ -3,7 +3,6 @@
 @model IEnumerable<PPOk_Notifications.Models.Notification>
 
 @{
-    SQLService db = new SQLService();
     ViewBag.Title = "Notifications";
 }
 
@@ -56,7 +55,7 @@
                                     @Html.DisplayFor(modelItem => item.ScheduledTime)
                                 </td>
                                 <td>
-                                    @db.GetPatientById(item.PatientId).LoadUserData().GetFullName()
+                                    @DatabasePatientService.GetById(item.PatientId).LoadUserData().GetFullName()
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Type)
