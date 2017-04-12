@@ -36,7 +36,6 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PharmacistListView()
         {
-            SQLService serv = new SQLService();
             IEnumerable<Pharmacist> param = new List<Pharmacist>();
             // FIXME sql to load in etc
             // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
@@ -50,6 +49,7 @@ namespace PPOk_Notifications.Controllers
                 return View(param);
             }
         }
+
         [HttpPost]
         public ActionResult SavePharmacist(Pharmacist m, int page = 0)
         {
@@ -57,14 +57,13 @@ namespace PPOk_Notifications.Controllers
             // use sql to save pharmacist to db
             return Redirect("/Pharmacy/PhamacistListView");
         }
+
         public ActionResult AddPharmacist(long id = 0)
         {
-
-            SQLService database = new SQLService();
             Pharmacist pharmy = new Pharmacist();
 
             if (id != 0)
-                pharmy = database.GetPharmacistById((int)id);
+                pharmy = DatabasePharmacistService.GetById((int)id);
 
             if (Request.IsAjaxRequest())
             {
@@ -75,14 +74,15 @@ namespace PPOk_Notifications.Controllers
                 return View(pharmy);
             }
         }
+
         public ActionResult EditPharmacist(long id)
         {
             return Redirect("Pharmacy/AddPharmacist" + id);
         }
+
         public ActionResult DeletePharmacist(long id)
         {
-            var db = new SQLService();
-            db.Pharmacist_Disable((int)id);
+            DatabasePharmacistService.Disable((int)id);
             return Redirect("/Pharmacy/PhamacistListView");
         }
 
@@ -96,8 +96,7 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult RefillListView()
         {
-            SQLService serv = new SQLService();
-            var refills = serv.GetRefillsActive();
+            var refills = DatabaseRefillService.GetAllActive();
             List<Refill> ready = new List<Refill>();
             foreach (var r in refills)
             {
@@ -108,10 +107,10 @@ namespace PPOk_Notifications.Controllers
             }
             return View(ready);
         }
+
         public ActionResult SetFilled(long id)
         {
-            var db = new SQLService();
-            db.GetRefillById((int)id).SetFilled();
+            DatabaseRefillService.GetById((int)id).SetFilled();
             return Redirect("/Pharmacy/RefillListView");
         }
 
@@ -124,14 +123,14 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PatientListView()
         {
-            SQLService serv = new SQLService();
-            var patients = serv.GetPatients();
+            var patients = DatabasePatientService.GetAll();
             foreach (var p in patients)
             {
                 p.LoadUserData();
             }
             return View(patients);
         }
+
         [HttpPost]
         public ActionResult SavePatient(Patient m, int page = 0)
         {
@@ -142,28 +141,28 @@ namespace PPOk_Notifications.Controllers
 //        public ActionResult DeletePatient() { }
   //      public ActionResult DetailsPatient() { }
     //    public ActionResult EditPatient() { }
+
         public ActionResult AddPatient(long id = 0)
         {
-            SQLService database = new SQLService();
             Patient patient = new Patient();
 
             if (id != 0)
-                patient = database.GetPatientById((int)id);
+                patient = DatabasePatientService.GetById((int)id);
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("AddPharmacist", patient);
+                return PartialView("AddPatient", patient);
             }
             else
             {
                 return View(patient);
             }
         }
+
         public ActionResult CycleMethod(long id)
         {
-            var db = new SQLService();
-            db.GetPatientById(id).ContactMethod = db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
-                Patient.PrimaryContactMethod.Email : db.GetPatientById(id).ContactMethod == Patient.PrimaryContactMethod.Email ?
+            DatabasePatientService.GetById(id).ContactMethod = DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
+                Patient.PrimaryContactMethod.Email : DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Email ?
                 Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
             return Redirect("/Pharmacy/PatientListView");
         }
@@ -179,6 +178,7 @@ namespace PPOk_Notifications.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Upload(HttpPostedFileBase upload)
@@ -191,10 +191,9 @@ namespace PPOk_Notifications.Controllers
 
                     if (upload.FileName.EndsWith(".csv"))
                     {
-                        Stream stream = upload.InputStream;
-                        DataTable csvTable = new DataTable();
-                        SQLService ser = new SQLService();
-                        using (CsvReader csvReader =
+                        var stream = upload.InputStream;
+                        var csvTable = new DataTable();
+                        using (var csvReader =
                             new CsvReader(new StreamReader(stream), true))
                         {
                             csvTable.Load(csvReader);
@@ -206,7 +205,7 @@ namespace PPOk_Notifications.Controllers
 
                            // if (ser.GetPatientById(id) == null)
                             //{
-                                Patient patient = new Patient();
+                                var patient = new Patient();
                                 patient.PersonCode = row["PersonCode"].ToString();
                                 patient.FirstName = row["PatientFirstName"].ToString();
                                 patient.LastName = row["PatientLastName"].ToString();
@@ -218,7 +217,7 @@ namespace PPOk_Notifications.Controllers
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
                                 patient.PharmacyId = 1;
 
-                                Prescription prescription = new Prescription();
+                                var prescription = new Prescription();
                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
                                 prescription.PrescriptionDateFilled = DateTime.ParseExact(row["DateFilled"].ToString(), "yyyyMMdd", null);
                                 System.Diagnostics.Debug.WriteLine(prescription.PrescriptionDateFilled.ToLongDateString());
@@ -227,17 +226,17 @@ namespace PPOk_Notifications.Controllers
                                 prescription.PrescriptionUpc = row["NDCUPCHRI"].ToString();
                                 prescription.PrescriptionNumber = int.Parse(row["PrescriptionNumber"].ToString());
 
-                                var ID = ser.UserInsert(patient);
+                                var ID = DatabaseUserService.Insert(patient);
                                 patient.UserId = ID;
-                                patient.PatientId = ser.PatientInsert(patient);
-                                ser.PatientInsert(patient);
+                                patient.PatientId = DatabasePatientService.Insert(patient);
+                                DatabasePatientService.Insert(patient);		//TODO: Was this intended? You're inserting the patient twice?
                                 prescription.PatientId = patient.PatientId;
-                                var preid = ser.PrescriptionInsert(prescription);
+                                var preid = DatabasePrescriptionService.Insert(prescription);
                                 prescription.PrecriptionId = preid;
-                                ser.PrescriptionInsert(prescription);
-                                Refill refill = new Refill(prescription);
+                                DatabasePrescriptionService.Insert(prescription);
+                                var refill = new Refill(prescription);
                                 refill.RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2);
-                                ser.RefillInsert(refill);
+                                DatabaseRefillService.Insert(refill);
 
                             //}
                            /* else if (ser.GetPatientById(id) != null)
@@ -323,31 +322,31 @@ namespace PPOk_Notifications.Controllers
 
                     if (upload.FileName.EndsWith(".csv"))
                     {
-                        Stream stream = upload.InputStream;
-                        DataTable csvTable = new DataTable();
-                        using (CsvReader csvReader =
+                        var stream = upload.InputStream;
+                        var csvTable = new DataTable();
+                        using (var csvReader =
                             new CsvReader(new StreamReader(stream), true))
                         {
                             csvTable.Load(csvReader);
                         }
                         foreach (DataRow row in csvTable.Rows)
                         {
-                            SQLService ser = new SQLService();
-                            Patient patient = new Patient();
-                            patient.FirstName = row["PatientFirstName"].ToString();
-                            patient.LastName = row["PatientLastName"].ToString();
-                            patient.Phone = row["Phone"].ToString();
-                            patient.PharmacyId = 1;
-                            patient.DateOfBirth = DateTime.Now;
-                            patient.Email = "ante@ante.com";
-                            patient.ContactMethod = Patient.PrimaryContactMethod.Call;
-                            patient.PreferedContactTime = DateTime.Now;
-                            patient.PersonCode = row["PersonCode"].ToString();
-                            var id =  ser.UserInsert(patient);
+	                        var patient = new Patient {
+		                        FirstName = row["PatientFirstName"].ToString(),
+		                        LastName = row["PatientLastName"].ToString(),
+		                        Phone = row["Phone"].ToString(),
+		                        PharmacyId = 1,
+		                        DateOfBirth = DateTime.Now,
+		                        Email = "ante@ante.com",
+		                        ContactMethod = Patient.PrimaryContactMethod.Call,
+		                        PreferedContactTime = DateTime.Now,
+		                        PersonCode = row["PersonCode"].ToString()
+	                        };
+	                        var id =  DatabaseUserService.Insert(patient);
                             patient.UserId = id;
-                            patient.PatientId = ser.PatientInsert(patient);
-                            Notification notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall, recallMessage);
-                            ser.NotificationInsert(notification);
+                            patient.PatientId = DatabasePatientService.Insert(patient);
+                            var notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall, recallMessage);
+                            DatabaseNotificationService.Insert(notification);
                         }
                     }
                     else
@@ -366,9 +365,8 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult Admin()
         {
-            var db = new SQLService();
-            long id = db.GetPharmacistByUserId((long)Session[Login.UserIdSession]).PharmacyId;
-            Pharmacy pharmacy = db.GetPharmacyById(id);
+            var id = DatabasePharmacistService.GetByUserId((long)Session[Login.UserIdSession]).PharmacyId;
+            var pharmacy = DatabasePharmacyService.GetById(id);
             pharmacy.GetTemplates();
 
             return View(pharmacy);
@@ -383,8 +381,7 @@ namespace PPOk_Notifications.Controllers
             string notificationDisabledTextTemplate, string notificationDisabledPhoneTemplate, string notificationDisabledEmailTemplate,
             string pharmacyName, string pharmacyPhone, string pharmacyAddress, long pharmacyId)
         {
-            SQLService service = new SQLService();
-            Pharmacy pharmacy = service.GetPharmacyById(pharmacyId);
+            var pharmacy = DatabasePharmacyService.GetById(pharmacyId);
             pharmacy.GetTemplates();
 
             pharmacy.PharmacyName = pharmacyName;
@@ -407,7 +404,7 @@ namespace PPOk_Notifications.Controllers
             pharmacy.TemplateBirthday.TemplatePhone = birthdayPhoneTemplate;
             pharmacy.TemplateBirthday.TemplateEmail = birthdayEmailTemplate;
 
-            service.PharmacyUpdate(pharmacy);
+            DatabasePharmacyService.Update(pharmacy);
             pharmacy.SaveTemplates();
 
 
