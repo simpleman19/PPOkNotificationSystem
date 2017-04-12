@@ -31,19 +31,14 @@ namespace PPOk_Notifications.Models {
 
 	    public static Login GetLogin(string email)
 	    {
-            var user = new SQLService().GetUserByEmail(email);
-            if (user == null)
-            {
-                return null;
-            }
-
-            return new SQLService().GetLoginByUserId(user.UserId);
-        }
+            var user = DatabaseUserService.GetByEmail(email);
+            return user == null ? null : DatabaseLoginService.GetByUserId(user.UserId);
+	    }
 
 	    public void SetPassword(string password)
 	    {
 	        LoginHash = HashPassword(password);
-            new SQLService().LoginUpdate(this);
+            DatabaseLoginService.Update(this);
         }
 
 	    public bool CheckPassword(string password)

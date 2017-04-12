@@ -37,8 +37,7 @@ namespace PPOk_Notifications.Models
             RefillIt = false;
             var notification = Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
 
-            var db = new SQLService();
-            db.NotificationInsert(notification);
+            DatabaseNotificationService.Insert(notification);
         }
         
         public void SetFilled()
@@ -46,17 +45,17 @@ namespace PPOk_Notifications.Models
             Refilled = true;
             RefillDate = DateTime.Now;
             NotificationSender.SendFilledNotification(this);
-            var db = new SQLService();
-            db.RefillUpdate(this);
+            DatabaseRefillService.Update(this);
         }
 
         public static Refill getTestRefill()
         {
-            var refill = new Refill();
-            refill.PrescriptionId = 1123;
-            refill.RefillDate = DateTime.Now;
-            refill.Refilled = false;
-            return refill;
+	        var refill = new Refill {
+		        PrescriptionId = 1123,
+		        RefillDate = DateTime.Now,
+		        Refilled = false
+	        };
+	        return refill;
         }
     }
 }

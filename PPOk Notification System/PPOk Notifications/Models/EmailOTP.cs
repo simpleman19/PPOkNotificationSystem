@@ -23,13 +23,11 @@ namespace PPOk_Notifications.Models {
 		public bool object_active { get; set; }
 
 		public bool IsActive() {
-			var db = new SQLService();
-			if (object_active) {
-				if ((Time - DateTime.Now).TotalDays < 7) {
-					return true;
-				} else {
-					db.EmailOTP_Disable(Id);
-				}
+			if (!object_active) return false;
+			if ((Time - DateTime.Now).TotalDays < 7) {
+				return true;
+			} else {
+				DatabaseEmailOtpService.Disable(Id);
 			}
 			return false;
 		}

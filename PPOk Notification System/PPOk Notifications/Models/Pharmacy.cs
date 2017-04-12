@@ -26,14 +26,14 @@ namespace PPOk_Notifications.Models
 
         public Refill CreateRefill(Prescription prescription, Patient patient)
         {
-            Refill refill = new Refill(prescription);
+            var refill = new Refill(prescription);
             // TODO ? this looks incomplete
             return refill;
         }
 
         public List<Notification> GetNotifications()
         {
-            List<Notification> notifications = new List<Notification>();
+            var notifications = new List<Notification>();
             // TODO
             return notifications;
         }
@@ -63,50 +63,45 @@ namespace PPOk_Notifications.Models
 
         public void GetTemplates()
         {
-            SQLService service = new SQLService();
 
-            TemplateRefill = service.GetTemplateById((int) TemplateRefillId);
-            TemplateReady = service.GetTemplateById((int) TemplateReadyId);
-            TemplateRecall = service.GetTemplateById((int) TemplateRecallId);
-            TemplateBirthday = service.GetTemplateById((int) TemplateBirthdayId);
+            TemplateRefill = DatabaseTemplateService.GetById((int) TemplateRefillId);
+            TemplateReady = DatabaseTemplateService.GetById((int) TemplateReadyId);
+            TemplateRecall = DatabaseTemplateService.GetById((int) TemplateRecallId);
+            TemplateBirthday = DatabaseTemplateService.GetById((int) TemplateBirthdayId);
         }
 
         // -- TEST CODE --
         public void SaveTemplates()
         {
-            SQLService service = new SQLService();
 
-            service.TemplateInsertOrUpdate(TemplateRefill);
-            service.TemplateInsertOrUpdate(TemplateRecall);
-            service.TemplateInsertOrUpdate(TemplateReady);
-            service.TemplateInsertOrUpdate(TemplateBirthday);
+            DatabaseTemplateService.InsertOrUpdate(TemplateRefill);
+			DatabaseTemplateService.InsertOrUpdate(TemplateRecall);
+			DatabaseTemplateService.InsertOrUpdate(TemplateReady);
+			DatabaseTemplateService.InsertOrUpdate(TemplateBirthday);
         }
 
         public void SaveNewTemplates()
         {
-            SQLService service = new SQLService();
-
-            TemplateRefillId = service.TemplateInsert(TemplateRefill);
-            TemplateRecallId = service.TemplateInsert(TemplateRecall);
-            TemplateReadyId = service.TemplateInsert(TemplateReady);
-            TemplateBirthdayId = service.TemplateInsert(TemplateBirthday);
+            TemplateRefillId = DatabaseTemplateService.Insert(TemplateRefill);
+            TemplateRecallId = DatabaseTemplateService.Insert(TemplateRecall);
+            TemplateReadyId = DatabaseTemplateService.Insert(TemplateReady);
+            TemplateBirthdayId = DatabaseTemplateService.Insert(TemplateBirthday);
         }
 
         public static long FakeDataFill()
         {
-            SQLService service = new SQLService();
-           
-            Pharmacy pharmacy = new Pharmacy();
-            pharmacy.PharmacyAddress = "Some Pharmacy\nSome Address\nSome City, OK 73008";
-            pharmacy.PharmacyName = "Fake Pharmacy";
-            pharmacy.PharmacyPhone = "555-5555";
+	        var pharmacy = new Pharmacy {
+		        PharmacyAddress = "Some Pharmacy\nSome Address\nSome City, OK 73008",
+		        PharmacyName = "Fake Pharmacy",
+		        PharmacyPhone = "555-5555"
+	        };
 
-            pharmacy.PharmacyId = service.PharmacyInsert(pharmacy);
+	        pharmacy.PharmacyId = DatabasePharmacyService.Insert(pharmacy);
 
             pharmacy.InsertDefaultTemplateData();
 
             pharmacy.SaveNewTemplates();
-            service.PharmacyInsertOrUpdate(pharmacy);
+            DatabasePharmacyService.InsertOrUpdate(pharmacy);
 
             return pharmacy.PharmacyId;
         }

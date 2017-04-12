@@ -59,7 +59,7 @@ namespace PPOk_Notifications.Models
             SentTime = null;
         }
 
-        public Notification(DateTime dateTime, long patientId, NotificationType type, String message)
+        public Notification(DateTime dateTime, long patientId, NotificationType type, string message)
         {
             Sent = false;
             PatientId = patientId;
@@ -71,12 +71,20 @@ namespace PPOk_Notifications.Models
 
         public Notification(Refill refill, NotificationType type)
         {
-            if (type == NotificationType.Ready)
-            {
-                ScheduledTime = DateTime.Now;
-            } else if (type == NotificationType.Refill)
-            {
-
+            switch (type) {
+	            case NotificationType.Ready:
+		            ScheduledTime = DateTime.Now;
+		            break;
+	            case NotificationType.Refill:
+		            break;
+	            case NotificationType.Recall:
+		            break;
+	            case NotificationType.Birthday:
+		            break;
+	            case NotificationType.Reset:
+		            break;
+	            default:
+		            throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Type = type;
             //Make database call to get patient id from prescription id
@@ -87,21 +95,21 @@ namespace PPOk_Notifications.Models
 
         public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type)
         {
-            Notification notification = new Notification(dateTime, patientID, type);
+            var notification = new Notification(dateTime, patientID, type);
             //Save notification to database
             return notification;
         }
 
-        public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type, String message)
+        public static Notification CreateNotification(DateTime dateTime, long patientID, NotificationType type, string message)
         {
-            Notification notification = new Notification(dateTime, patientID, type, message);
+            var notification = new Notification(dateTime, patientID, type, message);
             //Save notification to database
             return notification;
         }
 
         public static Notification CreateNotification(Refill refill, NotificationType type)
         {
-            Notification notification = new Notification(refill, type);
+            var notification = new Notification(refill, type);
             //Save notification to database
             return notification;
         }
@@ -110,8 +118,7 @@ namespace PPOk_Notifications.Models
         {
             notification.Sent = true;
             notification.SentTime = DateTime.Now;
-            var db = new SQLService();
-            db.NotificationUpdate(notification);
+            DatabaseNotificationService.Update(notification);
             return notification;
         }
 
@@ -119,25 +126,25 @@ namespace PPOk_Notifications.Models
         {
             notification.Sent = true;
             notification.SentTime = time;
-            var db = new SQLService();
-            db.NotificationUpdate(notification);
+            DatabaseNotificationService.Update(notification);
             return notification;
         }
 
         public static Notification GetTestNotification()
         {
-            Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
-            Random rand = new Random();
+            var test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
+            var rand = new Random();
             test.NotificationId = rand.Next(1000, 10000000);
             return test;
         }
 
         public static Notification GetTestNotification(Random rand)
         {
-            Notification test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill);
-            test.SentTime = DateTime.Now;
-            test.NotificationId = rand.Next(1000, 10000000);
-            return test;
+	        var test = new Notification(DateTime.Now, 1, Notification.NotificationType.Refill) {
+		        SentTime = DateTime.Now,
+		        NotificationId = rand.Next(1000, 10000000)
+	        };
+	        return test;
         }
     }
 }

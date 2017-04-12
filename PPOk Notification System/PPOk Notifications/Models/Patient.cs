@@ -52,26 +52,25 @@ namespace PPOk_Notifications.Models
 
         public Pharmacy getPharmacy()
         {
-            var db = new SQLService();
-            var pharm = db.GetPharmacyByIdActive(this.PharmacyId);
+            var pharm = DatabasePharmacyService.GetByIdActive(this.PharmacyId);
             pharm.GetTemplates();
             return pharm;
         }
 
         public static Patient getTestPatient()
         {
-            var p = new Patient();
-            p.FirstName = "Tom";
-            p.LastName = "Doe";
-            p.UserId = 123;
-            p.Phone = "+19999999999";
-            return p;
+	        var p = new Patient {
+		        FirstName = "Tom",
+		        LastName = "Doe",
+		        UserId = 123,
+		        Phone = "+19999999999"
+	        };
+	        return p;
         }
 
         public Patient LoadUserData()
         {
-            var db = new SQLService();
-            var user = db.GetUserById(UserId);
+            var user = DatabaseUserService.GetById(UserId);
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
