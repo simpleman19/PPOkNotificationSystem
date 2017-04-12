@@ -12,32 +12,32 @@ namespace PPOk_Notifications.Service {
 	public static class OTPService {
 
 		public static EmailOTP GenerateEmailOtp(Notification n) {
-			EmailOTP otp = new EmailOTP();
-			otp.NotificationId = n.NotificationId;
-			otp.Time = DateTime.Now;
-			otp.Code = RandomString(64);
+			var otp = new EmailOTP {
+				NotificationId = n.NotificationId,
+				Time = DateTime.Now,
+				Code = RandomString(64)
+			};
 
-			SQLService db = new SQLService();
-			otp.Id = db.EmailOTPInsert(otp);
+			otp.Id = DatabaseEmailOtpService.Insert(otp);
 			return otp;
 		}
 
 		public static OTP GenerateOtp(User u) {
-			OTP otp = new OTP();
-			otp.Time = DateTime.Now;
-			otp.UserId = u.UserId;
-			otp.Code = RandomString(64);
+			var otp = new OTP {
+				Time = DateTime.Now,
+				UserId = u.UserId,
+				Code = RandomString(64)
+			};
 
-			SQLService db = new SQLService();
-			otp.Id = db.OTPInsert(otp);
+			otp.Id = DatabaseOtpService.Insert(otp);
 			return otp;
 		}
 
 		public static string RandomString(int size) {
 			const string allowedChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			Random random = new Random();
-			string otp = "";
-			for (int i = 1; i < size + 1; i++) {
+			var random = new Random();
+			var otp = "";
+			for (var i = 1; i < size + 1; i++) {
 				otp  += allowedChars[random.Next(0, allowedChars.Length)];
 			}
 			return otp;
