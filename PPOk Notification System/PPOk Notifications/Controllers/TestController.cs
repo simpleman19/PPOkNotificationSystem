@@ -81,7 +81,7 @@ namespace PPOk_Notifications.Controllers
 		        PharmacyId = pid,
 		        PreferedContactTime = System.DateTime.Now
 	        };
-	        long id = DatabaseUserService.Insert(pat);
+	        var id = DatabaseUserService.Insert(pat);
             pat.UserId = id;
             var patId = DatabasePatientService.Insert(pat);
             this.AddFakePresRefillNotif(patId);

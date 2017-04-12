@@ -22,7 +22,7 @@ namespace PPOk_Notifications.Models
         [Column(Name = "refill_filled")]
         public bool Refilled { get; set; }
         [DisplayName("Ready to Refill")]
-        [Column(Name = "refill_it")]
+        [Column(Name = "refill_refill")]
         public bool RefillIt { get; set; }
 
         public Refill()

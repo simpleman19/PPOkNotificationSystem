@@ -11,7 +11,7 @@ INSERT INTO [PPOK].[dbo].[refill]
 	[prescription_id], 
 	[refill_date], 
 	[refill_filled],
-	[refill_it],
+	[refill_refill],
 	[object_active]
 )
 VALUES
@@ -31,6 +31,6 @@ SET
 	[prescription_id] = @PrescriptionId, 
 	[refill_date] = @RefillDate, 
 	[refill_filled] = @Refilled,
-	[refill_it] = @RefillIt
+	[refill_refill] = @RefillIt
 WHERE [refill].[refill_id] = @RefillId
 END

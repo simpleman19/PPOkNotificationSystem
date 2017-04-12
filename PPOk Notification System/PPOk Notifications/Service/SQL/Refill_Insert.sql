@@ -3,7 +3,7 @@
 	[prescription_id], 
 	[refill_date], 
 	[refill_filled],
-	[refill_it],
+	[refill_refill],
 	[object_active]
 )
 VALUES

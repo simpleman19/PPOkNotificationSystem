@@ -28,23 +28,19 @@ namespace PPOk_Notifications.Service {
 		}
 
 		public static bool Rebuild() {
-			try {
-				Drop();
-				Create();
-			} catch (Exception) {
-				return false;
-			}
+			Drop();
+			Create();
 			return true;
 		}
 
 		public static  void Drop() {
-			using (var db = DatabaseService.Connection) {
+			using (var db = ConnectLoosely()) {
 				db.Execute(ScriptService.Scripts["database_drop"]);
 			}
 		}
 
 		public static void Create() {
-			using (var db = DatabaseService.Connection) {
+			using (var db = ConnectLoosely()) {
 				ScriptService.Execute(db, "database_create");
 			}
 		}

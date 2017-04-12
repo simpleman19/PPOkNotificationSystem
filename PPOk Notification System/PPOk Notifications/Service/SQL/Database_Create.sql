@@ -81,7 +81,7 @@ CREATE TABLE [PPOK].[dbo].[refill]
 	[refill_date] datetime,
 	[refill_filled] bit NOT NULL, 
 	[object_active] bit NOT NULL,
-	[refill_it] bit NOT NULL
+	[refill_refill] bit NOT NULL
 )
 GO
 
