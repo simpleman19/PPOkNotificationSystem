@@ -45,12 +45,11 @@ namespace PPOk_Notifications.NotificationSending
         public static bool SendFilledNotification(Refill refill)
         {
             Notification n = new Notification(refill, Notification.NotificationType.Ready);
-            var db = new SQLService();
-            Prescription p = db.GetPrescriptionById(refill.PrescriptionId);
+            Prescription p = DatabasePrescriptionService.GetById(refill.PrescriptionId);
             n.PatientId = p.PatientId;
             System.Diagnostics.Debug.WriteLine(n.PatientId);
-            n.NotificationId = db.NotificationInsert(n);
-            var pat = db.GetPatientById(n.PatientId);
+            n.NotificationId = DatabaseNotificationService.Insert(n);
+            var pat = DatabasePatientService.GetById(n.PatientId);
             TwilioApi twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(n, twilio);
             return true;
@@ -58,10 +57,9 @@ namespace PPOk_Notifications.NotificationSending
 
         public static void SendRecalls(List<Notification> notifications)
         {
-            var db = new SQLService();
             foreach (Notification n in notifications)
             {
-                Patient pat = db.GetPatientById(n.PatientId);
+                Patient pat = DatabasePatientService.GetById(n.PatientId);
 
                 TwilioApi twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
@@ -70,8 +68,7 @@ namespace PPOk_Notifications.NotificationSending
 
         public static void SendNotification(Notification notification)
         {
-            var db = new SQLService();
-            Patient pat = db.GetPatientById(notification.PatientId);
+            Patient pat = DatabasePatientService.GetById(notification.PatientId);
 
             TwilioApi twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(notification, twilio);
@@ -79,11 +76,10 @@ namespace PPOk_Notifications.NotificationSending
 
         private void PrepareForSending()
         {
-            var db = new SQLService();
             List<Notification> notifications = getNotifications();
             foreach (Notification n in notifications)
             {
-                Patient pat = db.GetPatientById(n.PatientId);
+                Patient pat = DatabasePatientService.GetById(n.PatientId);
 
                 TwilioApi twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
@@ -93,8 +89,7 @@ namespace PPOk_Notifications.NotificationSending
         private static void SendNotification(Notification n, TwilioApi twilio)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
-            var db = new SQLService();
-            Patient p = db.GetPatientById(n.PatientId);
+            Patient p = DatabasePatientService.GetById(n.PatientId);
 
             if (n.Type == Notification.NotificationType.Recall)
             {
@@ -129,8 +124,7 @@ namespace PPOk_Notifications.NotificationSending
 
         private List<Notification> getNotifications()
         {
-            var db = new SQLService();
-            List<Notification> list = db.GetNotificationsActive();
+            List<Notification> list = DatabaseNotificationService.GetAllActive();
             // TODO add birthdays and get not sent but before current datetime
             return list;
         }
