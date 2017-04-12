@@ -20,15 +20,14 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult SmsResponse()
         {
-            var db = new SQLService();
 
             System.Diagnostics.Debug.WriteLine("SMS Response" + " " + Request["from"] + " " +  Request["body"]);
             if (Request["body"].ToLower() == "yes")
             {
-                User user = db.GetUserByPhoneActive(Request["from"]);
-                Patient pat = db.GetPatientByUserIdActive(user.UserId);
-                var notifications = db.GetNotificationsByPatientId(pat.PatientId);
-                Notification newest = notifications[0];
+                var user = DatabaseUserService.GetByPhoneActive(Request["from"]);
+                var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
+                var notifications = DatabaseNotificationService.GetByPatientId(pat.PatientId);
+                var newest = notifications[0];
                 foreach (var n in notifications)
                 {
                     if (newest.SentTime < n.SentTime)
@@ -37,9 +36,9 @@ namespace PPOk_Notifications.Controllers
                     }
                 }
                 newest.NotificationResponse = Request["body"];
-                Refill refill = db.GetRefillByPrescriptionId(db.GetPrescriptionByPatientId(pat.PatientId).PrecriptionId);
+                var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrecriptionId);
                 refill.RefillIt = true;
-                db.RefillUpdate(refill);
+                DatabaseRefillService.Update(refill);
 
             }
             var messagingResponse = new MessagingResponse();
