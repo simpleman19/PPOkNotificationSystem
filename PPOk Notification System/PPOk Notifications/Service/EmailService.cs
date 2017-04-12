@@ -54,12 +54,11 @@ namespace PPOk_Notifications.Service {
 			return SendEmail(message);
 		}
 		public static MailMessage Build(Notification notification) {
-			SQLService db = new SQLService();
 
 			//Get necessary data to build and format the email
-			Patient patient = db.GetPatientById(notification.PatientId);
-			User user = db.GetUserById(patient.UserId);
-			Pharmacy pharmacy = db.GetPharmacyById(patient.PharmacyId);
+			var patient = DatabasePatientService.GetById(notification.PatientId);
+			var user = DatabaseUserService.GetById(patient.UserId);
+			var pharmacy = DatabasePharmacyService.GetById(patient.PharmacyId);
 
 			var message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email));
@@ -71,29 +70,33 @@ namespace PPOk_Notifications.Service {
 			var emailtitle = "";
 
 			//Set email subject and body based on type of email
-			if (notification.Type == Notification.NotificationType.Birthday) {
-				message.Subject = "Happy Birthday, from " + pharmacy.PharmacyName + "!";
-				content += EmailHtmlLoader.BirthdayHtml;
-				emailtitle = "Happy Birthday!";
-
-			} else if (notification.Type == Notification.NotificationType.Ready) {
-				message.Subject = "Your Refill is ready to be picked up";
-				content += EmailHtmlLoader.ReadyHtml;
-				emailtitle = "You have a refill ready to be picked up";
-
-			} else if (notification.Type == Notification.NotificationType.Recall) {
-				message.Subject = "A Prescription you received has been recalled!";
-				message.Priority = MailPriority.High;
-				content += EmailHtmlLoader.RecallHtml;
-				emailtitle = "There has been a recall on a prescription you received";
-
-			} else if (notification.Type == Notification.NotificationType.Refill) {
-				message.Subject = "Your medication is up for refill";
-				content += EmailHtmlLoader.RefillHtml;
-				emailtitle = "Would you like to refill your medication with us?";
-
-			} else {
-				message.Subject = "Unknown Notification Type";
+			switch (notification.Type) {
+				case Notification.NotificationType.Birthday:
+					message.Subject = "Happy Birthday, from " + pharmacy.PharmacyName + "!";
+					content += EmailHtmlLoader.BirthdayHtml;
+					emailtitle = "Happy Birthday!";
+					break;
+				case Notification.NotificationType.Ready:
+					message.Subject = "Your Refill is ready to be picked up";
+					content += EmailHtmlLoader.ReadyHtml;
+					emailtitle = "You have a refill ready to be picked up";
+					break;
+				case Notification.NotificationType.Recall:
+					message.Subject = "A Prescription you received has been recalled!";
+					message.Priority = MailPriority.High;
+					content += EmailHtmlLoader.RecallHtml;
+					emailtitle = "There has been a recall on a prescription you received";
+					break;
+				case Notification.NotificationType.Refill:
+					message.Subject = "Your medication is up for refill";
+					content += EmailHtmlLoader.RefillHtml;
+					emailtitle = "Would you like to refill your medication with us?";
+					break;
+				case Notification.NotificationType.Reset:
+					break;
+				default:
+					message.Subject = "Unknown Notification Type";
+					break;
 			}
 
 			//Set contact reason message
@@ -143,13 +146,13 @@ namespace PPOk_Notifications.Service {
 
 	public class EmailHtmlLoader {
 
-		public static String TemplateHtml { get; private set; }
+		public static string TemplateHtml { get; private set; }
 
-		public static String BirthdayHtml { get; private set; }
-		public static String ReadyHtml { get; private set; }
-		public static String RefillHtml { get; private set; }
-		public static String RecallHtml { get; private set; }
-		public static String ResetHtml { get; private set; }
+		public static string BirthdayHtml { get; private set; }
+		public static string ReadyHtml { get; private set; }
+		public static string RefillHtml { get; private set; }
+		public static string RecallHtml { get; private set; }
+		public static string ResetHtml { get; private set; }
 		
 
 		public static void Init() {
