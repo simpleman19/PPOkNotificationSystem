@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Reflection;
-using System.Web;
 using Dapper;
 
 namespace PPOk_Notifications.Service {
+
 	public class ColumnAttributeTypeMapper<T> : FallbackTypeMapper {
+
 		public ColumnAttributeTypeMapper()
 			: base(new SqlMapper.ITypeMap[]
 				{
