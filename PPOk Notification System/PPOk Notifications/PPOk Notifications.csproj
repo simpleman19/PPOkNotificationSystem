@@ -642,6 +642,9 @@
     <Content Include="Service\SQL\Patient_GetById.sql" />
     <Content Include="Service\SQL\Patient_GetById_Active.sql" />
     <Content Include="Service\SQL\Patient_GetById_Inactive.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode_Inactive.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode_Active.sql" />
+    <Content Include="Service\SQL\Patient_GetByPersonCode.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId_Active.sql" />
     <Content Include="Service\SQL\Patient_GetByUserId_Inactive.sql" />

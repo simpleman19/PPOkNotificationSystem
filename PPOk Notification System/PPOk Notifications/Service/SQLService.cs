@@ -756,6 +756,27 @@ namespace PPOk_Notifications.Service {
 		}
 		#endregion
 
+		#region Get by person code
+		public Patient GetPatientByPersonCode(string person_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode"], new { person_code = person_code }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByUserPersonCodeActive(string person_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_active"], new { person_code = person_code }).FirstOrDefault();
+			}
+		}
+		public Patient GetPatientByUserPersonCodeInactive(string person_code) {
+			using (var db = connect()) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_inactive"], new { person_code = person_code }).FirstOrDefault();
+			}
+		}
+		#endregion
+
 		#region Insert
 		public long PatientInsert(Patient patient) {
 			using (var db = connect()) {
