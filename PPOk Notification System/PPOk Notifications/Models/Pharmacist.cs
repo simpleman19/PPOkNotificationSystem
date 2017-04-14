@@ -16,5 +16,15 @@ namespace PPOk_Notifications.Models {
         {
             this.Type = UserType.Pharmacist;
         }
+
+        public Pharmacist LoadUserData()
+        {
+            var user = DatabaseUserService.GetById(UserId);
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Email = user.Email;
+            Phone = user.Phone;
+            return this;
+        }
     }
 }
