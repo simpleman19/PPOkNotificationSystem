@@ -1,10 +1,14 @@
-﻿@model List<PPOk_Notifications.Models.PharmacyUser>
+﻿@model IEnumerable<PPOk_Notifications.Models.Pharmacist>
 
 @{
     ViewBag.Title = "PharmacistList";
 }
 
 <h2>List of Pharmacists</h2>
+
+<p>
+    Enabled pharmacists will show in Green and Disabled in Red
+</p>
 
 <p>
     @Html.ActionLink("Add Pharmacist", "AddPharmacist")
@@ -22,13 +26,17 @@
             <th>
                 phone
             </th>
+            <th>
+                email
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            string style = item.Enabled == true ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
+            <tr style="@style">
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
@@ -38,9 +46,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Phone)
                 </td>
-                <td> 
-                    @Html.ActionLink("Edit", "EditPharmacist", new {  id = item.UserId  }) |
-                    @Html.ActionLink("Delete", "DeletePharmacist", new { id = item.UserId })
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditPharmacist", new { id = item.PharmacistId }) |
+                    @Html.ActionLink("Delete", "DeletePharmacist", new { id = item.PharmacistId })
                 </td>
             </tr>
         }

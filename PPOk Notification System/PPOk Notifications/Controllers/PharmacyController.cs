@@ -17,16 +17,9 @@ namespace PPOk_Notifications.Controllers
         // GET: Pharmacy
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("RefillListView");
         }
-
-        public ActionResult Pharmacy()
-        {
-            return View();
-        }
-
-
-
+        
         /// //////////////////////////////////////////////////////////
         /// Pharmacists
         /// //////////////////////////////////////////////////////////
@@ -37,8 +30,13 @@ namespace PPOk_Notifications.Controllers
         public ActionResult PharmacistListView()
         {
             IEnumerable<Pharmacist> param = new List<Pharmacist>();
-            // FIXME sql to load in etc
-            // ((List<PPOk_Notifications.Models.PharmacyUser>)param).AddRange(serv.GetPharmacists());
+
+            ((List<PPOk_Notifications.Models.Pharmacist>)param).AddRange(DatabasePharmacistService.GetAll());
+
+            foreach (var p in param)
+            {
+                p.LoadUserData();
+            }
 
             if (Request.IsAjaxRequest())
             {
@@ -55,10 +53,19 @@ namespace PPOk_Notifications.Controllers
         {
             // if id's are default, get actual id's for the (new) pharmacist
             // use sql to save pharmacist to db
+            if (m.PharmacyId == 0)
+            {
+                var phid = DatabaseUserService.Insert(m);
+                m.UserId = phid;
+                DatabasePharmacistService.Insert(m);
+            }
+            else
+            {
+                DatabaseUserService.Update(m);
+                DatabasePharmacistService.Update(m);
+            }
 
-            // TODO (Incomplete)
-
-            return Redirect("/Pharmacy/PhamacistListView");
+            return RedirectToAction("PharmacistListView");
         }
 
         public ActionResult AddPharmacist(long id = 0)
@@ -80,13 +87,15 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult EditPharmacist(long id)
         {
-            return Redirect("Pharmacy/AddPharmacist" + id);
+            return RedirectToAction("AddPharmacist", new { id });
         }
 
         public ActionResult DeletePharmacist(long id)
         {
             DatabasePharmacistService.Disable((int)id);
-            return Redirect("/Pharmacy/PhamacistListView");
+            //DatabaseUserService.Disable((int)id);
+            //DatabasePharmacistService.UpdateInactive(DatabasePharmacistService.GetById((int)id));
+            return RedirectToAction("PhamacistListView");
         }
 
 
@@ -113,8 +122,21 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult SetFilled(long id)
         {
-            DatabaseRefillService.GetById((int)id).SetFilled();
-            return Redirect("/Pharmacy/RefillListView");
+            Refill r = DatabaseRefillService.GetById((int)id);
+            r.SetFilled();
+            DatabaseRefillService.Update(r);
+
+            return RedirectToAction("RefillListView");
+        }
+
+
+        public ActionResult DeleteRefill(long id)
+        {
+            Refill r = DatabaseRefillService.GetById((int)id);
+            r.RefillIt = false;
+            DatabaseRefillService.Update(r);
+
+            return RedirectToAction("RefillListView");
         }
 
         // TODO     public ActionResult DeleteRefill(long id)
@@ -140,12 +162,33 @@ namespace PPOk_Notifications.Controllers
             // if id's are default, get actual id's for the (new) patient
             // use sql to save patient to db
 
-            // TODO (Incomplete)
+            if (m.PatientId == 0)
+            {
+                var pid = DatabaseUserService.Insert(m);
+                m.UserId = pid;
+                DatabasePatientService.Insert(m);
+            }
+            else
+            {
+                DatabaseUserService.Update(m);
+                DatabasePatientService.Update(m);
+            }
 
-            return Redirect("/Pharmacy/PatientListView");
+            return RedirectToAction("PatientListView");
         }
-//        TODO      public ActionResult DeletePatient() { }
-//        TODO      public ActionResult EditPatient() { }
+
+        public ActionResult EditPatient(long id)
+        {
+            return RedirectToAction("AddPatient", new { id });
+        }
+
+        public ActionResult DeletePatient(long id)
+        {
+            //DatabaseUserService.Disable((int)id);
+            DatabasePatientService.UpdateInactive(DatabasePatientService.GetById((int)id));
+            //DatabasePatientService.Disable((int)id);
+            return RedirectToAction("PatientListView");
+        }
 
         public ActionResult AddPatient(long id = 0)
         {
@@ -166,10 +209,12 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult CycleMethod(long id)
         {
-            DatabasePatientService.GetById(id).ContactMethod = DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
+            Patient thisGuy = DatabasePatientService.GetById(id);
+            thisGuy.ContactMethod = DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
                 Patient.PrimaryContactMethod.Email : DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Email ?
                 Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
-            return Redirect("/Pharmacy/PatientListView");
+            DatabasePatientService.Update(thisGuy);
+            return RedirectToAction("PatientListView");
         }
         
         // pharmacy uploading patients
@@ -215,7 +260,7 @@ namespace PPOk_Notifications.Controllers
                                 var dateNow = DateTime.Now;
                                 patient.PreferedContactTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 5, 6);
                                 patient.ContactMethod = Patient.PrimaryContactMethod.Call;
-                                patient.PharmacyId = 1;
+                                patient.PharmacyId = 1; //FIXME: shouldn't this get the current pharmacy's ID?
 
                                 var prescription = new Prescription();
                                 prescription.PrescriptionName = row["GPIGenericName"].ToString();
@@ -229,7 +274,7 @@ namespace PPOk_Notifications.Controllers
                                 var ID = DatabaseUserService.Insert(patient);
                                 patient.UserId = ID;
                                 patient.PatientId = DatabasePatientService.Insert(patient);
-                                DatabasePatientService.Insert(patient);		//TODO: Was this intended? You're inserting the patient twice?
+                                DatabasePatientService.Insert(patient);		//FIXME: Was this intended? You're inserting the patient twice?
                                 prescription.PatientId = patient.PatientId;
                                 var preid = DatabasePrescriptionService.Insert(prescription);
                                 prescription.PrecriptionId = preid;

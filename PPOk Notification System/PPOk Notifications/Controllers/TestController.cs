@@ -66,6 +66,7 @@ namespace PPOk_Notifications.Controllers
 	        };
 	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
             var refill = new Refill(pres);
+            refill.RefillIt = true; // fixme... this aught to be done by a scheduler
             refill.RefillId = DatabaseRefillService.Insert(refill);
             return "Sucesss";
         }
