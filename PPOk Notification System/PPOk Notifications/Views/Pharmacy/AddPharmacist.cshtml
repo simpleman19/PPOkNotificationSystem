@@ -2,7 +2,8 @@
 
 @{
     ViewBag.Title = "AddPharmacist";
-    Model.LoadUserData();
+    if (Model.UserId != 0)
+    { Model.LoadUserData(); }
 }
 
 <h2>AddPharmacist</h2>

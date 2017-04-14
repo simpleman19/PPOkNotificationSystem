@@ -42,7 +42,6 @@
                     @Html.DisplayFor(modelItem => item.PharmacyPhone)
                 </td>
                 <td> 
-                    <!-- TODO support these links -->
                     @Html.ActionLink("Edit", "AddorEditPharmacy", new {  id = item.PharmacyId  }) |
                     @Html.ActionLink("View", "PharmacyDisplay", new { id = item.PharmacyId }) |
                     @Html.ActionLink("Delete", "DeletePharmacy", new { id = item.PharmacyId })

@@ -12,7 +12,7 @@ namespace PPOk_Notifications.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("PharmacyListView");
         }
 
         // returned view for seeing a list of pharmacies
@@ -27,8 +27,6 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult AddorEditPharmacy(long id = 0)
         {
-            // TODO     No way to add or edit pharmacy's admin
-
             var pharmacy = DatabasePharmacyService.GetById(id);
 
             if (pharmacy == null)
