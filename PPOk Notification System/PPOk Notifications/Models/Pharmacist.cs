@@ -16,5 +16,6 @@ namespace PPOk_Notifications.Models {
         {
             this.Type = UserType.Pharmacist;
         }
+        
     }
 }

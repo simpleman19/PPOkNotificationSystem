@@ -7,6 +7,10 @@
 <h2>List of Patients</h2>
 
 <p>
+    Enabled Patients will show in Green and Disabled in Red
+</p>
+
+<p>
     @Html.ActionLink("Add Patient", "AddPatient")
 </p>
 
@@ -40,7 +44,8 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            string style = item.Enabled == true ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
+            <tr style="@style">
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
