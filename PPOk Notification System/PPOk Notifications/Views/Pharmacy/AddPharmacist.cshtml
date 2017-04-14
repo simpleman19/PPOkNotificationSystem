@@ -2,12 +2,14 @@
 
 @{
     ViewBag.Title = "AddPharmacist";
-    Model.LoadUserData();
+    if (Model.UserId != 0)
+    { Model.LoadUserData(); }
 }
 
 <h2>AddPharmacist</h2>
 
-@using (Html.BeginForm())
+
+@using (Html.BeginForm("SavePharmacist", "Pharmacy", FormMethod.Post, new { id = "SavePharmacistForm" }))
 {
     @Html.AntiForgeryToken()
     
@@ -78,24 +80,8 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @using (Html.BeginForm("SavePharmacist", "Pharmacy"))
-                {
-                    @Html.HiddenFor(model => model.UserId)
-                    @Html.HiddenFor(model => model.PharmacistId)
-                    @Html.HiddenFor(model => model.PharmacyId)
-                    @Html.HiddenFor(model => model.Phone)
-                    @Html.HiddenFor(model => model.Email)
-                    @Html.HiddenFor(model => model.FirstName)
-                    @Html.HiddenFor(model => model.LastName)
-                    @Html.HiddenFor(model => model.Enabled)
-                    @Html.HiddenFor(model => model.IsAdmin)
-                    <input type="submit" value="Save" class="btn btn-default" />
-                }
-            </div>
-        </div>
     </div>
+    <button type="submit" id="btnSave" name="command" value="Save">Save</button>
 }
 
 <div>

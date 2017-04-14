@@ -49,19 +49,19 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
-        public ActionResult SavePharmacist(Pharmacist m, int page = 0)
+        public ActionResult SavePharmacist(Pharmacist m, String command)
         {
             // if id's are default, get actual id's for the (new) pharmacist
             // use sql to save pharmacist to db
             if (m.PharmacyId == 0)
             {
-                var phid = DatabaseUserService.Insert(m);
+                var phid = DatabaseUserService.Insert((User)m);
                 m.UserId = phid;
                 DatabasePharmacistService.Insert(m);
             }
             else
             {
-                DatabaseUserService.Update(m);
+                DatabaseUserService.Update((User)m);
                 DatabasePharmacistService.Update(m);
             }
 
@@ -157,20 +157,20 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
-        public ActionResult SavePatient(Patient m, int page = 0)
+        public ActionResult SavePatient(Patient m, String command)
         {
             // if id's are default, get actual id's for the (new) patient
             // use sql to save patient to db
 
             if (m.PatientId == 0)
             {
-                var pid = DatabaseUserService.Insert(m);
+                var pid = DatabaseUserService.Insert((User)m);
                 m.UserId = pid;
                 DatabasePatientService.Insert(m);
             }
             else
             {
-                DatabaseUserService.Update(m);
+                DatabaseUserService.Update((User)m);
                 DatabasePatientService.Update(m);
             }
 

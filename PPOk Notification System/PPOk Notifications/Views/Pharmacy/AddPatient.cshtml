@@ -2,12 +2,13 @@
 
 @{
     ViewBag.Title = "AddPatient";
-    Model.LoadUserData();
+    if (Model.UserId != 0)
+    { Model.LoadUserData(); }
 }
 
 <h2>AddPatient</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("SavePatient", "Pharmacy", FormMethod.Post, new { id = "SavePatientForm" }))
 {
     @Html.AntiForgeryToken()
     
@@ -112,31 +113,8 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @using (Html.BeginForm("SavePatient", "Pharmacy"))
-                {
-                    @Html.HiddenFor(model => model.UserId)
-                    @Html.HiddenFor(model => model.ContactMethod)
-                    @Html.HiddenFor(model => model.DateOfBirth)
-                    @Html.HiddenFor(model => model.Email)
-                    @Html.HiddenFor(model => model.Enabled)
-                    @Html.HiddenFor(model => model.FirstName)
-                    @Html.HiddenFor(model => model.LastName)
-                    @Html.HiddenFor(model => model.PatientId)
-                    @Html.HiddenFor(model => model.PersonCode)
-                    @Html.HiddenFor(model => model.Phone)
-                    @Html.HiddenFor(model => model.PreferedContactTime)
-                    @Html.HiddenFor(model => model.SendBirthdayMessage)
-                    @Html.HiddenFor(model => model.SendRefillMessage)
-                    @Html.HiddenFor(model => model.Type)
-                    @Html.HiddenFor(model => model.UserId)
-                    @Html.HiddenFor(model => model.UserLogin)
-                    <input type="submit" value="Save" class="btn btn-default" />
-                }
-            </div>
-        </div>
     </div>
+    <button type="submit" id="btnSave" name="command" value="Save">Save</button>
 }
 
 <div>
