@@ -83,22 +83,22 @@ namespace PPOk_Notifications.Service {
 		#endregion
 
 		#region Get by person code
-		public static Patient GetByPersonCode(string person_code) {
+		public static Patient GetByPersonCode(string person_code, long pharmacy_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
-				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode"], new { person_code = person_code }).FirstOrDefault();
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode"], new { person_code = person_code, pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetByUserPersonCodeActive(string person_code) {
+		public static Patient GetByUserPersonCodeActive(string person_code, long pharmacy_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
-				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_active"], new { person_code = person_code }).FirstOrDefault();
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_active"], new { person_code = person_code, pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
-		public static Patient GetByUserPersonCodeInactive(string person_code) {
+		public static Patient GetByUserPersonCodeInactive(string person_code, long pharmacy_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
-				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_inactive"], new { person_code = person_code }).FirstOrDefault();
+				return db.Query<Patient>(ScriptService.Scripts["patient_getbypersoncode_inactive"], new { person_code = person_code, pharmacy_id = pharmacy_id }).FirstOrDefault();
 			}
 		}
 		#endregion
