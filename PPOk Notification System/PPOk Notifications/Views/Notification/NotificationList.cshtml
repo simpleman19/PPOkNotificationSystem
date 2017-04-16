@@ -55,7 +55,7 @@
                                     @Html.DisplayFor(modelItem => item.ScheduledTime)
                                 </td>
                                 <td>
-                                    @DatabasePatientService.GetById(item.PatientId).LoadUserData().GetFullName()
+                                    @Patient.PatientTree[item.PatientId].GetFullName()
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Type)

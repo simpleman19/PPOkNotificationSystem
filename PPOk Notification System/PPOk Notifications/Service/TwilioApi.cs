@@ -14,7 +14,7 @@ namespace PPOk_Notifications.Service
 
         Pharmacy pharmacy;
 
-        bool testTwilio = true;
+        bool testTwilio = false;
 
         public TwilioApi(Pharmacy pharm)
         {

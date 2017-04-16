@@ -1,6 +1,6 @@
 ﻿@using PPOk_Notifications.Service
 @using PPOk_Notifications.Models
-@model IEnumerable<PPOk_Notifications.Models.Refill>
+@model List<PPOk_Notifications.Models.Refill>
 
 @{
     ViewBag.Title = "Refill List";
@@ -29,7 +29,7 @@
                 Prescription UPC
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RefillDate)
+                Refill Date
             </th>
             <th></th>
         </tr>
@@ -37,19 +37,22 @@
     <tbody>
         @foreach (var item in Model)
         {
-            string style = item.Refilled == true ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
+            Prescription prescription = DatabasePrescriptionService.GetById(item.PrescriptionId);
+            Patient patient = DatabasePatientService.GetById(prescription.PrecriptionId);
+            patient.LoadUserData();
+            string style = item.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>
                     @Html.DisplayFor(modelItem => item.Refilled)
                 </td>
                 <td>
-                    @DatabasePatientService.GetById(DatabasePrescriptionService.GetById(item.PrescriptionId).PatientId).LoadUserData().GetFullName()
+                    @patient.GetFullName()
                 </td>
                 <td>
-                    @DatabasePrescriptionService.GetById(item.PrescriptionId).PrescriptionName
+                    @prescription.PrescriptionName
                 </td>
                 <td>
-                    @DatabasePrescriptionService.GetById(item.PrescriptionId).PrescriptionUpc
+                    @prescription.PrescriptionUpc
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RefillDate)

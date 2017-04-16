@@ -34,6 +34,39 @@ namespace PPOk_Notifications.Models
         [Column(Name = "preference_contact")]
         public PrimaryContactMethod ContactMethod { get; set; }
 
+        public static Dictionary<long, Patient> _PatientTree;
+
+        public static Dictionary<long, Patient> PatientTree
+        {
+            get
+            {
+                if (_PatientTree == null || PatientTreeInvalid)
+                {
+                    _PatientTree = new Dictionary<long, Patient>();
+                    List<Patient> patients = DatabasePatientService.GetAll();
+                    foreach (Patient p in patients)
+                    {
+                        System.Diagnostics.Debug.WriteLine("adding " + p.PatientId);
+                        p.LoadUserData();
+                        _PatientTree.Add(p.PatientId, p);
+                    }
+                }
+                return _PatientTree;
+            }
+        }
+        public static bool _PatientTreeInvalid = false;
+
+        public static bool PatientTreeInvalid
+        {
+            get
+            {
+                return _PatientTreeInvalid;
+            }
+            set
+            {
+                _PatientTreeInvalid = value;
+            }
+        }
         public Patient()
         {
             this.Type = UserType.Patient;
@@ -67,6 +100,7 @@ namespace PPOk_Notifications.Models
 	        };
 	        return p;
         }
+
     }
 
 }

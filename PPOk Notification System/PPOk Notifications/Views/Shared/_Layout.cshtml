@@ -1,4 +1,6 @@
 ﻿@using PPOk_Notifications.Service
+@using PPOk_Notifications.Models
+
 <!DOCTYPE html>
 <html>
 @{
@@ -6,7 +8,7 @@
     bool pharmacist = false;
     bool pharmAdmin = false;
     bool ppokAdmin = false;
-
+    Session["pharm_id"] = 0;
     if (Session["user_id"] != null)
     {
         var user = DatabaseUserService.GetByIdActive((long)Session["user_id"]);
@@ -22,6 +24,7 @@
                 {
                     pharmAdmin = true;
                 }
+                Session["pharm_id"] = pharm.PharmacyId;
             } else if (user.Type == PPOk_Notifications.Models.User.UserType.PPOkAdmin)
             {
                 ppokAdmin = true;

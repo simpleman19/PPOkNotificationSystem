@@ -60,18 +60,14 @@ namespace PPOk_Notifications.NotificationSending
         {
             foreach (var n in notifications)
             {
-                var pat = DatabasePatientService.GetById(n.PatientId);
-
-                var twilio = new TwilioApi(pat.getPharmacy());
+                var twilio = new TwilioApi(Patient.PatientTree[n.PatientId].getPharmacy());
                 SendNotification(n, twilio);
             }
         }
 
         public static void SendNotification(Notification notification)
         {
-            var pat = DatabasePatientService.GetById(notification.PatientId);
-
-            var twilio = new TwilioApi(pat.getPharmacy());
+            var twilio = new TwilioApi(Patient.PatientTree[notification.PatientId].getPharmacy());
             SendNotification(notification, twilio);
         }
 

@@ -29,9 +29,9 @@ namespace PPOk_Notifications.Controllers
         //[HttpPost]
         public ActionResult PharmacistListView()
         {
-            IEnumerable<Pharmacist> param = new List<Pharmacist>();
+            List<Pharmacist> param = new List<Pharmacist>();
 
-            ((List<PPOk_Notifications.Models.Pharmacist>)param).AddRange(DatabasePharmacistService.GetAll());
+            param.AddRange(DatabasePharmacistService.GetAll());
 
             foreach (var p in param)
             {
