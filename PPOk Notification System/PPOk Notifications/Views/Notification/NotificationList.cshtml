@@ -55,7 +55,7 @@
                                     @Html.DisplayFor(modelItem => item.ScheduledTime)
                                 </td>
                                 <td>
-                                    @Patient.PatientTree[item.PatientId].GetFullName()
+                                    @Patient.PatientDict[item.PatientId].GetFullName()
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Type)

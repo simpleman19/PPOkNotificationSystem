@@ -34,37 +34,37 @@ namespace PPOk_Notifications.Models
         [Column(Name = "preference_contact")]
         public PrimaryContactMethod ContactMethod { get; set; }
 
-        public static Dictionary<long, Patient> _PatientTree;
+        public static Dictionary<long, Patient> _PatientDict;
 
-        public static Dictionary<long, Patient> PatientTree
+        public static Dictionary<long, Patient> PatientDict
         {
             get
             {
-                if (_PatientTree == null || PatientTreeInvalid)
+                if (_PatientDict == null || PatientDictInvalid)
                 {
-                    _PatientTree = new Dictionary<long, Patient>();
+                    _PatientDict = new Dictionary<long, Patient>();
                     List<Patient> patients = DatabasePatientService.GetAll();
                     foreach (Patient p in patients)
                     {
                         System.Diagnostics.Debug.WriteLine("adding " + p.PatientId);
                         p.LoadUserData();
-                        _PatientTree.Add(p.PatientId, p);
+                        _PatientDict.Add(p.PatientId, p);
                     }
                 }
-                return _PatientTree;
+                return _PatientDict;
             }
         }
-        public static bool _PatientTreeInvalid = false;
+        public static bool _PatientDictInvalid = false;
 
-        public static bool PatientTreeInvalid
+        public static bool PatientDictInvalid
         {
             get
             {
-                return _PatientTreeInvalid;
+                return _PatientDictInvalid;
             }
             set
             {
-                _PatientTreeInvalid = value;
+                _PatientDictInvalid = value;
             }
         }
         public Patient()
