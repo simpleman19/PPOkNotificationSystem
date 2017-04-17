@@ -89,39 +89,39 @@ namespace PPOk_Notifications.Controllers {
 
 		//View Returns
 	    public ActionResult UnsubscribeFailure () {
-		    return View();
+		    return View("UnsubscribeFailure");
 	    }
 
 	    public ActionResult UnsubscribeSuccess () {
-		    return View();
+		    return View("UnsubscribeSuccess");
 	    }
 
 		public ActionResult RefillFailure() {
-			return View();
+			return View("RefillFailure");
 		}
 
 		public ActionResult RefillSuccess () {
-		    return View();
+		    return View("RefillSuccess");
 	    }
 
 		public ActionResult ResetSuccess() {
-			return View();
+			return View("ResetSuccess");
 		}
 
 		public ActionResult ResetFailure() {
-			return View();
+			return View("ResetFailure");
 		}
 
 		public ActionResult BadLink() {
-			return View();
+			return View("BadLink");
 		}
 
 		public ActionResult ExpiredOtp() {
-			return View();
+			return View("ExpiredOtp");
 		}
 
 		public ActionResult UnknownOtp() {
-			return View();
+			return View("UnknownOtp");
 		}
 	}
 }
