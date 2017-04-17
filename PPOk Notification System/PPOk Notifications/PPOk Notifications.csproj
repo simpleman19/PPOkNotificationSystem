@@ -680,6 +680,9 @@
     <Content Include="Service\SQL\Patient_Update_Inactive.sql" />
     <Content Include="Service\SQL\Pharmacist_Disable.sql" />
     <Content Include="Service\SQL\Pharmacist_Enable.sql" />
+    <Content Include="Service\SQL\Pharmacist_GetAllByPharmacyId.sql" />
+    <Content Include="Service\SQL\Pharmacist_GetAllByPharmacyId_Inactive.sql" />
+    <Content Include="Service\SQL\Pharmacist_GetAllByPharmacyId_Active.sql" />
     <Content Include="Service\SQL\Pharmacist_GetById - Copy.sql" />
     <Content Include="Service\SQL\Pharmacist_GetById_Inactive.sql" />
     <Content Include="Service\SQL\Pharmacist_GetById_Active.sql" />
