@@ -19,11 +19,11 @@ namespace PPOk_Notifications.Controllers
         {
             return RedirectToAction("RefillListView");
         }
-        
+
+        #region Pharmacists
         /// //////////////////////////////////////////////////////////
         /// Pharmacists
         /// //////////////////////////////////////////////////////////
-
 
 
         //[HttpPost]
@@ -93,19 +93,16 @@ namespace PPOk_Notifications.Controllers
         public ActionResult DeletePharmacist(long id)
         {
             DatabasePharmacistService.Disable((int)id);
-            //DatabaseUserService.Disable((int)id);
-            //DatabasePharmacistService.UpdateInactive(DatabasePharmacistService.GetById((int)id));
             return RedirectToAction("PhamacistListView");
         }
+        #endregion
 
 
-
+        #region Refills
         /// //////////////////////////////////////////////////////////
         /// Refills
         /// //////////////////////////////////////////////////////////
 
-
-        //[HttpPost]
         public ActionResult RefillListView()
         {
             var refills = DatabaseRefillService.GetAllActive();
@@ -140,15 +137,16 @@ namespace PPOk_Notifications.Controllers
         }
 
         // TODO     public ActionResult DeleteRefill(long id)
+        #endregion
 
+        #region Patients
         /// //////////////////////////////////////////////////////////
         /// Patients
         /// //////////////////////////////////////////////////////////
 
-        //[HttpPost]
         public ActionResult PatientListView()
         {
-            var patients = DatabasePatientService.GetAll();
+            var patients = DatabasePatientService.GetAllActive();
             foreach (var p in patients)
             {
                 p.LoadUserData();
@@ -184,9 +182,7 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult DeletePatient(long id)
         {
-            //DatabaseUserService.Disable((int)id);
             DatabasePatientService.UpdateInactive(DatabasePatientService.GetById((int)id));
-            //DatabasePatientService.Disable((int)id);
             return RedirectToAction("PatientListView");
         }
 
@@ -216,7 +212,9 @@ namespace PPOk_Notifications.Controllers
             DatabasePatientService.Update(thisGuy);
             return RedirectToAction("PatientListView");
         }
-        
+        #endregion
+
+        #region Upload
         // pharmacy uploading patients
         // from csv
         public ActionResult Upload()
@@ -407,7 +405,9 @@ namespace PPOk_Notifications.Controllers
             }
             return View();
         }
+        #endregion
 
+        #region Admin
         /// //////////////////////////////////////////////////////////
         /// Administrators
         /// //////////////////////////////////////////////////////////
@@ -459,5 +459,7 @@ namespace PPOk_Notifications.Controllers
 
             return View(pharmacy);
         }
+        #endregion
+
     }
 }
