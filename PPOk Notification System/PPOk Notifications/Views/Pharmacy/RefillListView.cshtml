@@ -38,8 +38,7 @@
         @foreach (var item in Model)
         {
             Prescription prescription = DatabasePrescriptionService.GetById(item.PrescriptionId);
-            Patient patient = DatabasePatientService.GetById(prescription.PrecriptionId);
-            patient.LoadUserData();
+            Patient patient = Patient.PatientTree[prescription.PatientId];
             string style = item.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>

@@ -1,6 +1,9 @@
-﻿@model PPOk_Notifications.Models.Pharmacy
+﻿@using PPOk_Notifications.Models;
+@using PPOk_Notifications.Service;
+@model PPOk_Notifications.Models.Pharmacy
 @{
     ViewBag.Title = "Admin";
+    List<Pharmacist> pharms = DatabasePharmacistService.GetAllByPharmacyId(Model.PharmacyId);
 }
 
 <style>
@@ -48,7 +51,49 @@
                         </div>
                     </div>
                     <div class="col-xs-6">
+                        @if (pharms != null && Model.PharmacyId != 0)
+                        {
                         <h2>Pharmacists</h2>
+                        @Html.ActionLink("Add New", "AddOrEditPharmacist")
+                        <table class="table" id="pharmacist_list">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Phone
+                                    </th>
+                                    <th>
+                                        Admin
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in pharms)
+                                {
+                                    item.LoadUserData();
+                                    <tr>
+                                        <td>
+                                            @item.GetFullName()
+                                        </td>
+                                        <td>
+                                            @item.Phone
+                                        </td>
+                                        <td>
+                                            @item.IsAdmin
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "EditPharmacist", new { id = item.PharmacistId })
+                                            |
+                                            @Html.ActionLink("Disable", "DisablePharmacist", new { id = item.PharmacistId })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        }
                     </div>
                 </div>
                 <h2>Message Templates</h2>
