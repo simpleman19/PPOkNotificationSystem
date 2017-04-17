@@ -26,16 +26,34 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall"]).AsList();
 			}
 		}
+		public static List<Refill> GetAll(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getallbypharmacyid"]).AsList();
+			}
+		}
 		public static List<Refill> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall_active"]).AsList();
 			}
 		}
+		public static List<Refill> GetAllActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getallbypharmacyid_active"]).AsList();
+			}
+		}
 		public static List<Refill> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
 				return db.Query<Refill>(ScriptService.Scripts["refill_getall_inactive"]).AsList();
+			}
+		}
+		public static List<Refill> GetAllInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getallbypharmacyid_inactive"]).AsList();
 			}
 		}
 		#endregion
