@@ -54,7 +54,7 @@
                         @if (pharms != null && Model.PharmacyId != 0)
                         {
                         <h2>Pharmacists</h2>
-                        @Html.ActionLink("Add New", "AddOrEditPharmacist")
+                        @Html.ActionLink("Add New", "AddPharmacist", "Pharmacy", new { }, null)
                         <table class="table" id="pharmacist_list">
                             <thead>
                                 <tr>
@@ -85,9 +85,9 @@
                                             @item.IsAdmin
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Edit", "EditPharmacist", new { id = item.PharmacistId })
+                                            @Html.ActionLink("Edit", "EditPharmacist", "Pharmacy", new { id = item.PharmacistId }, null)
                                             |
-                                            @Html.ActionLink("Disable", "DisablePharmacist", new { id = item.PharmacistId })
+                                            @Html.ActionLink("Disable", "DeletePharmacist", "Pharmacy", new { id = item.PharmacistId }, null)
                                         </td>
                                     </tr>
                                 }
