@@ -666,8 +666,11 @@
     <Content Include="Service\SQL\Patient_Disable.sql" />
     <Content Include="Service\SQL\Patient_Enable.sql" />
     <Content Include="Service\SQL\OTP_GetAll.sql" />
+    <Content Include="Service\SQL\Patient_GetAllByPharmacyId.sql" />
     <Content Include="Service\SQL\Patient_GetAll.sql" />
+    <Content Include="Service\SQL\Patient_GetAllByPharmacyId_Active.sql" />
     <Content Include="Service\SQL\Patient_GetAll_Active.sql" />
+    <Content Include="Service\SQL\Patient_GetAllByPharmacyId_Inactive.sql" />
     <Content Include="Service\SQL\Patient_GetAll_Inactive.sql" />
     <Content Include="Service\SQL\OTP_GetById.sql" />
     <Content Include="Service\SQL\Patient_GetById.sql" />

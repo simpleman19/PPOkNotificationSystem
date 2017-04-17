@@ -26,16 +26,34 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall"]).AsList();
 			}
 		}
+		public static List<Patient> GetAll(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getallbypharmacyid"]).AsList();
+			}
+		}
 		public static List<Patient> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall_active"]).AsList();
 			}
 		}
+		public static List<Patient> GetAllActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getallbypharmacyid_active"]).AsList();
+			}
+		}
 		public static List<Patient> GetAllInactive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
 				return db.Query<Patient>(ScriptService.Scripts["patient_getall_inactive"]).AsList();
+			}
+		}
+		public static List<Patient> GetAllInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Patient), new ColumnAttributeTypeMapper<Patient>());
+				return db.Query<Patient>(ScriptService.Scripts["patient_getallbypharmacyid_inactive"]).AsList();
 			}
 		}
 		#endregion
