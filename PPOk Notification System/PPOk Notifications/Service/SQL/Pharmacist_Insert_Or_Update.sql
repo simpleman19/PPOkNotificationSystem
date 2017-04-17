@@ -19,7 +19,7 @@ VALUES
 	@PharmacistId,
 	@UserId,
 	@PharmacyId,
-	@PharmacistAdmin,
+	@IsAdmin,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[pharmacist] OFF
@@ -30,6 +30,6 @@ UPDATE [PPOK].[dbo].[pharmacist]
 SET
 	[user_id] = @UserId, 
 	[pharmacy_id] = @PharmacyId, 
-	[pharmacist_admin] = @PharmacistAdmin
+	[pharmacist_admin] = @IsAdmin
 WHERE [pharmacist].[pharmacist_id] = @PharmacistId
 END

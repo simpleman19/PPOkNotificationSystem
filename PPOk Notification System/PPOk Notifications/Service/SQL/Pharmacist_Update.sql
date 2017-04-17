@@ -2,5 +2,5 @@
 SET
 	[user_id] = @UserId, 
 	[pharmacy_id] = @PharmacyId, 
-	[pharmacist_admin] = @PharmacistAdmin
+	[pharmacist_admin] = @IsAdmin
 WHERE [pharmacist].[pharmacist_id] = @PharmacistId
