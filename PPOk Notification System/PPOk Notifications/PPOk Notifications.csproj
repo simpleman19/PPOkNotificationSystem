@@ -595,6 +595,12 @@
     <Content Include="Service\SQL\Database_Drop.sql" />
     <Content Include="Service\SQL\EmailOTP_Disable.sql" />
     <Content Include="Service\SQL\EmailOTP_Enable.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Inactive.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Active.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Future_Date.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Future_Time.sql" />
+    <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Today.sql" />
     <Content Include="Service\SQL\OTP_Update_Inactive.sql" />
     <Content Include="Service\SQL\OTP_Update_Active.sql" />
     <Content Include="Service\SQL\OTP_Update.sql" />

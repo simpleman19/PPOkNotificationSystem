@@ -26,10 +26,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall"]).AsList();
 			}
 		}
+		public static List<Notification> GetAll(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
 		public static List<Notification> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_active"]).AsList();
+			}
+		}
+		public static List<Notification> GetAllActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
 		public static List<Notification> GetAllInactive() {
@@ -38,10 +50,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_inactive"]).AsList();
 			}
 		}
+		public static List<Notification> GetAllInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
 		public static List<Notification> GetToday() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_today"]).AsList();
+			}
+		}
+		public static List<Notification> GetToday(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_today"]).AsList();
 			}
 		}
 		public static List<Notification> GetFutureDate() {
@@ -50,10 +74,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_date"]).AsList();
 			}
 		}
+		public static List<Notification> GetFutureDate(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_date"]).AsList();
+			}
+		}
 		public static List<Notification> GetFutureTime() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_time"]).AsList();
+			}
+		}
+		public static List<Notification> GetFutureTime(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_time"]).AsList();
 			}
 		}
 		#endregion
