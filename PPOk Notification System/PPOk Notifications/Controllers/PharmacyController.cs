@@ -11,10 +11,10 @@ using PPOk_Notifications.Filters;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
     public class PharmacyController : Controller
     {
         // GET: Pharmacy
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult Index()
         {
             return RedirectToAction("RefillListView");
@@ -27,6 +27,7 @@ namespace PPOk_Notifications.Controllers
 
 
         //[HttpPost]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult PharmacistListView()
         {
             List<Pharmacist> param = new List<Pharmacist>();
@@ -49,25 +50,27 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult SavePharmacist(Pharmacist m, String command)
         {
             // if id's are default, get actual id's for the (new) pharmacist
             // use sql to save pharmacist to db
             if (m.PharmacyId == 0)
             {
-                var phid = DatabaseUserService.Insert((User)m);
+                var phid = DatabaseUserService.Insert(m);
                 m.UserId = phid;
                 DatabasePharmacistService.Insert(m);
             }
             else
             {
-                DatabaseUserService.Update((User)m);
+                DatabaseUserService.Update(m);
                 DatabasePharmacistService.Update(m);
             }
 
             return RedirectToAction("PharmacistListView");
         }
 
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult AddPharmacist(long id = 0)
         {
             var pharmy = new Pharmacist();
@@ -85,11 +88,13 @@ namespace PPOk_Notifications.Controllers
             }
         }
 
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult EditPharmacist(long id)
         {
             return RedirectToAction("AddPharmacist", new { id });
         }
 
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult DeletePharmacist(long id)
         {
             DatabasePharmacistService.Disable((int)id);
@@ -102,6 +107,7 @@ namespace PPOk_Notifications.Controllers
         /// Refills
         /// //////////////////////////////////////////////////////////
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult RefillListView()
         {
             var refills = DatabaseRefillService.GetAllActive();
@@ -116,6 +122,7 @@ namespace PPOk_Notifications.Controllers
             return View(ready);
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult SetFilled(long id)
         {
             Refill r = DatabaseRefillService.GetById((int)id);
@@ -125,7 +132,7 @@ namespace PPOk_Notifications.Controllers
             return RedirectToAction("RefillListView");
         }
 
-
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult DeleteRefill(long id)
         {
             Refill r = DatabaseRefillService.GetById((int)id);
@@ -143,6 +150,7 @@ namespace PPOk_Notifications.Controllers
         /// Patients
         /// //////////////////////////////////////////////////////////
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult PatientListView()
         {
             var patients = DatabasePatientService.GetAllActive();
@@ -154,6 +162,7 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult SavePatient(Patient m, String command)
         {
             // if id's are default, get actual id's for the (new) patient
@@ -174,17 +183,20 @@ namespace PPOk_Notifications.Controllers
             return RedirectToAction("PatientListView");
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult EditPatient(long id)
         {
             return RedirectToAction("AddPatient", new { id });
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult DeletePatient(long id)
         {
             DatabasePatientService.UpdateInactive(DatabasePatientService.GetById((int)id));
             return RedirectToAction("PatientListView");
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult AddPatient(long id = 0)
         {
             Patient patient = new Patient();
@@ -202,6 +214,7 @@ namespace PPOk_Notifications.Controllers
             }
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult CycleMethod(long id)
         {
             Patient thisGuy = DatabasePatientService.GetById(id);
@@ -216,6 +229,7 @@ namespace PPOk_Notifications.Controllers
         #region Upload
         // pharmacy uploading patients
         // from csv
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult Upload()
         {
             return View();
@@ -223,6 +237,7 @@ namespace PPOk_Notifications.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult Upload(HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
@@ -346,6 +361,7 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult UploadRecalls()
         {
             return View();
@@ -354,6 +370,7 @@ namespace PPOk_Notifications.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult UploadRecalls(HttpPostedFileBase upload, string recallMessage)
         {
             if (ModelState.IsValid)
@@ -411,6 +428,7 @@ namespace PPOk_Notifications.Controllers
         /// Administrators
         /// //////////////////////////////////////////////////////////
 
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult Admin()
         {
             var id = DatabasePharmacistService.GetByUserId((long)Session[Login.UserIdSession]).PharmacyId;
@@ -421,6 +439,7 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
+        [Authenticate(Group.PharmacyAdmin)]
         public ActionResult Admin(
             string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
             string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,

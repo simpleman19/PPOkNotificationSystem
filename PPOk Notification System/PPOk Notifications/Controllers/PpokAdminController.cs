@@ -7,7 +7,7 @@ using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
+    [Authenticate(Group.PPOkAdmin)]
     public class PpokAdminController : Controller
     {
         // GET: Admin

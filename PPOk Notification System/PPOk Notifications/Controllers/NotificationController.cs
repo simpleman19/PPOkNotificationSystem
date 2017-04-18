@@ -7,7 +7,7 @@ using PPOk_Notifications.Filters;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
+    [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
     public class NotificationController : Controller
     {
         // GET: Notification

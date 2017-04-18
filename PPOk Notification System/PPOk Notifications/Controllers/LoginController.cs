@@ -54,17 +54,11 @@ namespace PPOk_Notifications.Controllers
             return null;
         }
 
-        [Authenticate]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Index");
-        }
-
-        [Authenticate]
-        public ActionResult Success()
-        {
-            return View();
         }
 
         public ActionResult ResetResult()
