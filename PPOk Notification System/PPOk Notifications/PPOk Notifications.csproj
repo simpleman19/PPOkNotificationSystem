@@ -853,6 +853,7 @@
     <Content Include="Views\Email\BadLink.cshtml" />
     <Content Include="Views\Email\ExpiredOtp.cshtml" />
     <Content Include="Views\Email\UnknownOtp.cshtml" />
+    <Content Include="Views\Login\ResetRequestSent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

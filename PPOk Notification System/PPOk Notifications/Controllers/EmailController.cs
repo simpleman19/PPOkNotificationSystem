@@ -68,14 +68,12 @@ namespace PPOk_Notifications.Controllers {
 
 		public ActionResult Reset() {
 			try {
-				var otp = DatabaseOtpService.GetByCode(RouteData.Values["otp"].ToString());
-				var user = DatabaseUserService.GetById(otp.UserId);
-				var login = DatabaseLoginService.GetByUserId(otp.UserId);
+				var userOtp = DatabaseOtpService.GetByCode(RouteData.Values["otp"].ToString());
+				var user = DatabaseUserService.GetById(userOtp.UserId);
 
-				if (otp.IsActive()) {
+				if (userOtp.IsActive()) {
 					if (user.Enabled) {
-						DatabaseOtpService.Disable(otp.Id);
-						return View("../Login/Reset",(object)user.Email);
+						return View("../Login/Reset", new LoginController.ResetData { Email = user.Email, OTP = userOtp.Code });
 					} else {
 						return ResetFailure();
 					}

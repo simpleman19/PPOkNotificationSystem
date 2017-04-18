@@ -5,10 +5,8 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
     public class LoginController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Index()
         {
             if (Session[Login.UserIdSession] != null)
@@ -25,7 +23,6 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult Index(string email, string password)
         {
             var login = Login.GetLogin(email);
@@ -57,12 +54,14 @@ namespace PPOk_Notifications.Controllers
             return null;
         }
 
+        [Authenticate]
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Index");
         }
 
+        [Authenticate]
         public ActionResult Success()
         {
             return View();
@@ -81,30 +80,36 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult ResetRequest(string email)
         {
-            // TODO: Send email with reset token instead
-            return RedirectToAction("Reset", "Login", new { email = email});
-        }
-
-        public ActionResult Reset(string email)
-        {
-            // TODO add reset token (which is sent to them in the email link)
-            if (email == null)
+            var user = DatabaseUserService.GetByEmail(email);
+            if (user == null)
             {
                 return RedirectToAction("Index");
             }
 
-            return View((object)email);
+            EmailService.SendReset(user);
+            return RedirectToAction("ResetRequestSent");
+        }
+
+        public ActionResult ResetRequestSent()
+        {
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Reset(string email, string password, string confirm_password)
+        public ActionResult Reset(string email, string password, string confirm_password, string otpCode)
         {
-            // TODO add reset token (which is sent to them in the email link)
+            var otp = DatabaseOtpService.GetByCode(otpCode);
+            if (otp == null || !otp.IsActive())
+            {
+                return RedirectToAction("Index");
+            }
+            DatabaseOtpService.Disable(otp.Id);
+
             var user = Login.GetLogin(email);
 
             if (user == null)
             {
-                return RedirectToAction("ResetResult", ResetResults.UserNotFound);
+                return RedirectToAction("Index");
             }
 
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirm_password))
@@ -124,9 +129,14 @@ namespace PPOk_Notifications.Controllers
 
         public enum ResetResults
         {
-            UserNotFound,
             PasswordNotSet,
             PasswordsDontMatch
+        }
+
+        public class ResetData
+        {
+            public string Email { get; set; }
+            public string OTP { get; set; }
         }
     }
 }

@@ -11,9 +11,6 @@
             <h2 style="margin-bottom:20px; margin-top:40px;">Password Reset</h2>
             @switch (Model)
             {
-                case LoginController.ResetResults.UserNotFound:
-                    <p>User not found.</p>
-                    break;
                 case LoginController.ResetResults.PasswordNotSet:
                     <p>No password was provided.</p>
                     break;
@@ -26,7 +23,6 @@
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
         </div>
     </div>
 </div>
