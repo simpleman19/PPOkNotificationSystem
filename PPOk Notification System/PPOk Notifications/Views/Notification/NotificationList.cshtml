@@ -12,19 +12,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title></title>
-</head>ppp
+</head>
 <body>
     <div class="container">
         <div class="row" style="margin-bottom:25px;">
             <div class="col-xs-12">
                 <h2>List of Notifications</h2>
                 <p>Pick a date range to view notifications:</p>
+@using (Html.BeginForm("GetNotifications", "Notification", FormMethod.Post, new { id = "GetDatesForm" }))
+{
+    @Html.AntiForgeryToken()
+
                 <div class="row">
-                    <input type="text" id="datepicker1" />
-                    <input type="text" id="datepicker2" />
+                    <input type="text" id="datepicker1" name="datePicker1" value="@ViewBag.date1"/>
+                    <input type="text" id="datepicker2" name="datePicker2" value="@ViewBag.date2"/>
+                    <button type="submit" id="btnSave" class="btn btn-primary" name="command" value="Save">Get Notifications</button>
                 </div>
-                <p>**Add a date picker to change notifications returned</p>
-                <button class="btn btn-default" onclick="reloadNotifications()">Get Notifications</button>
+}
             </div>
         </div>
         <div class="row">
@@ -81,9 +85,6 @@
         $("#datepicker1").datepicker();
         $("#datepicker2").datepicker();
 
-        function reloadNotifications() {
-            console.log("reloading");
-        }
     </script>
 </body>
 </html>

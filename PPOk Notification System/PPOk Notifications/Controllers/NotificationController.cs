@@ -29,20 +29,21 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult NotificationList()
         {
-            List<Notification> notifications = DatabaseNotificationService.GetAllActive();
-            if (notifications.Count == 0)
-            {
-                Notification n = null;
-                Random rand = new Random();
-                for (int i = 0; i < 15; i++)
-                {
-                    n = Notification.GetTestNotification(rand);
-                    DatabaseNotificationService.Insert(n);
-                    notifications.Add(n);
-                }
-                notifications = DatabaseNotificationService.GetAllActive();
-            }
+            List<Notification> notifications = DatabaseNotificationService.GetAllActive((long)Session["pharm_id"]);
+            ViewBag.date1 = @DateTime.Now.ToShortDateString();
+            ViewBag.date2 = @DateTime.Now.AddDays(7).ToShortDateString();
             return View(notifications);
+        }
+
+        public ActionResult GetNotifications(string datePicker1, string datePicker2)
+        {
+            var date1 = DateTime.Parse(datePicker1);
+            var date2 = DateTime.Parse(datePicker2);
+            ViewBag.date1 = date1.ToShortDateString();
+            ViewBag.date2 = date2.ToShortDateString();
+            System.Diagnostics.Debug.WriteLine(date1.ToLongDateString() + "  " + date2.ToLongDateString());
+            List<Notification> notifications = DatabaseNotificationService.GetAllInactive((long)Session["pharm_id"]);
+            return View("NotificationList", notifications);
         }
 
         public ActionResult DeleteNotification(long id)
