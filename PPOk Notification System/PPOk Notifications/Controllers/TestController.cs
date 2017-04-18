@@ -84,15 +84,18 @@ namespace PPOk_Notifications.Controllers
         }
 
         public string AddFakePatient(long pid) {
-	        var pat = new Patient {
-		        ContactMethod = Patient.PrimaryContactMethod.Text,
-		        FirstName = "John",
-		        LastName = "Doe",
-		        PersonCode = "1",
-		        DateOfBirth = System.DateTime.Now,
-		        Phone = "+18065703539",
-		        PharmacyId = pid,
-		        PreferedContactTime = System.DateTime.Now
+            var pat = new Patient {
+                ContactMethod = Patient.PrimaryContactMethod.Text,
+                FirstName = "John",
+                LastName = "Doe",
+                PersonCode = "1",
+                DateOfBirth = System.DateTime.Now,
+                Phone = "+18065703539",
+                PharmacyId = pid,
+                PreferedContactTime = System.DateTime.Now,
+                SendRefillMessage = true,
+                SendBirthdayMessage = true
+
 	        };
 	        var id = DatabaseUserService.Insert(pat);
             pat.UserId = id;

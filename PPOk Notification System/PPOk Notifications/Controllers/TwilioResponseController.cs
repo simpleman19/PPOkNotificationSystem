@@ -225,7 +225,7 @@ namespace PPOk_Notifications.Controllers
         [HttpPost]
         public ActionResult SmsResponse()
         {
-
+            var messagingResponse = new MessagingResponse();
             System.Diagnostics.Debug.WriteLine("SMS Response" + " " + Request["from"] + " " +  Request["body"]);
             if (Request["body"].ToLower() == "yes")
             {
@@ -241,13 +241,47 @@ namespace PPOk_Notifications.Controllers
                     }
                 }
                 newest.NotificationResponse = Request["body"];
+                DatabaseNotificationService.Update(newest);
                 var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrecriptionId);
                 refill.RefillIt = true;
                 DatabaseRefillService.Update(refill);
-
+                messagingResponse.Message("Thanks, your prescription will be ready shortly");
+            } else if (Request["body"].ToLower() == "stop")
+            {
+                var user = DatabaseUserService.GetByPhoneActive(Request["from"]);
+                var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
+                var notifications = DatabaseNotificationService.GetByPatientId(pat.PatientId);
+                var newest = notifications[0];
+                foreach (var n in notifications)
+                {
+                    if (newest.SentTime < n.SentTime)
+                    {
+                        newest = n;
+                    }
+                }
+                if (newest.Type == Notification.NotificationType.Refill)
+                {
+                    pat.SendRefillMessage = false;
+                    messagingResponse.Message("You have been unsubscribed from refill notifications");
+                } else if (newest.Type == Notification.NotificationType.Birthday)
+                {
+                    pat.SendBirthdayMessage = false;
+                    messagingResponse.Message("You have been unsubscribed from birthday notifications");
+                } else if (newest.Type == Notification.NotificationType.Ready)
+                {
+                    pat.SendRefillMessage = false;
+                    messagingResponse.Message("You have been unsubscribed from refill notifications");
+                }
+                DatabasePatientService.Update(pat);
             }
-            var messagingResponse = new MessagingResponse();
-            messagingResponse.Message("Thanks, your prescription will be ready shortly");
+            else if (Request["body"].ToLower() == "stop all")
+            {
+                var user = DatabaseUserService.GetByPhoneActive(Request["from"]);
+                var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
+                pat.ContactMethod = Patient.PrimaryContactMethod.OptOut;
+            }
+
+
 
             return new TwiMLResult(messagingResponse);
         }

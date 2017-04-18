@@ -25,37 +25,13 @@ namespace PPOk_Notifications.Controllers
         /// Pharmacists
         /// //////////////////////////////////////////////////////////
 
-
-        //[HttpPost]
-        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
-        public ActionResult PharmacistListView()
-        {
-            List<Pharmacist> param = new List<Pharmacist>();
-
-            param.AddRange(DatabasePharmacistService.GetAll());
-
-            foreach (var p in param)
-            {
-                p.LoadUserData();
-            }
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("PharmacistListView", param);
-            }
-            else
-            {
-                return View(param);
-            }
-        }
-
         [HttpPost]
-        [Authenticate(Group.PharmacyAdmin)]
+        [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult SavePharmacist(Pharmacist m, String command)
         {
             // if id's are default, get actual id's for the (new) pharmacist
             // use sql to save pharmacist to db
-            if (m.PharmacyId == 0)
+            if (m.PharmacistId == 0)
             {
                 var phid = DatabaseUserService.Insert(m);
                 m.UserId = phid;
@@ -67,34 +43,31 @@ namespace PPOk_Notifications.Controllers
                 DatabasePharmacistService.Update(m);
             }
 
-            return RedirectToAction("PharmacistListView");
-        }
-
-        [Authenticate(Group.PharmacyAdmin)]
-        public ActionResult AddPharmacist(long id = 0)
-        {
-            var pharmy = new Pharmacist();
-
-            if (id != 0)
-                pharmy = DatabasePharmacistService.GetById((int)id);
-
-            if (Request.IsAjaxRequest())
+            if (DatabaseUserService.GetById((long)Session["user_id"]).Type == Models.User.UserType.PPOkAdmin)
             {
-                return PartialView("AddPharmacist", pharmy);
+                return RedirectToAction("AddorEditPharmacy", "PpokAdmin", new { id = m.PharmacyId });
             }
-            else
-            {
-                return View(pharmy);
-            }
+            return RedirectToAction("Admin", "Pharmacy");
         }
 
-        [Authenticate(Group.PharmacyAdmin)]
-        public ActionResult EditPharmacist(long id)
+        [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
+        public ActionResult AddorEditPharmacist(long id = 0, long pharm_id = 0)
         {
-            return RedirectToAction("AddPharmacist", new { id });
+            var pharmy = DatabasePharmacistService.GetById(id);
+            if (pharmy == null)
+            {
+                pharmy = new Pharmacist();
+                pharmy.PharmacyId = pharm_id;
+            } else
+            {
+                pharmy.LoadUserData();
+            }
+
+            return View(pharmy);
+            
         }
 
-        [Authenticate(Group.PharmacyAdmin)]
+        [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult DeletePharmacist(long id)
         {
             DatabasePharmacistService.Disable((int)id);
@@ -176,17 +149,11 @@ namespace PPOk_Notifications.Controllers
             }
             else
             {
-                DatabaseUserService.Update((User)m);
+                DatabaseUserService.Update(m);
                 DatabasePatientService.Update(m);
             }
 
             return RedirectToAction("PatientListView");
-        }
-
-        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
-        public ActionResult EditPatient(long id)
-        {
-            return RedirectToAction("AddPatient", new { id });
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
@@ -197,21 +164,17 @@ namespace PPOk_Notifications.Controllers
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
-        public ActionResult AddPatient(long id = 0)
+        public ActionResult AddorEditPatient(long id = 0)
         {
             Patient patient = new Patient();
 
             if (id != 0)
+            {
                 patient = DatabasePatientService.GetById((int)id);
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("AddPatient", patient);
+                patient.LoadUserData();
             }
-            else
-            {
-                return View(patient);
-            }
+                
+            return View(patient);
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]

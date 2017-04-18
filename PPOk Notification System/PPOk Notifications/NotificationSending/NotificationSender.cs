@@ -91,18 +91,17 @@ namespace PPOk_Notifications.NotificationSending
             if (n.Type == Notification.NotificationType.Recall)
             {
                 twilio.MakeRecallPhoneCall(n);
+                Notification.MarkSent(n);
             }
-            else
+            else if (((n.Type == Notification.NotificationType.Refill || n.Type == Notification.NotificationType.Ready) && p.SendRefillMessage) || (n.Type == Notification.NotificationType.Birthday && p.SendBirthdayMessage))
             {
-
-                // TODO Get template from pharmacy
-                switch(p.ContactMethod)
+                switch (p.ContactMethod)
                 {
                     case Patient.PrimaryContactMethod.Call:
                         twilio.MakePhoneCall(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
-
+                        // TODO send email
                         break;
                     case Patient.PrimaryContactMethod.Text:
                         twilio.SendTextMessage(n);
@@ -113,10 +112,9 @@ namespace PPOk_Notifications.NotificationSending
                     default:
                         break;
                 }
-                // TODO Call Twilio api using patient prefered contact method
-                // Mark as sent
+                Notification.MarkSent(n);
             }
-            Notification.MarkSent(n);
+
         }
 
         private List<Notification> getNotifications()

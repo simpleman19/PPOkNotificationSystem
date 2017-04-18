@@ -25,6 +25,7 @@ namespace PPOk_Notifications.Service
         public void SendTextMessage(Notification notification)
         {
             var p = DatabasePatientService.GetById(notification.PatientId);
+            p.LoadUserData();
             var temp = GetTempFromPharmacy(notification.Type);
             if (testTwilio)
             {
@@ -36,10 +37,22 @@ namespace PPOk_Notifications.Service
 
         }
 
+        public void SendTextMessage(Patient p, String messageString)
+        {
+            p.LoadUserData();
+            if (testTwilio)
+            {
+                var message = MessageResource.Create(
+                    to: new PhoneNumber(p.Phone),
+                    from: new PhoneNumber("+14052469892 "),
+                    body: messageString);
+            }
+        }
+
         public void MakePhoneCall(Notification notification)
         {
             var p = DatabasePatientService.GetById(notification.PatientId);
-
+            p.LoadUserData();
             if (testTwilio)
             {
                 var to = new PhoneNumber(p.Phone);
@@ -62,13 +75,12 @@ namespace PPOk_Notifications.Service
                                                url: callback_url);
 
             }
-            //TODO create xmls for phone calls
         }
 
         public void MakeRecallPhoneCall(Notification notification)
         {
             Patient p = DatabasePatientService.GetById(notification.PatientId);
-
+            p.LoadUserData();
             if (testTwilio)
             {
                 var to = new PhoneNumber(p.Phone);

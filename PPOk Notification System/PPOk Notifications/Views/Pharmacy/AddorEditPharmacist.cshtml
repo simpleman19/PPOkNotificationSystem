@@ -62,14 +62,7 @@
         </div>
 
         @Html.HiddenFor(model => model.PharmacistId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PharmacyId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PharmacyId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PharmacyId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.PharmacyId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.IsAdmin, htmlAttributes: new { @class = "control-label col-md-2" })

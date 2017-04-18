@@ -24,12 +24,14 @@ namespace PPOk_Notifications.Models
 		[Column(Name = "preference_time")]
 		public DateTime PreferedContactTime { get; set; }
 
-		public bool SendBirthdayMessage { get; set; }
+        [Column(Name = "send_birthday_message")]
+        public bool SendBirthdayMessage { get; set; }
 
-		public bool SendRefillMessage { get; set; }
+        [Column(Name = "send_refill_message")]
+        public bool SendRefillMessage { get; set; }
 
-		[Column(Name = "object_active")]
-		public bool object_active { get; set; }
+        [Column(Name = "object_active")]
+        public bool object_active { get; set; }
 
         [Column(Name = "preference_contact")]
         public PrimaryContactMethod ContactMethod { get; set; }

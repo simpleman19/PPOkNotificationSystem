@@ -841,8 +841,8 @@
     <Content Include="Views\Pharmacy\Upload.cshtml" />
     <Content Include="Views\TwilioResponse\Index.cshtml" />
     <Content Include="Views\Pharmacy\UploadRecalls.cshtml" />
-    <Content Include="Views\Pharmacy\AddPharmacist.cshtml" />
-    <Content Include="Views\Pharmacy\AddPatient.cshtml" />
+    <Content Include="Views\Pharmacy\AddorEditPharmacist.cshtml" />
+    <Content Include="Views\Pharmacy\AddorEditPatient.cshtml" />
     <Content Include="Views\Email\EmailResponseLayout.cshtml" />
     <Content Include="Views\Email\UnsubscribeFailure.cshtml" />
     <Content Include="Views\Email\UnsubscribeSuccess.cshtml" />

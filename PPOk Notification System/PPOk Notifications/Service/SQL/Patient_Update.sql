@@ -5,5 +5,7 @@ SET
 	[user_id] = @UserId, 
 	[patient_dob] = @DateOfBirth, 
 	[preference_contact] = @ContactMethod, 
-	[preference_time] = @PreferedContactTime
+	[preference_time] = @PreferedContactTime,
+	[send_refill_message] = @SendRefillMessage,
+	[send_birthday_message] = @SendBirthdayMessage
 WHERE [patient].[patient_id] = @PatientId

@@ -8,24 +8,26 @@ BEGIN
 SET IDENTITY_INSERT [PPOK].[dbo].[patient] ON
 INSERT INTO [PPOK].[dbo].[patient]
 (
-	[patient_id],
 	[person_code],
 	[pharmacy_id], 
 	[user_id], 
 	[patient_dob], 
 	[preference_contact], 
-	[preference_time], 
+	[preference_time],
+	[send_refill_message],
+	[send_birthday_message],
 	[object_active]
 )
 VALUES
 ( 
-	@PatientId,
 	@PersonCode,
 	@PharmacyId, 
 	@UserId, 
 	@DateOfBirth, 
 	@ContactMethod, 
-	@PreferedContactTime, 
+	@PreferedContactTime,
+	@SendRefillMessage,
+	@SendBirthdayMessage,
 	1
 )
 SET IDENTITY_INSERT [PPOK].[dbo].[patient] OFF
@@ -38,6 +40,8 @@ SET
 	[user_id] = @UserId, 
 	[patient_dob] = @DateOfBirth,  
 	[preference_contact] = @ContactMethod, 
-	[preference_time] = @PreferedContactTime
+	[preference_time] = @PreferedContactTime,
+	[send_refill_message] = @SendRefillMessage,
+	[send_birthday_message] = @SendBirthdayMessage
 WHERE [patient].[patient_id] = @PatientId
 END

@@ -8,7 +8,7 @@
     bool pharmacist = false;
     bool pharmAdmin = false;
     bool ppokAdmin = false;
-    Session["pharm_id"] = 0;
+    Session["pharm_id"] = (long) 0;
     if (Session["user_id"] != null)
     {
         var user = DatabaseUserService.GetByIdActive((long)Session["user_id"]);
