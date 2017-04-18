@@ -71,6 +71,12 @@ namespace PPOk_Notifications.NotificationSending
             SendNotification(notification, twilio);
         }
 
+        public static void SendNotification(Patient p, String message)
+        {
+            var twilio = new TwilioApi(p.getPharmacy());
+            twilio.SendTextMessage(p, message);
+        }
+
         private void PrepareForSending()
         {
             var notifications = getNotifications();
