@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 using Dapper;
 
 
-//I'm pretty proud of this one...
+//                                 I'm pretty proud of this one...
 
 namespace PPOk_Notifications.Service {
-
+	
 	/**
 	 * Contains and hanndles text representations of all SQL scripts in order
 	 * to allow running them directly through SQL's management console, and
