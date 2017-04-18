@@ -13,12 +13,6 @@ namespace PPOk_Notifications.Controllers
 {
     public class PharmacyController : Controller
     {
-        // GET: Pharmacy
-        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
-        public ActionResult Index()
-        {
-            return RedirectToAction("RefillListView");
-        }
 
         #region Pharmacists
         /// //////////////////////////////////////////////////////////
@@ -92,7 +86,7 @@ namespace PPOk_Notifications.Controllers
                     ready.Add(r);
                 }
             }
-            return View(ready);
+            return View(Tuple.Create(ready, refills));
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
