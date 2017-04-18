@@ -61,6 +61,24 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Refill>(ScriptService.Scripts["refill_getallbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
+		public static List<Refill> GetResponded(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getrespondedbypharmacyid"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
+		public static List<Refill> GetRespondedActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getrespondedbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
+		public static List<Refill> GetRespondedInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Refill), new ColumnAttributeTypeMapper<Refill>());
+				return db.Query<Refill>(ScriptService.Scripts["refill_getrespondedbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
 		#endregion
 
 		#region Get by id

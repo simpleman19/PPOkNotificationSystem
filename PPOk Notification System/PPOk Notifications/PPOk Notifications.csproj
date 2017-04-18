@@ -735,6 +735,9 @@
     <Content Include="Service\SQL\Prescription_Update_Active.sql" />
     <Content Include="Service\SQL\Prescription_Update.sql" />
     <Content Include="Service\SQL\Prescription_Insert_Or_Update.sql" />
+    <Content Include="Service\SQL\Refill_GetRespondedByPharmacyId.sql" />
+    <Content Include="Service\SQL\Refill_GetRespondedByPharmacyId_Inactive.sql" />
+    <Content Include="Service\SQL\Refill_GetRespondedByPharmacyId_Active.sql" />
     <Content Include="Service\SQL\Refill_GetAllByPharmacyId_Inactive.sql" />
     <Content Include="Service\SQL\Refill_GetAllByPharmacyId_Active.sql" />
     <Content Include="Service\SQL\Refill_GetAllByPharmacyId.sql" />
