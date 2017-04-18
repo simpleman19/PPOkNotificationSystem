@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Code";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4" style="text-align: center;">
+            <h2 style="margin-bottom: 20px; margin-top: 40px;">Patient Login Code</h2>
+            
+            <p>You should receive a text message shortly with your one-time login code. If you don't receive a text, please try again.</p>
+            @using (Html.BeginForm())
+            {
+                <div class="inner-addon left-addon" style="min-width: 100%;">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    <input type="text" name="logincode" class="form-control" placeholder="One-Time Login Code" style="min-width: 100%;" />
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <input type="submit" value="Request Login Code" class="btn btn-default" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

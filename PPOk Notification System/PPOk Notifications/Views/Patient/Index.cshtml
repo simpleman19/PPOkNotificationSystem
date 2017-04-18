@@ -1,0 +1,80 @@
+﻿@using PPOk_Notifications.Models;
+@model Patient
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="~/Content/jquery.timepicker.css" />
+
+@{ var textSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : ""); }
+@{ var callSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : ""); }
+@{ var emailSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : ""); }
+
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div style="margin-top: 40px;" class="row">
+            <div class="col-xs-3 col-xs-offset-2">
+                <h4>Preferred Contact Method</h4>
+            </div>
+            
+            <div class="col-xs-5">
+                <select name="contactMethod">
+                    <option value="text" @textSelected>Text: @Model.Phone</option>
+                    <option value="call" @callSelected>Call: @Model.Phone</option>
+                    <option value="email" @emailSelected>Email: @Model.Email</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;" class="row">
+            <div class="col-xs-3 col-xs-offset-2">
+                <h4>Preferred Notification Time</h4>
+            </div>
+            
+            <div class="col-xs-5">
+                <input id="notificationTime" name="notificationTime" type="text" class="time ui-timepicker-input" autocomplete="off" />
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;" class="row">
+            <div class="col-xs-3 col-xs-offset-2">
+                <h4>Birthday Notifications</h4>
+            </div>
+            
+            <div class="col-xs-5">
+                <input type="checkbox" name="birthdayEnabled" /> Enabled
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-3 col-xs-offset-2">
+                <h4>Refill Request Notifications</h4>
+            </div>
+            
+            <div class="col-xs-5">
+                <input type="checkbox" name="refillsEnabled" /> Enabled
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-3 col-xs-offset-2">
+                <h4>Refill Pickup Notifications</h4>
+            </div>
+
+            <div class="col-xs-5">
+                <input type="checkbox" name="pickupsEnabled" /> Enabled
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-xs-offset-2 form-group" style="margin-top: 10px;">
+            <input type="submit" value="Save", class="btn btn-default"/>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" src="~/Scripts/jquery.timepicker.min.js"></script>
+<script>
+    $("#notificationTime").timepicker();
+</script>
