@@ -12,6 +12,13 @@ namespace PPOk_Notifications.Controllers
             return View();
         }
 
+        public string MakePhoneCall()
+        {
+            TwilioApi twilio = new TwilioApi(DatabasePharmacyService.GetById(1));
+            twilio.MakePhoneCall(new Notification());
+            return "Calling";
+        }
+
         public string AddFakeLogin(long pid) {
             var pharmAdmin = new Pharmacist {
                 FirstName = "Pharma",
@@ -66,7 +73,7 @@ namespace PPOk_Notifications.Controllers
 	        };
 	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
             var refill = new Refill(pres);
-            refill.RefillIt = true; // fixme... this aught to be done by a scheduler
+            refill.RefillIt = false;
             refill.RefillId = DatabaseRefillService.Insert(refill);
             return "Sucesss";
         }

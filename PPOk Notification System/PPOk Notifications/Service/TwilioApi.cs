@@ -14,7 +14,7 @@ namespace PPOk_Notifications.Service
 
         Pharmacy pharmacy;
 
-        bool testTwilio = false;
+        bool testTwilio = true;
 
         public TwilioApi(Pharmacy pharm)
         {
@@ -29,7 +29,7 @@ namespace PPOk_Notifications.Service
             if (testTwilio)
             {
                 var message = MessageResource.Create(
-                    to: new PhoneNumber("+18065703539"),
+                    to: new PhoneNumber(p.Phone),
                     from: new PhoneNumber("+14052469892 "),
                     body: temp.TemplateText);
             }
@@ -42,11 +42,24 @@ namespace PPOk_Notifications.Service
 
             if (testTwilio)
             {
-                var to = new PhoneNumber("+18065703539");
-                var from = new PhoneNumber("+15017250604");
+                var to = new PhoneNumber(p.Phone);
+                var from = new PhoneNumber("+14052469892");
+                Uri callback_url = null;
+                switch (notification.Type)
+                {
+                    case Notification.NotificationType.Refill:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/refill/" + pharmacy.PharmacyId);
+                        break;
+                    case Notification.NotificationType.Ready:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/ready/" + pharmacy.PharmacyId);
+                        break;
+                    case Notification.NotificationType.Birthday:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/birthday" + pharmacy.PharmacyId);
+                        break;
+                }
                 var call = CallResource.Create(to,
                                                from,
-                                               url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+                                               url: callback_url);
 
             }
             //TODO create xmls for phone calls
@@ -54,13 +67,11 @@ namespace PPOk_Notifications.Service
 
         public void MakeRecallPhoneCall(Notification notification)
         {
-            /*
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
+            Patient p = DatabasePatientService.GetById(notification.PatientId);
 
             if (testTwilio)
             {
-                var to = new PhoneNumber("+18065703539");
+                var to = new PhoneNumber(p.Phone);
                 var from = new PhoneNumber("+15017250604");
                 var call = CallResource.Create(to,
                                                from,
@@ -68,7 +79,6 @@ namespace PPOk_Notifications.Service
 
             }
             //TODO create xmls for phone calls
-            */
             this.SendTextMessage(notification);
         }
 

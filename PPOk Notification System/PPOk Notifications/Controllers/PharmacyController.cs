@@ -97,7 +97,6 @@ namespace PPOk_Notifications.Controllers
         }
         #endregion
 
-
         #region Refills
         /// //////////////////////////////////////////////////////////
         /// Refills

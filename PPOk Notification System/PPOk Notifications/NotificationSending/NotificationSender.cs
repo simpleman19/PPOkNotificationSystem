@@ -99,7 +99,7 @@ namespace PPOk_Notifications.NotificationSending
                 switch(p.ContactMethod)
                 {
                     case Patient.PrimaryContactMethod.Call:
-                        twilio.SendTextMessage(n);
+                        twilio.MakePhoneCall(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
 
