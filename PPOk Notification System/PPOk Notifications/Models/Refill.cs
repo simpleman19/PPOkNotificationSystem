@@ -34,7 +34,6 @@ namespace PPOk_Notifications.Models
             Refilled = false;
             RefillIt = false;
             var notification = Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
-
             DatabaseNotificationService.Insert(notification);
         }
         

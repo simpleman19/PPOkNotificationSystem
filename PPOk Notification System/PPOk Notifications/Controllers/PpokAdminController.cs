@@ -10,12 +10,6 @@ namespace PPOk_Notifications.Controllers
     [Authenticate(Group.PPOkAdmin)]
     public class PpokAdminController : Controller
     {
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return RedirectToAction("PharmacyListView");
-        }
-
         // returned view for seeing a list of pharmacies
         // can add to list
         // can select edit/view/delete from list

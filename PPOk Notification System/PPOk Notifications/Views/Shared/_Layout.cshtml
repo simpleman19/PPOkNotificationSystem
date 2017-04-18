@@ -65,8 +65,8 @@
                 {
                     <li><a href="~/Pharmacy/RefillListView">Refills</a></li>
                     <li><a href="~/Notification/NotificationList">Notifications</a></li>
-                    <li><a href="~/Pharmacy/UploadRecalls">Recalls</a></li>
                     <li><a href="~/Pharmacy/PatientListView">Patients</a></li>
+                    <li><a href="~/Pharmacy/UploadRecalls">Uploads</a></li>
                 }
                 @if (ppokAdmin)
                 {
@@ -91,17 +91,7 @@
     </div>
 </div>
 
-<div class="site-content container body-content">
-    @if (pharmacist)
-    {
-        <div class="row">
-            <div class="col-xs-2 col-xs-offset-10">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" style="margin:10px;">
-                    Upload Patient File
-                </button>
-            </div>
-        </div>
-    }
+<div class="site-content container body-content" style="margin-top: 30px">
     @RenderBody()
 </div>
 <div class="body-content">
@@ -110,40 +100,5 @@
         <p>&copy; @DateTime.Now.Year - PPOk Notification Scheduler</p>
     </footer>
 </div>
-
-@if (loggedIn)
-    {
-    <!-- Modal for upload -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Upload Patient Data</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary()
-
-                            <div class="form-group">
-                                <input type="file" id="dataFile" name="upload" />
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" value="Upload" class="btn btn-default" />
-                            </div>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 </body>
 </html>

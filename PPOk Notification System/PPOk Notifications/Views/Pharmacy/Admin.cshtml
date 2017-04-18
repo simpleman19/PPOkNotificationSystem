@@ -3,7 +3,7 @@
 @model PPOk_Notifications.Models.Pharmacy
 @{
     ViewBag.Title = "Admin";
-    List<Pharmacist> pharms = DatabasePharmacistService.GetAllByPharmacyId(Model.PharmacyId);
+    List<Pharmacist> pharms = DatabasePharmacistService.GetAllByPharmacyIdActive(Model.PharmacyId);
 }
 
 <style>

@@ -56,7 +56,7 @@ namespace PPOk_Notifications.Models
                 return _PatientDict;
             }
         }
-        public static bool _PatientDictInvalid = false;
+        public static bool _PatientDictInvalid = true;
 
         public static bool PatientDictInvalid
         {

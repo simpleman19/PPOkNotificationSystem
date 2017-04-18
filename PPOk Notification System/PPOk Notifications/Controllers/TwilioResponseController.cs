@@ -36,12 +36,10 @@ namespace PPOk_Notifications.Controllers
                         new XAttribute("numDigits", "1"),
                         new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/refillresponse"),
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                     message
                                 )
                           ),
                     new XElement("Say",
-                        new XAttribute("voice", "female"),
                         "We didn't recieve any input, Goodbye!")
                     )
                 );
@@ -73,7 +71,6 @@ namespace PPOk_Notifications.Controllers
                 var xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                 "Your refill will be ready shortly.")
                                 )
                     );
@@ -84,7 +81,6 @@ namespace PPOk_Notifications.Controllers
                 var xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                 "Connecting you to a pharmacist."),
                         new XElement("Dial",
                         "+18065703539")
@@ -97,7 +93,6 @@ namespace PPOk_Notifications.Controllers
                 var xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                 "Unrecognized Input, Goodbye")
                                 )
                     );
@@ -109,9 +104,7 @@ namespace PPOk_Notifications.Controllers
         #region Recall
         public ActionResult Recall(long id)
         {
-            Pharmacy p = DatabasePharmacyService.GetById(id);
-            p.GetTemplates();
-            string message = p.GetRecallTemplate().TemplatePhone;
+            var n = DatabaseNotificationService.GetById(id);
             var xml = new XDocument(
                 new XElement("Response",
                     new XElement("Gather",
@@ -119,13 +112,11 @@ namespace PPOk_Notifications.Controllers
                         new XAttribute("numDigits", "1"),
                         new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/recallresponse"),
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
-                                    message
+                                    n.NotificationMessage
                                 )
                           ),
                     new XElement("Say",
-                        new XAttribute("voice", "female"),
-                        "We didn't recieve any input, Goodbye!")
+                        "Goodbye!")
                     )
                 );
             return new XmlActionResult(xml);
@@ -140,7 +131,6 @@ namespace PPOk_Notifications.Controllers
                 var xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                 "Connecting you to a pharmacist."),
                         new XElement("Dial",
                         "+18065703539")
@@ -153,7 +143,6 @@ namespace PPOk_Notifications.Controllers
                 var xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                 "Unrecognized Input, Goodbye")
                                 )
                     );
@@ -175,12 +164,10 @@ namespace PPOk_Notifications.Controllers
                         new XAttribute("numDigits", "1"),
                         new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/readyresponse"),
                             new XElement("Say",
-                                new XAttribute("voice", "female"),
                                     message
                                 )
                           ),
                     new XElement("Say",
-                        new XAttribute("voice", "female"),
                         "We didn't recognize that input, Goodbye!")
                     )
                 );

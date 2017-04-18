@@ -64,8 +64,13 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult DeletePharmacist(long id)
         {
+            long pharmacyId = DatabasePharmacistService.GetById(id).PharmacyId;
             DatabasePharmacistService.Disable((int)id);
-            return RedirectToAction("PhamacistListView");
+            if (DatabaseUserService.GetById((long)Session["user_id"]).Type == Models.User.UserType.PPOkAdmin)
+            {
+                return RedirectToAction("AddorEditPharmacy", "PpokAdmin", new { id = pharmacyId });
+            }
+            return RedirectToAction("Admin", "Pharmacy");
         }
         #endregion
 
@@ -321,7 +326,9 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult UploadRecalls()
         {
-            return View();
+            var pharm = DatabasePharmacyService.GetById((long)Session["pharm_id"]);
+            pharm.GetTemplates();
+            return View(pharm);
         }
 
 
@@ -330,6 +337,8 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult UploadRecalls(HttpPostedFileBase upload, string recallMessage)
         {
+            var pharm = DatabasePharmacyService.GetById((long)Session["pharm_id"]);
+            pharm.GetTemplates();
             if (ModelState.IsValid)
             {
 
@@ -362,13 +371,14 @@ namespace PPOk_Notifications.Controllers
                             patient.UserId = id;
                             patient.PatientId = DatabasePatientService.Insert(patient);
                             var notification = new Notification(DateTime.Now, patient.PatientId, Notification.NotificationType.Recall, recallMessage);
+                            DatabasePatientService.Disable(patient.PatientId);
                             DatabaseNotificationService.Insert(notification);
                         }
                     }
                     else
                     {
                         ModelState.AddModelError("File", "This file format is not supported");
-                        return View();
+                        return View(pharm);
                     }
                 }
                 else
@@ -376,7 +386,7 @@ namespace PPOk_Notifications.Controllers
                     ModelState.AddModelError("File", "Please Upload Your file");
                 }
             }
-            return View();
+            return View(pharm);
         }
         #endregion
 
@@ -385,7 +395,7 @@ namespace PPOk_Notifications.Controllers
         /// Administrators
         /// //////////////////////////////////////////////////////////
 
-        [Authenticate(Group.PharmacyAdmin)]
+        [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult Admin()
         {
             var id = DatabasePharmacistService.GetByUserId((long)Session[Login.UserIdSession]).PharmacyId;
@@ -396,7 +406,7 @@ namespace PPOk_Notifications.Controllers
         }
 
         [HttpPost]
-        [Authenticate(Group.PharmacyAdmin)]
+        [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult Admin(
             string refillTextTemplate, string refillPhoneTemplate, string refillEmailTemplate,
             string pickupTextTemplate, string pickupPhoneTemplate, string pickupEmailTemplate,

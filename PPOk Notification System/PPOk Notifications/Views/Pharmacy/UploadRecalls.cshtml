@@ -1,5 +1,15 @@
-﻿<div class="row">
-    <div class="col-xs-2 col-xs-offset-5">
+﻿@using PPOk_Notifications.Models;
+@model Pharmacy
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-2">
+        <h2>Upload Patient File</h2>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" style="margin:10px;">
+            Upload Patient File
+        </button>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+        <h2>Upload Recalls</h2>
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal1" style="margin:10px;">
             Upload Recall File
         </button>
@@ -26,13 +36,45 @@
                     </div>
 
                     <div class="form-group">
-                       <input type="submit" value="Upload" class="btn btn-default" />
+                        <label for="message-text" name="recallMessage" class="form-control-label">Message:</label>
+                        <textarea class="form-control" id="message-text" name="recallMessage">@Model.GetRecallTemplate().TemplatePhone</textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="message-text" name="recallMessage" class="form-control-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <input type="submit" value="Upload" class="btn btn-default" />
                     </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal for upload -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload Patient Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Upload", "Pharmacy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+
+                    <div class="form-group">
+                        <input type="file" id="dataFile" name="upload" />
+                    </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Upload" class="btn btn-default" />
+                            </div>
                 }
             </div>
             <div class="modal-footer">
