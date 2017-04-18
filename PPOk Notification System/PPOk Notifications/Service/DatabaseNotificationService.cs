@@ -86,6 +86,12 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_date"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
+		public static List<Notification> GetDateRange(DateTime BeginDate, DateTime EndDate) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_date"], new { BeginDate = BeginDate, EndDate = EndDate }).AsList();
+			}
+		}
 		public static List<Notification> GetDateRange(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
@@ -98,16 +104,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_time"]).AsList();
 			}
 		}
-		public static List<Notification> GetFutureTime(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
+		public static List<Notification> GetFutureTime(long pharmacy_id) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
-				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_time"], new { pharmacy_id = pharmacy_id, BeginDate = BeginDate, EndDate = EndDate}).AsList();
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_time"], new { pharmacy_id = pharmacy_id}).AsList();
 			}
 		}
-		public static List<Notification> GetTimeRange(long pharmacy_id) {
+		public static List<Notification> GetTimeRange(DateTime BeginDate, DateTime EndDate) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
-				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_range_time"], new { pharmacy_id = pharmacy_id }).AsList();
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_time"], new { BeginDate = BeginDate , EndDate = EndDate }).AsList();
+			}
+		}
+		public static List<Notification> GetTimeRange(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_range_time"], new { pharmacy_id = pharmacy_id, BeginDate = BeginDate, EndDate = EndDate }).AsList();
 			}
 		}
 		#endregion

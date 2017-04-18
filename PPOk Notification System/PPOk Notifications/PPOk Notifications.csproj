@@ -605,6 +605,8 @@
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId.sql" />
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Future_Date.sql" />
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Future_Time.sql" />
+    <Content Include="Service\SQL\Notification_GetAll_Range_Time.sql" />
+    <Content Include="Service\SQL\Notification_GetAll_Range_Date.sql" />
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Range_Date.sql" />
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Range_Time.sql" />
     <Content Include="Service\SQL\Notification_GetAllByPharmacyId_Today.sql" />
