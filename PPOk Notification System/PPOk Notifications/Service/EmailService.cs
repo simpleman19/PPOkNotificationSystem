@@ -8,6 +8,12 @@ using PPOk_Notifications.Models;
 namespace PPOk_Notifications.Service {
 	public static class EmailService {
 
+		/**
+		 * Send a compiled MailMessage from the configured credentials
+		 * 
+		 * @param - MailMessage - compiled message to send
+		 * @returns - bool - result of sending the email
+		 */
 		public static bool SendEmail(MailMessage message) {
 			try {
 				using (var smtp = new SmtpClient()) {
@@ -28,10 +34,22 @@ namespace PPOk_Notifications.Service {
 			return true;
 		}
 
+		/**
+		 * Send a notification via email
+		 * 
+		 * @param - Notification - the notification to be compiled and sent
+		 * @returns - bool - result of sending the email
+		 */
 		public static bool SendNotification(Notification notification) {
 			return SendEmail(Build(notification));
 		}
 
+		/**
+		 * Send password reset email
+		 * 
+		 * @param - User - a user for which to request a password reset
+		 * @returns - bool - result of sending the email
+		 */
 		public static bool SendReset(User user) {
 			var message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email));
@@ -56,6 +74,15 @@ namespace PPOk_Notifications.Service {
 
 			return SendEmail(message);
 		}
+
+		/**
+		 * Compiles a notification into an email. Fills template placeholders
+		 * with actual data, sets proper email parameters, and renders the body
+		 * of the email based on notification type.
+		 * 
+		 * @param - Notifiation - the notification to compile
+		 * @returns - MailMessage - the compiled email with rendered body
+		 */
 		public static MailMessage Build(Notification notification) {
 
 			//Get necessary data to build and format the email
@@ -147,6 +174,10 @@ namespace PPOk_Notifications.Service {
 		}
 	}
 
+	/**
+	 * This class specifies the various HTML template files and loads them
+	 * at startup in order to serve them to the email compiling service
+	 */
 	public class EmailHtmlLoader {
 
 		public static string TemplateHtml { get; private set; }
@@ -158,6 +189,10 @@ namespace PPOk_Notifications.Service {
 		public static string ResetHtml { get; private set; }
 		
 
+		/**
+		 * Loads emails from the emailHTML directory. This emthod is run
+		 * at startup in order to load dynamic templates.
+		 */
 		public static void Init() {
 			TemplateHtml = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Service\EmailHTML\template.html");
 			BirthdayHtml = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Service\EmailHTML\birthday.html");

@@ -6,7 +6,12 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
+	/**
+	 * Debugging purposes only, this inserts random data, resets the entire system
+	 * and can cause serious damage to a system in use.
+	 */
     public class TestController : Controller {
+
         // GET: Debug
         public ActionResult Index() {
             return View();
@@ -96,11 +101,13 @@ namespace PPOk_Notifications.Controllers
             return "success";
         }
 
+		//Resets the entire databse
         public string Reset() {
             var result = DatabaseService.Rebuild();
 	        return result ? "Success" : "Failure";
         }
 
+		//Prints out a text list of all the SQL scripts loaded by the system
         public string SqlScripts() {
             var debug = ScriptService.Scripts.Keys.Aggregate("", (current, key) => current + (key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>"));
 	        if (ScriptService.Scripts.Count == 0) {
@@ -109,6 +116,7 @@ namespace PPOk_Notifications.Controllers
             return debug;
         }
 
+		//Inserts default information for testing
         public string InsertFake() {
             var output = "";
             var pharmID = Pharmacy.FakeDataFill();
@@ -117,6 +125,7 @@ namespace PPOk_Notifications.Controllers
             return output;
         }
 
+		//Resets the database and inserts default data
         public string ResetAndInsert() {
             var output = "";
             output += "\n" + this.Reset();
@@ -124,10 +133,12 @@ namespace PPOk_Notifications.Controllers
             return output;
         }
 
+		//Prints a random OTP string without creating the object
 		public string GetRandomOTP() {
 			return OTPService.RandomString(64);
 		}
 
+		//Sends test emails with working callbacks to the email specified
 	    public string SendTestEmail() {
 
 			var u = new User();
