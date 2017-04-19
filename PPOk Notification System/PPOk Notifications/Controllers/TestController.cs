@@ -29,7 +29,7 @@ namespace PPOk_Notifications.Controllers
                 FirstName = "Pharma",
                 LastName = "cist",
                 Phone = "+19999999993",
-                Email = "test@test.com",
+                Email = "pharm@test.com",
                 PharmacyId = pid,
                 UserId = 1,
                 IsAdmin = true,
