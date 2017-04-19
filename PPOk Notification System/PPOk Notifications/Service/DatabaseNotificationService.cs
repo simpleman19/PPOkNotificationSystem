@@ -87,10 +87,18 @@ namespace PPOk_Notifications.Service {
 			}
 		}
 		public static List<Notification> GetDateRange(DateTime BeginDate, DateTime EndDate) {
-			using (var db = DatabaseService.Connection) {
-				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
-				return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_date"], new { BeginDate = BeginDate, EndDate = EndDate }).AsList();
-			}
+            try
+            {
+                using (var db = DatabaseService.Connection)
+                {
+                    Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+                    return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_date"], new { BeginDate = BeginDate, EndDate = EndDate }).AsList();
+                }
+            } catch(Exception e)
+            {
+                return null;
+            }
+
 		}
 		public static List<Notification> GetDateRange(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
 			using (var db = DatabaseService.Connection) {

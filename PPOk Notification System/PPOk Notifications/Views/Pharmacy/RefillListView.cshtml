@@ -1,5 +1,5 @@
 ﻿@using PPOk_Notifications.Models
-@model Tuple<IEnumerable<KeyValuePair<Refill, Prescription>>, Dictionary<Refill, Prescription>>
+@model Tuple<List<Refill>, List<Refill>, Dictionary<long, Prescription>>
 
 @{
     ViewBag.Title = "Refill List";
@@ -36,8 +36,8 @@
     <tbody>
         @foreach (var item in Model.Item1)
         {
-            var prescription = item.Value;
-            var refill = item.Key;
+            var prescription = Model.Item3[item.PrescriptionId];
+            var refill = item;
             Patient patient = patientDict[prescription.PatientId];
             string style = refill.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
@@ -57,7 +57,7 @@
                     @Html.DisplayFor(modelItem => refill.RefillDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Set Filled", "SetFilled", new { id = refill.RefillId }) 
+                    @Html.ActionLink("Set Filled" , "SetFilled", new { id = refill.RefillId }) 
                     | 
                     @Html.ActionLink("Delete", "DeleteRefill", new { id = refill.RefillId })
                 </td>
@@ -97,8 +97,8 @@
     <tbody>
         @foreach (var item in Model.Item2)
         {
-            var prescription = item.Value;
-            var refill = item.Key;
+            var prescription = Model.Item3[item.PrescriptionId];
+            var refill = item;
             Patient patient = patientDict[prescription.PatientId];
             string style = refill.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
@@ -118,7 +118,7 @@
                     @Html.DisplayFor(modelItem => refill.RefillDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Set Filled", "SetFilled", new { id = refill.RefillId })
+                    @Html.ActionLink(((refill.Refilled) ? "Send Reminder" : "Set Filled"), "SetFilled", new { id = refill.RefillId })
                     |
                     @Html.ActionLink("Delete", "DeleteRefill", new { id = refill.RefillId })
                 </td>

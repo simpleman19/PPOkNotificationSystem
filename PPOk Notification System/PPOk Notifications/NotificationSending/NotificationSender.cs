@@ -12,7 +12,7 @@ namespace PPOk_Notifications.NotificationSending
     public class NotificationSender : IRegisteredObject
     {
         private readonly string _path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        private const int MinsBetweenSending = 1;
+        private const int MinsBetweenSending = 2;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -125,7 +125,19 @@ namespace PPOk_Notifications.NotificationSending
 
         private List<Notification> getNotifications()
         {
-            var list = DatabaseNotificationService.GetAllActive();
+            var tempList = DatabaseNotificationService.GetDateRange(DateTime.Now.AddYears(-100), DateTime.Now);
+            List<Notification> list = new List<Notification>();
+            if (tempList == null)
+            {
+                tempList = new List<Notification>();
+            }
+            foreach (var n in tempList)
+            {
+                if (!n.Sent && n.ScheduledTime.Date <= DateTime.Now.Date && Patient.PatientDict[n.PatientId].PreferedContactTime.TimeOfDay <= DateTime.Now.TimeOfDay && Patient.PatientDict[n.PatientId].PharmacyId == 1)
+                {
+                    list.Add(n);
+                }
+            }
             // TODO add birthdays and get not sent but before current datetime
             return list;
         }

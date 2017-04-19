@@ -59,10 +59,10 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    @item.DateOfBirth.ToShortDateString()
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PreferedContactTime)
+                    @item.PreferedContactTime.ToShortTimeString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ContactMethod)
@@ -82,7 +82,6 @@
     $(document).ready(function () {
         pharmacy_table = $('#patient_list').DataTable({
             "dom": '<"pull-left"f><"pull-right"l>tip',
-            "paging": false,
             language: {
                 searchPlaceholder: "Search Patients"
             }

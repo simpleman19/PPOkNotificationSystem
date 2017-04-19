@@ -35,6 +35,7 @@ namespace PPOk_Notifications.Controllers
             return View(notifications);
         }
 
+        [HttpPost]
         public ActionResult GetNotifications(string datePicker1, string datePicker2)
         {
             var date1 = DateTime.Parse(datePicker1);
@@ -44,6 +45,16 @@ namespace PPOk_Notifications.Controllers
             List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], date1, date2);
             return View("NotificationList", notifications);
         }
+
+        [HttpGet]
+        public ActionResult GetNotifications()
+        {
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], DateTime.Now, @DateTime.Now.AddDays(7));
+            ViewBag.date1 = @DateTime.Now.ToShortDateString();
+            ViewBag.date2 = @DateTime.Now.AddDays(7).ToShortDateString();
+            return View(notifications);
+        }
+
 
         public ActionResult DeleteNotification(long id)
         {

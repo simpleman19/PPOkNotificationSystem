@@ -90,12 +90,23 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult RefillListView()
         {
-            var refills = DatabasePrescriptionService.GetAllWithRefill((long)Session["pharm_id"]);
-            var ready = from e in refills
-                        where e.Key.RefillIt
-                        select e;
-
-            return View("RefillListView", Tuple.Create(ready, refills));
+            var refills = DatabaseRefillService.GetAllActive((long)Session["pharm_id"]);
+            var ready = DatabaseRefillService.GetRespondedActive((long) Session["pharm_id"]);
+            List<Refill> readyList = new List<Refill>();
+            foreach (var r in ready)
+            {
+                if (!r.Refilled)
+                {
+                    readyList.Add(r);
+                }
+            }
+            var prescription = DatabasePrescriptionService.GetAll();
+            Dictionary<long, Prescription> prescriptionDict = new Dictionary<long, Prescription>();
+            foreach (var p in prescription)
+            {
+                prescriptionDict.Add(p.PrescriptionId, p);
+            }
+            return View("RefillListView", Tuple.Create(readyList, refills, prescriptionDict));
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
@@ -105,7 +116,7 @@ namespace PPOk_Notifications.Controllers
             r.SetFilled();
             DatabaseRefillService.Update(r);
 
-            return RefillListView();
+            return RedirectToAction("RefillListView", "Pharmacy");
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
