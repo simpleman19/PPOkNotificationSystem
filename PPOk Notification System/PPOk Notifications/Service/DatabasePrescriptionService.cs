@@ -50,6 +50,7 @@ namespace PPOk_Notifications.Service {
 				db.Query<Refill, Prescription, Prescription>(ScriptService.Scripts["prescription_getallwithrefills"],
 					(r, p) => {
 						dict.Add(r, p);
+					    r.PrescriptionId = p.PrescriptionId;
 						return p;
 					},
 				    new { pharmacy_id = pharmacy_id },
