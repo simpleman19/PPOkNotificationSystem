@@ -161,7 +161,9 @@ namespace PPOk_Notifications.Controllers
         #region Ready
         public ActionResult Ready(long id)
         {
-            Pharmacy p = DatabasePharmacyService.GetById(id);
+            var n = DatabaseNotificationService.GetById(id);
+            var pat = DatabasePatientService.GetById(n.PatientId);
+            Pharmacy p = DatabasePharmacyService.GetById(pat.PharmacyId);
             p.GetTemplates();
             string message = p.GetReadyTemplate().TemplatePhone;
             var xml = new XDocument(
