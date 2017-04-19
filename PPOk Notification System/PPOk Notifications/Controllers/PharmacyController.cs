@@ -294,6 +294,8 @@ namespace PPOk_Notifications.Controllers
             return View(pharmacy);
         }
 
+        // This is kinda bad, but it's a controller method, so it's never called manually.
+        // Just didn't quite get around to moving this to a POCO :(
         [HttpPost]
         [Authenticate(Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult Admin(
