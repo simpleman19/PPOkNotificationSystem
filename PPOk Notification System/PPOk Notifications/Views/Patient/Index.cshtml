@@ -1,18 +1,23 @@
-﻿@using PPOk_Notifications.Models;
+﻿@using System.Globalization
+@using PPOk_Notifications.Models;
 @model Patient
 
 @{
     ViewBag.Title = "Index";
-    Model.LoadUserData();
 }
 
 <link rel="stylesheet" href="~/Content/jquery.timepicker.css" />
 
-@{ var textSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : ""); }
-@{ var callSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : ""); }
-@{ var emailSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : ""); }
+@{
+    var textSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : "");
+    var callSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : "");
+    var emailSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : "");
+    var birthdayEnabled = new HtmlString(Model.SendBirthdayMessage ? "checked" : "");
+    var refillsEnabled = new HtmlString(Model.SendRefillMessage ? "checked" : "");
+    var time = Model.PreferedContactTime.ToString("hh:mmtt", CultureInfo.InvariantCulture);
+}
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index"))
 {
     string alignment = "col-xs-4 col-xs-offset-2";
     string alignment2 = "col-xs-5";
@@ -30,6 +35,7 @@
                         <option value="text" @textSelected>Text: @Model.Phone</option>
                         <option value="call" @callSelected>Call: @Model.Phone</option>
                         <option value="email" @emailSelected>Email: @Model.Email</option>
+                        <option value="optout">Opt-out</option>
                     </select>
                 </div>
             </div>
@@ -40,7 +46,7 @@
                 </div>
 
                 <div class="@alignment2" style="margin-top: 10px;">
-                    <input id="notificationTime" name="notificationTime" type="text" class="time ui-timepicker-input" autocomplete="off" /> 
+                    <input id="notificationTime" name="notificationTime" type="text" class="time ui-timepicker-input" autocomplete="off" value="@time"/>
                 </div>
             </div>
 
@@ -50,7 +56,7 @@
                 </div>
 
                 <div class="@alignment2" style="margin-top: 10px;">
-                    <input type="checkbox" name="birthdayEnabled" /> Enabled
+                    <input type="checkbox" name="birthdayEnabled" @birthdayEnabled /> Enabled
                 </div>
             </div>
 
@@ -60,17 +66,7 @@
                 </div>
 
                 <div class="@alignment2" style="margin-top: 10px;">
-                    <input type="checkbox" name="refillsEnabled" /> Enabled
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="@alignment">
-                    <h4>Refill Pickup Notifications</h4>
-                </div>
-
-                <div class="@alignment2" style="margin-top: 10px;">
-                    <input type="checkbox" name="pickupsEnabled" /> Enabled
+                    <input type="checkbox" name="refillsEnabled" @refillsEnabled /> Enabled
                 </div>
             </div>
 

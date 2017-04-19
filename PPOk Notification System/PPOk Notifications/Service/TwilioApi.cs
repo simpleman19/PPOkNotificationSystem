@@ -10,9 +10,7 @@ namespace PPOk_Notifications.Service
     public class TwilioApi
     {
         private const string AccountSid = "AC2fcaf6f7256a0f7891903318195c9e01";
-        //private const string AccountSid = "AC959383919ad257c0c8c69bb8b358ff43";
         private const string AuthToken = "7504188a03f5969ff3549eaf8fba3e9c";
-        //private const string AuthToken = "85231a1a333ad4fbbc61eaed854e492b";
 
         readonly Pharmacy pharmacy;
 

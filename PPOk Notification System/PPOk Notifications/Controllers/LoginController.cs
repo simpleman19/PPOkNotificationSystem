@@ -19,7 +19,7 @@ namespace PPOk_Notifications.Controllers
                 }
             }
 
-            return View();
+            return View("Index");
         }
 
         [HttpPost]
@@ -28,16 +28,16 @@ namespace PPOk_Notifications.Controllers
             var login = Login.GetLogin(email);
             if (login == null)
             {
-                return View(false);
+                return View("Index", false);
             }
 
             if (!login.CheckPassword(password))
             {
-                return View(false);
+                return View("Index", false);
             }
 
             Session[Login.UserIdSession] = login.UserId;
-            return RedirectToProperPage(login.UserId) ?? View(false);
+            return RedirectToProperPage(login.UserId) ?? View("Index", false);
         }
 
         private ActionResult RedirectToProperPage(long userId)
@@ -58,17 +58,17 @@ namespace PPOk_Notifications.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
-            return RedirectToAction("Index");
+            return Index();
         }
 
-        public ActionResult ResetResult()
+        public ActionResult ResetResult(ResetResults? results)
         {
-            return View();
+            return View("ResetResult", results);
         }
 
         public ActionResult ResetRequest()
         {
-            return View();
+            return View("ResetRequest");
         }
 
         [HttpPost]
@@ -77,16 +77,16 @@ namespace PPOk_Notifications.Controllers
             var user = DatabaseUserService.GetByEmail(email);
             if (user == null)
             {
-                return RedirectToAction("Index");
+                return Index();
             }
 
             EmailService.SendReset(user);
-            return RedirectToAction("ResetRequestSent");
+            return ResetRequestSent();
         }
 
         public ActionResult ResetRequestSent()
         {
-            return View();
+            return View("ResetRequestSent");
         }
 
         [HttpPost]
@@ -95,7 +95,7 @@ namespace PPOk_Notifications.Controllers
             var otp = DatabaseOtpService.GetByCode(otpCode);
             if (otp == null || !otp.IsActive())
             {
-                return RedirectToAction("Index");
+                return Index();
             }
             DatabaseOtpService.Disable(otp.Id);
 
@@ -103,22 +103,22 @@ namespace PPOk_Notifications.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("Index");
+                return Index();
             }
 
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirm_password))
             {
-                return RedirectToAction("ResetResult", ResetResults.PasswordNotSet);
+                return ResetResult(ResetResults.PasswordNotSet);
             }
 
             if (password != confirm_password)
             {
-                return RedirectToAction("ResetResult", ResetResults.PasswordsDontMatch);
+                return ResetResult(ResetResults.PasswordsDontMatch);
             }
 
             user.SetPassword(password);
 
-            return RedirectToAction("ResetResult");
+            return ResetResult(null);
         }
 
         public enum ResetResults
