@@ -224,10 +224,11 @@ namespace PPOk_Notifications.Controllers
             if (Request["body"].ToLower() == "yes")
             {
                 var users = DatabaseUserService.GetMultipleByPhone(Request["from"]);
-                User user = null;
+                Patient user = null;
+                Notification newest = null;
                 foreach (var u in users)
                 {
-                    var patT = DatabasePatientService.GetByUserIdActive(user.UserId);
+                    var patT = DatabasePatientService.GetByUserIdActive(u.UserId);
                     var notificationsT = DatabaseNotificationService.GetByPatientId(patT.PatientId);
                     var newestT = notificationsT[0];
                     foreach (var n in notificationsT)
@@ -240,21 +241,14 @@ namespace PPOk_Notifications.Controllers
                     if (newestT.Sent && newestT.SentTime > DateTime.Now.AddMinutes(-10))
                     {
                         user = patT;
+                        newest = newestT;
                     }
                 }
-                var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
-                var notifications = DatabaseNotificationService.GetByPatientId(pat.PatientId);
-                var newest = notifications[0];
-                foreach (var n in notifications)
-                {
-                    if (newest.SentTime > n.SentTime)
-                    {
-                        newest = n;
-                    }
-                }
+                user.LoadUserData();
                 newest.NotificationResponse = Request["body"];
                 DatabaseNotificationService.Update(newest);
-                var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrescriptionId);
+                var pres = DatabasePrescriptionService.GetByPatientId(user.PatientId);
+                var refill = DatabaseRefillService.GetByPrescriptionId(pres.PrescriptionId);
                 refill.RefillIt = true;
                 DatabaseRefillService.Update(refill);
                 messagingResponse.Message("Thanks, your prescription will be ready shortly");
