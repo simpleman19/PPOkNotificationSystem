@@ -51,12 +51,13 @@ namespace PPOk_Notifications.Models
                         System.Diagnostics.Debug.WriteLine("adding " + p.PatientId);
                         p.LoadUserData();
                         _PatientDict.Add(p.PatientId, p);
+                        PatientDictInvalid = false;
                     }
                 }
                 return _PatientDict;
             }
         }
-        public static bool _PatientDictInvalid = true;
+        public static bool _PatientDictInvalid;
 
         public static bool PatientDictInvalid
         {

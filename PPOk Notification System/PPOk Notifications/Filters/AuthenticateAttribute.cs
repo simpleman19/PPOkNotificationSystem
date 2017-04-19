@@ -43,7 +43,7 @@ namespace PPOk_Notifications.Filters
             switch (user.Type)
             {
                 case User.UserType.Pharmacist:
-                    var pharmacist = DatabasePharmacistService.GetById((long) userId);
+                    var pharmacist = DatabasePharmacistService.GetByUserId((long) userId);
                     if (pharmacist.IsAdmin)
                     {
                         if (!_groups.Contains(Group.PharmacyAdmin))

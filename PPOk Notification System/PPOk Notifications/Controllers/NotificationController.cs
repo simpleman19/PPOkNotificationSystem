@@ -29,7 +29,7 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult NotificationList()
         {
-            List<Notification> notifications = DatabaseNotificationService.GetAllActive((long)Session["pharm_id"]);
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], DateTime.Now, @DateTime.Now.AddDays(7));
             ViewBag.date1 = @DateTime.Now.ToShortDateString();
             ViewBag.date2 = @DateTime.Now.AddDays(7).ToShortDateString();
             return View(notifications);
@@ -42,7 +42,7 @@ namespace PPOk_Notifications.Controllers
             ViewBag.date1 = date1.ToShortDateString();
             ViewBag.date2 = date2.ToShortDateString();
             System.Diagnostics.Debug.WriteLine(date1.ToLongDateString() + "  " + date2.ToLongDateString());
-            List<Notification> notifications = DatabaseNotificationService.GetAllInactive((long)Session["pharm_id"]);
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], date1, date2);
             return View("NotificationList", notifications);
         }
 

@@ -107,7 +107,7 @@ namespace PPOk_Notifications.NotificationSending
                         twilio.MakePhoneCall(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
-                        // TODO send email
+                        EmailService.SendNotification(n);
                         break;
                     case Patient.PrimaryContactMethod.Text:
                         twilio.SendTextMessage(n);

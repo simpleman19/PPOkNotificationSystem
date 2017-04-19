@@ -27,9 +27,16 @@ namespace PPOk_Notifications.Controllers
             // use sql to save pharmacist to db
             if (m.PharmacistId == 0)
             {
+                m.Type = Models.User.UserType.Pharmacist;
                 var phid = DatabaseUserService.Insert(m);
                 m.UserId = phid;
-                DatabasePharmacistService.Insert(m);
+                m.PharmacistId = DatabasePharmacistService.Insert(m);
+                var login = new Login();
+                login.LoginToken = "";
+                login.UserId = m.UserId;
+                login.SetPassword(Login.GetUniqueKey(32));
+                DatabaseLoginService.Insert(login);
+                EmailService.SendReset(m);
             }
             else
             {
@@ -82,16 +89,10 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult RefillListView()
         {
-            var refills = DatabaseRefillService.GetAllActive();
-            var ready = new List<Refill>();
-            foreach (var r in refills)
-            {
-                if (r.RefillIt)
-                {
-                    ready.Add(r);
-                }
-            }
-            return View(Tuple.Create(ready, refills));
+            var refills = DatabaseRefillService.GetAllActive((long)Session["pharm_id"]);
+            var ready = DatabaseRefillService.GetRespondedActive((long)Session["pharm_id"]);
+
+            return View("RefillListView", Tuple.Create(ready, refills));
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
@@ -101,7 +102,7 @@ namespace PPOk_Notifications.Controllers
             r.SetFilled();
             DatabaseRefillService.Update(r);
 
-            return RedirectToAction("RefillListView");
+            return RefillListView();
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
@@ -111,7 +112,7 @@ namespace PPOk_Notifications.Controllers
             r.RefillIt = false;
             DatabaseRefillService.Update(r);
 
-            return RedirectToAction("RefillListView");
+            return RefillListView();
         }
 
         // TODO     public ActionResult DeleteRefill(long id)
@@ -125,12 +126,12 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult PatientListView()
         {
-            var patients = DatabasePatientService.GetAllActive();
+            var patients = DatabasePatientService.GetAllActive((long)Session["pharm_id"]);
             foreach (var p in patients)
             {
                 p.LoadUserData();
             }
-            return View(patients);
+            return View("PatientListView", patients);
         }
 
         [HttpPost]
@@ -142,6 +143,7 @@ namespace PPOk_Notifications.Controllers
 
             if (m.PatientId == 0)
             {
+                m.PharmacyId = (long)Session["pharm_id"];
                 var pid = DatabaseUserService.Insert((User)m);
                 m.UserId = pid;
                 DatabasePatientService.Insert(m);
@@ -152,14 +154,14 @@ namespace PPOk_Notifications.Controllers
                 DatabasePatientService.Update(m);
             }
 
-            return RedirectToAction("PatientListView");
+            return PatientListView();
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult DeletePatient(long id)
         {
             DatabasePatientService.UpdateInactive(DatabasePatientService.GetById((int)id));
-            return RedirectToAction("PatientListView");
+            return PatientListView();
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
