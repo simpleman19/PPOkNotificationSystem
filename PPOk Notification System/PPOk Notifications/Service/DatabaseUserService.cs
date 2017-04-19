@@ -14,12 +14,12 @@ namespace PPOk_Notifications.Service {
 		#region Enable/Disable Operations
 		public static void Enable(long user_id) {
 			using (var db = DatabaseService.Connection) {
-				db.Execute(ScriptService.Scripts["user_enable"], user_id);
+				db.Execute(ScriptService.Scripts["user_enable"], new { UserId = user_id });
 			}
 		}
 		public static void Disable(long user_id) {
 			using (var db = DatabaseService.Connection) {
-				db.Execute(ScriptService.Scripts["user_disable"], new { user_id = user_id });
+				db.Execute(ScriptService.Scripts["user_disable"], new { UserId = user_id });
 			}
 		}
 		#endregion
