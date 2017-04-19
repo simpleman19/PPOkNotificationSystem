@@ -1,9 +1,9 @@
-﻿@using PPOk_Notifications.Service
-@using PPOk_Notifications.Models
-@model Tuple<List<PPOk_Notifications.Models.Refill>, List<PPOk_Notifications.Models.Refill>>
+﻿@using PPOk_Notifications.Models
+@model Tuple<IEnumerable<KeyValuePair<Refill, Prescription>>, IEnumerable<KeyValuePair<Refill, Prescription>>>
 
 @{
     ViewBag.Title = "Refill List";
+    Dictionary<long, Patient> patientDict = Patient.PatientDict;
 }
 
 <h2>List of Refills marked for Refill</h2>
@@ -11,7 +11,6 @@
 <p>
     Unfilled Refills will show in Red and Completed Refills will be shown in Green
 </p>
-
 
 <table class="table" id="refill_marked_list">
     <thead>
@@ -37,12 +36,13 @@
     <tbody>
         @foreach (var item in Model.Item1)
         {
-            Prescription prescription = DatabasePrescriptionService.GetById(item.PrescriptionId);
-            Patient patient = Patient.PatientDict[prescription.PatientId];
-            string style = item.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
+            var prescription = item.Value;
+            var refill = item.Key;
+            Patient patient = patientDict[prescription.PatientId];
+            string style = refill.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Refilled)
+                    @Html.DisplayFor(modelItem => refill.Refilled)
                 </td>
                 <td>
                     @patient.GetFullName()
@@ -54,12 +54,12 @@
                     @prescription.PrescriptionUpc
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RefillDate)
+                    @Html.DisplayFor(modelItem => refill.RefillDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Set Filled", "SetFilled", new { id = item.RefillId }) 
+                    @Html.ActionLink("Set Filled", "SetFilled", new { id = refill.RefillId }) 
                     | 
-                    @Html.ActionLink("Delete", "DeleteRefill", new { id = item.RefillId })
+                    @Html.ActionLink("Delete", "DeleteRefill", new { id = refill.RefillId })
                 </td>
             </tr>
         }
@@ -97,12 +97,13 @@
     <tbody>
         @foreach (var item in Model.Item2)
         {
-            Prescription prescription = DatabasePrescriptionService.GetById(item.PrescriptionId);
-            Patient patient = Patient.PatientDict[prescription.PatientId];
-            string style = item.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
+            var prescription = item.Value;
+            var refill = item.Key;
+            Patient patient = patientDict[prescription.PatientId];
+            string style = refill.Refilled ? "background-color:#b3ffb3" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Refilled)
+                    @Html.DisplayFor(modelItem => refill.Refilled)
                 </td>
                 <td>
                     @patient.GetFullName()
@@ -114,12 +115,12 @@
                     @prescription.PrescriptionUpc
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RefillDate)
+                    @Html.DisplayFor(modelItem => refill.RefillDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Set Filled", "SetFilled", new { id = item.RefillId })
+                    @Html.ActionLink("Set Filled", "SetFilled", new { id = refill.RefillId })
                     |
-                    @Html.ActionLink("Delete", "DeleteRefill", new { id = item.RefillId })
+                    @Html.ActionLink("Delete", "DeleteRefill", new { id = refill.RefillId })
                 </td>
             </tr>
         }

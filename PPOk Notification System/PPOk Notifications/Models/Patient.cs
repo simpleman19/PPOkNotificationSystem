@@ -48,7 +48,6 @@ namespace PPOk_Notifications.Models
                     List<Patient> patients = DatabasePatientService.GetAll();
                     foreach (Patient p in patients)
                     {
-                        System.Diagnostics.Debug.WriteLine("adding " + p.PatientId);
                         p.LoadUserData();
                         _PatientDict.Add(p.PatientId, p);
                     }
