@@ -41,7 +41,6 @@ namespace PPOk_Notifications.Controllers
             var date2 = DateTime.Parse(datePicker2);
             ViewBag.date1 = date1.ToShortDateString();
             ViewBag.date2 = date2.ToShortDateString();
-            System.Diagnostics.Debug.WriteLine(date1.ToLongDateString() + "  " + date2.ToLongDateString());
             List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], date1, date2);
             return View("NotificationList", notifications);
         }

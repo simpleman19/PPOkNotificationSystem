@@ -49,6 +49,7 @@ namespace PPOk_Notifications.Controllers
             }
             if (user.Type == Models.User.UserType.Pharmacist)
             {
+                Session["pharm_id"] = DatabasePharmacistService.GetByUserId(user.UserId).PharmacyId;
                 return Redirect("/Pharmacy/RefillListView");
             }
             return null;

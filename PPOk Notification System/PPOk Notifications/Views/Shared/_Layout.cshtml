@@ -12,7 +12,6 @@
     if (Session["user_id"] != null)
     {
         var user = DatabaseUserService.GetByIdActive((long)Session["user_id"]);
-        System.Diagnostics.Debug.WriteLine(Session["user_id"] + " " + user.GetFullName());
         if (user != null)
         {
             loggedIn = true;

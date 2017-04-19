@@ -26,7 +26,9 @@ namespace PPOk_Notifications.Controllers
         #region Refill
         public ActionResult Refill(long id)
         {
-            Pharmacy p = DatabasePharmacyService.GetById(id);
+            var n = DatabaseNotificationService.GetById(id);
+            var pat = DatabasePatientService.GetById(n.PatientId);
+            Pharmacy p = DatabasePharmacyService.GetById(pat.PharmacyId);
             p.GetTemplates();
             string message = p.GetRefillTemplate().TemplatePhone;
             var xml = new XDocument(
@@ -34,7 +36,7 @@ namespace PPOk_Notifications.Controllers
                     new XElement("Gather",
                         new XAttribute("timeout", "10"),
                         new XAttribute("numDigits", "1"),
-                        new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/refillresponse"),
+                        new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/refillresponse/" + id),
                             new XElement("Say",
                                     message
                                 )
@@ -46,34 +48,37 @@ namespace PPOk_Notifications.Controllers
             return new XmlActionResult(xml);
         }
 
-        public ActionResult RefillResponse()
+        public ActionResult RefillResponse(long id)
         {
             string digits = Request["Digits"];
-            System.Diagnostics.Debug.WriteLine(digits);
+            System.Diagnostics.Debug.WriteLine(Request["To"]);
+            var notification = DatabaseNotificationService.GetById(id);
+            var user = DatabasePatientService.GetById(notification.PatientId);
             if (digits.Contains("1"))
             {
-                System.Diagnostics.Debug.WriteLine(Request["To"]);
-                var user = DatabaseUserService.GetByPhoneActive(Request["To"]);
-                var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
-                var notifications = DatabaseNotificationService.GetByPatientId(pat.PatientId);
-                var newest = notifications[0];
-                foreach (var n in notifications)
+                XDocument xml = null;
+                if (user != null)
                 {
-                    if (newest.SentTime < n.SentTime)
-                    {
-                        newest = n;
-                    }
-                }
-                newest.NotificationResponse = Request["digits"];
-                var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrecriptionId);
-                refill.RefillIt = true;
-                DatabaseRefillService.Update(refill);
-                var xml = new XDocument(
+                    notification.NotificationResponse = Request["digits"];
+                    DatabaseNotificationService.Update(notification);
+                    var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(user.PatientId).PrecriptionId);
+                    refill.RefillIt = true;
+                    DatabaseRefillService.Update(refill);
+                    xml = new XDocument(
+                            new XElement("Response",
+                                new XElement("Say",
+                                    "Your refill will be ready shortly.")
+                                    )
+                        );
+                } else
+                {
+                    xml = new XDocument(
                         new XElement("Response",
                             new XElement("Say",
-                                "Your refill will be ready shortly.")
+                                "couldn't find refill")
                                 )
                     );
+                }
                 return new XmlActionResult(xml);
             }
             else if (digits.Contains("9"))
@@ -83,7 +88,7 @@ namespace PPOk_Notifications.Controllers
                             new XElement("Say",
                                 "Connecting you to a pharmacist."),
                         new XElement("Dial",
-                        "+18065703539")
+                        DatabasePharmacyService.GetById(user.PharmacyId).PharmacyPhone)
                         )
                     );
                 return new XmlActionResult(xml);
@@ -110,7 +115,7 @@ namespace PPOk_Notifications.Controllers
                     new XElement("Gather",
                         new XAttribute("timeout", "10"),
                         new XAttribute("numDigits", "1"),
-                        new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/recallresponse"),
+                        new XAttribute("action", "https://ocharambe.localtunnel.me/twilioresponse/recallresponse/" + id),
                             new XElement("Say",
                                     n.NotificationMessage
                                 )
@@ -122,8 +127,10 @@ namespace PPOk_Notifications.Controllers
             return new XmlActionResult(xml);
         }
 
-        public ActionResult RecallResponse()
+        public ActionResult RecallResponse(long id)
         {
+            var notification = DatabaseNotificationService.GetById(id);
+            var user = DatabasePatientService.GetById(notification.PatientId);
             string digits = Request["Digits"];
             System.Diagnostics.Debug.WriteLine(digits);
             if (digits.Contains("9"))
@@ -133,7 +140,7 @@ namespace PPOk_Notifications.Controllers
                             new XElement("Say",
                                 "Connecting you to a pharmacist."),
                         new XElement("Dial",
-                        "+18065703539")
+                        DatabasePharmacyService.GetById(user.PharmacyId).PharmacyPhone)
                         )
                     );
                 return new XmlActionResult(xml);
@@ -216,13 +223,31 @@ namespace PPOk_Notifications.Controllers
             System.Diagnostics.Debug.WriteLine("SMS Response" + " " + Request["from"] + " " +  Request["body"]);
             if (Request["body"].ToLower() == "yes")
             {
-                var user = DatabaseUserService.GetByPhoneActive(Request["from"]);
+                var users = DatabaseUserService.GetMultipleByPhone(Request["from"]);
+                User user = null;
+                foreach (var u in users)
+                {
+                    var patT = DatabasePatientService.GetByUserIdActive(user.UserId);
+                    var notificationsT = DatabaseNotificationService.GetByPatientId(patT.PatientId);
+                    var newestT = notificationsT[0];
+                    foreach (var n in notificationsT)
+                    {
+                        if (newestT.SentTime > n.SentTime)
+                        {
+                            newestT = n;
+                        }
+                    }
+                    if (newestT.Sent && newestT.SentTime > DateTime.Now.AddMinutes(-10))
+                    {
+                        user = patT;
+                    }
+                }
                 var pat = DatabasePatientService.GetByUserIdActive(user.UserId);
                 var notifications = DatabaseNotificationService.GetByPatientId(pat.PatientId);
                 var newest = notifications[0];
                 foreach (var n in notifications)
                 {
-                    if (newest.SentTime < n.SentTime)
+                    if (newest.SentTime > n.SentTime)
                     {
                         newest = n;
                     }

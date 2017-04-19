@@ -44,11 +44,11 @@ namespace PPOk_Notifications.Models
             {
                 if (_PatientDict == null || PatientDictInvalid)
                 {
+                    System.Diagnostics.Debug.WriteLine("Reloading Patient Cache");
                     _PatientDict = new Dictionary<long, Patient>();
                     List<Patient> patients = DatabasePatientService.GetAll();
                     foreach (Patient p in patients)
                     {
-                        System.Diagnostics.Debug.WriteLine("adding " + p.PatientId);
                         p.LoadUserData();
                         _PatientDict.Add(p.PatientId, p);
                         PatientDictInvalid = false;
@@ -70,6 +70,7 @@ namespace PPOk_Notifications.Models
                 _PatientDictInvalid = value;
             }
         }
+
         public Patient()
         {
             this.Type = UserType.Patient;

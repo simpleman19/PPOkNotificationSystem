@@ -50,7 +50,7 @@ namespace PPOk_Notifications.NotificationSending
             n.PatientId = p.PatientId;
             System.Diagnostics.Debug.WriteLine(n.PatientId);
             n.NotificationId = DatabaseNotificationService.Insert(n);
-            var pat = DatabasePatientService.GetById(n.PatientId);
+            var pat = Patient.PatientDict[n.PatientId];
             var twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(n, twilio);
             return true;
@@ -82,7 +82,7 @@ namespace PPOk_Notifications.NotificationSending
             var notifications = getNotifications();
             foreach (var n in notifications)
             {
-                var pat = DatabasePatientService.GetById(n.PatientId);
+                var pat = Patient.PatientDict[n.PatientId];
 
                 var twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
@@ -92,7 +92,7 @@ namespace PPOk_Notifications.NotificationSending
         private static void SendNotification(Notification n, TwilioApi twilio)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
-            var p = DatabasePatientService.GetById(n.PatientId);
+            var p = Patient.PatientDict[n.PatientId];
 
             if (n.Type == Notification.NotificationType.Recall)
             {

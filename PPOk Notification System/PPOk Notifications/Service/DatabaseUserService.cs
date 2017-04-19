@@ -115,7 +115,17 @@ namespace PPOk_Notifications.Service {
 				return db.Query<User>(ScriptService.Scripts["user_getbyphone"], new { user_phone = user_phone }).FirstOrDefault();
 			}
 		}
-		public static User GetByPhoneActive(string user_phone) {
+
+        public static List<User> GetMultipleByPhone(string user_phone)
+        {
+            using (var db = DatabaseService.Connection)
+            {
+                Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+                return db.Query<User>(ScriptService.Scripts["user_getbyphone"], new { user_phone = user_phone }).AsList();
+            }
+        }
+
+        public static User GetByPhoneActive(string user_phone) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyphone_active"], new { user_phone = user_phone }).FirstOrDefault();

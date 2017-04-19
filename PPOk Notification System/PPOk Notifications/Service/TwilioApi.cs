@@ -60,13 +60,13 @@ namespace PPOk_Notifications.Service
                 switch (notification.Type)
                 {
                     case Notification.NotificationType.Refill:
-                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/refill/" + pharmacy.PharmacyId);
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/refill/" + notification.NotificationId);
                         break;
                     case Notification.NotificationType.Ready:
-                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/ready/" + pharmacy.PharmacyId);
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/ready/" + notification.NotificationId);
                         break;
                     case Notification.NotificationType.Birthday:
-                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/birthday" + pharmacy.PharmacyId);
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/birthday" + notification.NotificationId);
                         break;
                 }
                 var call = CallResource.Create(to,
