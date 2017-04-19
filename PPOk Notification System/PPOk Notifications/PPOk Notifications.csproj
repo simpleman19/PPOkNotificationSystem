@@ -596,6 +596,7 @@
     <Content Include="Service\EmailHTML\recall.html" />
     <Content Include="Service\EmailHTML\birthday.html" />
     <Content Include="Service\EmailHTML\template.html" />
+    <Content Include="Service\SQL\Prescription_GetAllWithRefills.sql" />
     <Content Include="Service\SQL\blank.sql" />
     <Content Include="Service\SQL\Database_Create.sql" />
     <Content Include="Service\SQL\Database_Drop.sql" />
