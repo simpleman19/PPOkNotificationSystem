@@ -63,7 +63,7 @@ namespace PPOk_Notifications.Controllers
 
             DatabaseLoginService.Insert(login2);
 
-            return "sucess <br/> Pharm: username: test@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
+            return "sucess <br/> Pharm: username: pharm@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
         }
 
         public string AddFakePresRefillNotif(long pid) {

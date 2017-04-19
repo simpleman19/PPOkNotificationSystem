@@ -101,7 +101,7 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult SetFilled(long id)
         {
-            Refill r = DatabaseRefillService.GetById((int)id);
+            Refill r = DatabaseRefillService.GetById(id);
             r.SetFilled();
             DatabaseRefillService.Update(r);
 
@@ -111,14 +111,13 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult DeleteRefill(long id)
         {
-            Refill r = DatabaseRefillService.GetById((int)id);
+            Refill r = DatabaseRefillService.GetById(id);
             r.RefillIt = false;
             DatabaseRefillService.Update(r);
 
             return RefillListView();
         }
 
-        // TODO     public ActionResult DeleteRefill(long id)
         #endregion
 
         #region Patients
