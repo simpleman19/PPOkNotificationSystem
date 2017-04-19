@@ -180,17 +180,6 @@ namespace PPOk_Notifications.Controllers
                 
             return View(patient);
         }
-
-        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
-        public ActionResult CycleMethod(long id)
-        {
-            Patient thisGuy = DatabasePatientService.GetById(id);
-            thisGuy.ContactMethod = DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Call ?
-                Patient.PrimaryContactMethod.Email : DatabasePatientService.GetById(id).ContactMethod == Patient.PrimaryContactMethod.Email ?
-                Patient.PrimaryContactMethod.Text : Patient.PrimaryContactMethod.Call;
-            DatabasePatientService.Update(thisGuy);
-            return RedirectToAction("PatientListView");
-        }
         #endregion
 
         #region Upload

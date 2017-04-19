@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using PPOk_Notifications.Models;
-@model Patient
+@model Tuple<Patient, bool>
 
 @{
     ViewBag.Title = "Index";
@@ -9,21 +9,36 @@
 <link rel="stylesheet" href="~/Content/jquery.timepicker.css" />
 
 @{
-    var textSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : "");
-    var callSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : "");
-    var emailSelected = new HtmlString(Model.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : "");
-    var birthdayEnabled = new HtmlString(Model.SendBirthdayMessage ? "checked" : "");
-    var refillsEnabled = new HtmlString(Model.SendRefillMessage ? "checked" : "");
-    var time = Model.PreferedContactTime.ToString("hh:mmtt", CultureInfo.InvariantCulture);
+    var textSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : "");
+    var callSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : "");
+    var emailSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : "");
+    var birthdayEnabled = new HtmlString(Model.Item1.SendBirthdayMessage ? "checked" : "");
+    var refillsEnabled = new HtmlString(Model.Item1.SendRefillMessage ? "checked" : "");
+    var time = Model.Item1.PreferedContactTime.ToString("hh:mmtt", CultureInfo.InvariantCulture);
+
+    MvcForm form;
+    if (Model.Item2)
+    {
+        form = Html.BeginForm("Index", "Patient");
+    }
+    else
+    {
+        form = Html.BeginForm("PharmIndex", "Patient");
+    }
 }
 
-@using (Html.BeginForm("Index"))
+@using (form)
 {
+    if (!Model.Item2)
+    {
+        @Html.Hidden("patientId", Model.Item1.PatientId);
+    }
+
     string alignment = "col-xs-4 col-xs-offset-2";
     string alignment2 = "col-xs-5";
     <div class="container">
         <div class="col-xs-8 col-xs-offset-2">
-            <h2>Welcome @Model.GetFullName()</h2>
+            <h2>Welcome @Model.Item1.GetFullName()</h2>
             <h3>Change your Contact Preferences Below:</h3>
             <div style="margin-top: 20px;" class="row">
                 <div class="@alignment">
@@ -32,9 +47,9 @@
 
                 <div class="@alignment2" style="margin-top: 10px;">
                     <select name="contactMethod">
-                        <option value="text" @textSelected>Text: @Model.Phone</option>
-                        <option value="call" @callSelected>Call: @Model.Phone</option>
-                        <option value="email" @emailSelected>Email: @Model.Email</option>
+                        <option value="text" @textSelected>Text: @Model.Item1.Phone</option>
+                        <option value="call" @callSelected>Call: @Model.Item1.Phone</option>
+                        <option value="email" @emailSelected>Email: @Model.Item1.Email</option>
                         <option value="optout">Opt-out</option>
                     </select>
                 </div>

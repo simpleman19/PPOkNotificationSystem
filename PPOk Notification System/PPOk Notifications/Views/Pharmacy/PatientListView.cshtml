@@ -44,7 +44,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            string style = item.Enabled == true ? "" : "background-color:#ffb3b3";
+            string style = item.Enabled ? "" : "background-color:#ffb3b3";
             <tr style="@style">
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
@@ -70,7 +70,7 @@
                 <td>
                     @Html.ActionLink("Edit", "AddorEditPatient", new { id = item.PatientId }) |
                     @Html.ActionLink("Delete", "DeletePatient", new { id = item.PatientId }) |
-                    @Html.ActionLink("Cycle Contact Method", "CycleMethod", new { id = item.PatientId })
+                    @Html.ActionLink("Notification Preferences", "PharmIndex", "Patient", new { patientId = item.PatientId }, null)
                 </td>
             </tr>
         }

@@ -11,7 +11,7 @@
 </p>
 
 <p>
-    @Html.ActionLink("Add Pharmacist", "AddPharmacist")
+    @Html.ActionLink("Add Pharmacist", "AddorEditPharmacist")
 </p>
 
 <table class="table" id="pharmacy_list">
@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditPharmacist", new { id = item.PharmacistId }) |
+                    @Html.ActionLink("Edit", "AddorEditPharmacist", new { id = item.PharmacistId }) |
                     @Html.ActionLink("Delete", "DeletePharmacist", new { id = item.PharmacistId })
                 </td>
             </tr>

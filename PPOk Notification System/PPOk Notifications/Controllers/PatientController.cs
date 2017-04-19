@@ -24,14 +24,14 @@ namespace PPOk_Notifications.Controllers
             }
             patient.LoadUserData();
 
-            return View("Index", patient);
+            return View("Index", Tuple.Create(patient, true));
         }
 
         [HttpPost]
         [Authenticate(Group.Patient)]
         public ActionResult Index(string contactMethod, string notificationTime, string birthdayEnabled, string refillsEnabled)
         {
-            var userId = (long) Session[Models.Login.UserIdSession];
+            var userId = (long)Session[Models.Login.UserIdSession];
             var patient = DatabasePatientService.GetByUserId(userId);
             if (patient == null)
             {
@@ -39,6 +39,56 @@ namespace PPOk_Notifications.Controllers
             }
             patient.LoadUserData();
 
+            SavePatient(patient, contactMethod, notificationTime, birthdayEnabled, refillsEnabled);
+            return View("Index", Tuple.Create(patient, true));
+        }
+
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
+        public ActionResult PharmIndex(string patientId)
+        {
+            var patient = GetPatient(patientId);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            patient.LoadUserData();
+            return View("Index", Tuple.Create(patient, false));
+        }
+
+        [HttpPost]
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
+        public ActionResult PharmIndex(string patientId, string contactMethod, string notificationTime, string birthdayEnabled, string refillsEnabled)
+        {
+            var patient = GetPatient(patientId);
+            if (patient == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            patient.LoadUserData();
+
+            SavePatient(patient, contactMethod, notificationTime, birthdayEnabled, refillsEnabled);
+            return View("Index", Tuple.Create(patient, false));
+        }
+
+        private Patient GetPatient(string patientId)
+        {
+            long patientIdLong;
+            if (!long.TryParse(patientId, out patientIdLong))
+            {
+                return null;
+            }
+
+            var patient = DatabasePatientService.GetById(patientIdLong);
+            if (patient == null)
+            {
+                return null;
+            }
+            patient.LoadUserData();
+            return patient;
+        }
+
+        private void SavePatient(Patient patient, string contactMethod, string notificationTime, string birthdayEnabled, string refillsEnabled)
+        {
             switch (contactMethod)
             {
                 case "text":
@@ -65,7 +115,6 @@ namespace PPOk_Notifications.Controllers
             patient.SendRefillMessage = refillsEnabled == "on";
            
             DatabasePatientService.Update(patient);
-            return View("Index", patient);
         }
 
         public ActionResult Login()
