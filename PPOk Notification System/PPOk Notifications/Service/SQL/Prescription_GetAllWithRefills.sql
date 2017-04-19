@@ -1,4 +1,4 @@
-﻿SELECT r.[refill_id], r.[refill_date], r.[refill_filled], pers.*
+﻿SELECT r.[refill_id], r.[refill_date], r.[refill_filled], r.[refill_refill], pers.*
 FROM [PPOK].[dbo].[refill] r
 INNER JOIN [PPOK].[dbo].[prescription] pers ON r.[prescription_id] = pers.[prescription_id]
 INNER JOIN [PPOK].[dbo].[patient] pat ON pat.[patient_id] = pers.[patient_id]
