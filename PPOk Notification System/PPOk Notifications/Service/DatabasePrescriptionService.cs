@@ -43,6 +43,18 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getall_inactive"]).AsList();
 			}
 		}
+		public static Dictionary<Refill,Prescription> GetAllWithRefill() {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+				return db.Query<Prescription, Refill, Prescription>(ScriptService.Scripts["prescription_getall_inactive"],
+					(r, per) => {
+						//Map the dictionary here
+						return s;
+					},
+					splitOn: "refill_id"
+				).ToDictionary();
+			}
+		}
 		#endregion
 
 		#region Get by id
