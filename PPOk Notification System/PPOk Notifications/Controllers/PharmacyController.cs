@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PPOk_Notifications.Filters;
@@ -89,10 +90,12 @@ namespace PPOk_Notifications.Controllers
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
         public ActionResult RefillListView()
         {
-            var refills = DatabaseRefillService.GetAllActive((long)Session["pharm_id"]);
-            var ready = DatabaseRefillService.GetRespondedActive((long)Session["pharm_id"]);
+            var refills = DatabasePrescriptionService.GetAllWithRefill((long)Session["pharm_id"]);
+            var ready = from e in refills
+                        where e.Key.RefillIt
+                        select e;
 
-            return View("RefillListView", Tuple.Create(ready, refills));
+            return View(Tuple.Create(ready, refills));
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
