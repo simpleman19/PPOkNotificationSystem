@@ -95,7 +95,7 @@ namespace PPOk_Notifications.Controllers
                         where e.Key.RefillIt
                         select e;
 
-            return View(Tuple.Create(ready, refills));
+            return View("RefillListView", Tuple.Create(ready, refills));
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
@@ -212,7 +212,7 @@ namespace PPOk_Notifications.Controllers
 					ModelState.AddModelError("File", "Error parsing file");
 				}
             }
-            return View();
+            return RefillListView();
         }
 
         [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]

@@ -92,11 +92,13 @@ namespace PPOk_Notifications.Service {
 							
 							DatabasePrescriptionService.InsertOrUpdate(prescription);
 
-							var refill = new Refill(prescription) {
-								RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2)
-							};
-							DatabaseRefillService.Insert(refill);
-
+						    if (DatabaseRefillService.GetByPrescriptionId(prescription.PrescriptionId) == null)
+						    {
+						        var refill = new Refill(prescription) {
+								    RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2)
+							    };
+							    DatabaseRefillService.Insert(refill);
+						    }
 						} catch (Exception e) {
 							//Ignore prescriptions that fail the model building
 						}
