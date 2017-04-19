@@ -31,7 +31,7 @@ namespace PPOk_Notifications.Controllers {
 						notification.NotificationResponse = "Refill";
 						DatabaseNotificationService.Update(notification);
 
-						var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(patient.PatientId).PrecriptionId);
+						var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(patient.PatientId).PrescriptionId);
 						refill.RefillIt = true;
 						DatabaseRefillService.Update(refill);
 

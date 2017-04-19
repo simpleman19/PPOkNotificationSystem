@@ -29,9 +29,6 @@ namespace PPOk_Notifications.Service {
 					patients.Add(p.PersonCode, p);
 				}
 
-				var prescriptionlist = DatabasePrescriptionService.GetAll();
-				var prescriptions = prescriptionlist.ToDictionary(p => p.PrecriptionId);
-
 				//Interate over each line of text in the file
 				var text = new StringReader(textdata);
 				var line = string.Empty;
@@ -85,20 +82,15 @@ namespace PPOk_Notifications.Service {
 							var prescription = new Prescription() {
 								PrescriptionDateFilled = DateTime.ParseExact(row[7], "yyyyMMdd", null),
 								PrescriptionNumber = prescriptionId,
+								PrescriptionId = prescriptionId,
 								PrescriptionDaysSupply = Convert.ToInt32(row[9]),
 								PrescriptionRefills = Convert.ToInt32(row[10]),
 								PrescriptionUpc = row[11],
 								PrescriptionName = row[12],
 								PatientId = patient.PatientId
 							};
-							if (prescriptions.ContainsKey(prescriptionId)) {
-								//Check and update previous prescription
-								prescription.PrecriptionId = prescriptionId;
-								DatabasePrescriptionService.Update(prescription);
-							} else {
-								//Add new prescription
-								prescription.PrecriptionId = DatabasePrescriptionService.Insert(prescription);
-							}
+							
+							DatabasePrescriptionService.InsertOrUpdate(prescription);
 
 							var refill = new Refill(prescription) {
 								RefillDate = prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2)

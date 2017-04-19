@@ -61,7 +61,7 @@ namespace PPOk_Notifications.Controllers
                 {
                     notification.NotificationResponse = Request["digits"];
                     DatabaseNotificationService.Update(notification);
-                    var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(user.PatientId).PrecriptionId);
+                    var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(user.PatientId).PrescriptionId);
                     refill.RefillIt = true;
                     DatabaseRefillService.Update(refill);
                     xml = new XDocument(
@@ -254,7 +254,7 @@ namespace PPOk_Notifications.Controllers
                 }
                 newest.NotificationResponse = Request["body"];
                 DatabaseNotificationService.Update(newest);
-                var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrecriptionId);
+                var refill = DatabaseRefillService.GetByPrescriptionId(DatabasePrescriptionService.GetByPatientId(pat.PatientId).PrescriptionId);
                 refill.RefillIt = true;
                 DatabaseRefillService.Update(refill);
                 messagingResponse.Message("Thanks, your prescription will be ready shortly");

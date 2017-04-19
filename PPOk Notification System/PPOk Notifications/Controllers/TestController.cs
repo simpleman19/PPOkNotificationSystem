@@ -76,7 +76,7 @@ namespace PPOk_Notifications.Controllers
 		        PrescriptionDaysSupply = 30,
 		        PrescriptionUpc = "123456789"
 	        };
-	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
+	        pres.PrescriptionId = DatabasePrescriptionService.Insert(pres);
             var refill = new Refill(pres);
             refill.RefillIt = false;
             refill.RefillId = DatabaseRefillService.Insert(refill);
@@ -173,10 +173,10 @@ namespace PPOk_Notifications.Controllers
 		    pr.PrescriptionNumber = 1;
 		    pr.PrescriptionUpc = "ABC123";
 			pr.PrescriptionDateFilled = DateTime.Now;
-		    pr.PrecriptionId = DatabasePrescriptionService.Insert(pr);
+		    pr.PrescriptionId = DatabasePrescriptionService.Insert(pr);
 
 		    r.RefillIt = false;
-		    r.PrescriptionId = pr.PrecriptionId;
+		    r.PrescriptionId = pr.PrescriptionId;
 		    r.Refilled = false;
 			r.RefillDate = DateTime.Now;
 		    r.RefillId = DatabaseRefillService.Insert(r);

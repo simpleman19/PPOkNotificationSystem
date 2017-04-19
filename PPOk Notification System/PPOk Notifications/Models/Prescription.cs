@@ -9,7 +9,7 @@ namespace PPOk_Notifications.Models
         [Column(Name = "patient_id")]
         public long PatientId { get; set; }
         [Column(Name = "prescription_id")]
-        public long PrecriptionId { get; set; }
+        public long PrescriptionId { get; set; }
         public int PrescriptionNumber { get; set; }
         [Column(Name = "prescription_name")]
         public string PrescriptionName { get; set; }
