@@ -77,7 +77,7 @@ namespace PPOk_Notifications.Controllers
 		        LastName = "Doe",
 		        PersonCode = "1",
 		        DateOfBirth = System.DateTime.Now,
-		        Phone = "+18065703539",
+		        Phone = "+14054179251",
 		        PharmacyId = pid,
 		        PreferedContactTime = System.DateTime.Now
 	        };

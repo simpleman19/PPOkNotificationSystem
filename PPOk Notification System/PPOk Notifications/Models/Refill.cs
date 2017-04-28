@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using PPOk_Notifications.Service;
 using PPOk_Notifications.NotificationSending;
-using PPOk_Notifications.Service;
+
 
 namespace PPOk_Notifications.Models
 {
