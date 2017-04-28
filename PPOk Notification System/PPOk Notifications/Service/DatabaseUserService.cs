@@ -4,17 +4,22 @@ using Dapper;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
+
+	/**
+	 * Establishes all SQL squery methods for the named model.
+	 * Handles all dapper interaction and attribute mapping.
+	 */
 	public static class DatabaseUserService {
 
 		#region Enable/Disable Operations
 		public static void Enable(long user_id) {
 			using (var db = DatabaseService.Connection) {
-				db.Execute(ScriptService.Scripts["user_enable"], user_id);
+				db.Execute(ScriptService.Scripts["user_enable"], new { UserId = user_id });
 			}
 		}
 		public static void Disable(long user_id) {
 			using (var db = DatabaseService.Connection) {
-				db.Execute(ScriptService.Scripts["user_disable"], new { user_id = user_id });
+				db.Execute(ScriptService.Scripts["user_disable"], new { UserId = user_id });
 			}
 		}
 		#endregion
@@ -110,7 +115,17 @@ namespace PPOk_Notifications.Service {
 				return db.Query<User>(ScriptService.Scripts["user_getbyphone"], new { user_phone = user_phone }).FirstOrDefault();
 			}
 		}
-		public static User GetByPhoneActive(string user_phone) {
+
+        public static List<User> GetMultipleByPhone(string user_phone)
+        {
+            using (var db = DatabaseService.Connection)
+            {
+                Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+                return db.Query<User>(ScriptService.Scripts["user_getbyphone"], new { user_phone = user_phone }).AsList();
+            }
+        }
+
+        public static User GetByPhoneActive(string user_phone) {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				return db.Query<User>(ScriptService.Scripts["user_getbyphone_active"], new { user_phone = user_phone }).FirstOrDefault();
@@ -156,6 +171,30 @@ namespace PPOk_Notifications.Service {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
 				db.Execute(ScriptService.Scripts["user_update_inactive"], user);
+			}
+		}
+		#endregion
+
+		#region Custom
+		public static User GetFullById(long user_id) {
+			using (var db = DatabaseService.Connection) {
+
+				Dapper.SqlMapper.SetTypeMap(typeof(User), new ColumnAttributeTypeMapper<User>());
+				var u = db.Query<User>(ScriptService.Scripts["user_getbyid"], new { user_id = user_id }).FirstOrDefault();
+
+				switch (u.Type) {
+					case User.UserType.Pharmacist: {
+						var hu = DatabasePharmacistService.GetByUserId(u.UserId);
+						hu.LoadUserData();
+						return hu;
+					}
+					case User.UserType.Patient: {
+						var hu = DatabasePatientService.GetByUserId(u.UserId);
+						hu.LoadUserData();
+						return hu;
+					}
+				}
+				return u;
 			}
 		}
 		#endregion

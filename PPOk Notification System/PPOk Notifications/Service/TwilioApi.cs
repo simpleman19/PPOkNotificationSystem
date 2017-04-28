@@ -12,7 +12,7 @@ namespace PPOk_Notifications.Service
         private const string AccountSid = "AC2fcaf6f7256a0f7891903318195c9e01";
         private const string AuthToken = "7504188a03f5969ff3549eaf8fba3e9c";
 
-        Pharmacy pharmacy;
+        readonly Pharmacy pharmacy;
 
         bool testTwilio = true;
 
@@ -25,51 +25,70 @@ namespace PPOk_Notifications.Service
         public void SendTextMessage(Notification notification)
         {
             var p = DatabasePatientService.GetById(notification.PatientId);
+            p.LoadUserData();
             var temp = GetTempFromPharmacy(notification.Type);
             if (testTwilio)
             {
                 var message = MessageResource.Create(
-                    to: new PhoneNumber("+18065703539"),
+                    to: new PhoneNumber(p.Phone),
                     from: new PhoneNumber("+14052469892 "),
                     body: temp.TemplateText);
             }
+        }
 
+        public void SendTextMessage(Patient p, String messageString)
+        {
+            p.LoadUserData();
+            if (testTwilio)
+            {
+                var message = MessageResource.Create(
+                    to: new PhoneNumber(p.Phone),
+                    from: new PhoneNumber("+14052469892 "),
+                    body: messageString);
+            }
         }
 
         public void MakePhoneCall(Notification notification)
         {
             var p = DatabasePatientService.GetById(notification.PatientId);
-
+            p.LoadUserData();
             if (testTwilio)
             {
-                var to = new PhoneNumber("+18065703539");
-                var from = new PhoneNumber("+15017250604");
+                var to = new PhoneNumber(p.Phone);
+                var from = new PhoneNumber("+14052469892");
+                Uri callback_url = null;
+                switch (notification.Type)
+                {
+                    case Notification.NotificationType.Refill:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/refill/" + notification.NotificationId);
+                        break;
+                    case Notification.NotificationType.Ready:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/ready/" + notification.NotificationId);
+                        break;
+                    case Notification.NotificationType.Birthday:
+                        callback_url = new Uri("http://ocharambe.localtunnel.me/twilioresponse/birthday" + notification.NotificationId);
+                        break;
+                }
                 var call = CallResource.Create(to,
                                                from,
-                                               url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+                                               url: callback_url);
 
             }
-            //TODO create xmls for phone calls
         }
 
         public void MakeRecallPhoneCall(Notification notification)
         {
-            /*
-            var db = new SQLService();
-            Patient p = db.GetPatientById(notification.PatientId);
-
+            Patient p = DatabasePatientService.GetById(notification.PatientId);
+            p.LoadUserData();
             if (testTwilio)
             {
-                var to = new PhoneNumber("+18065703539");
-                var from = new PhoneNumber("+15017250604");
+                var to = new PhoneNumber(p.Phone);
+                var from = new PhoneNumber("+14052469892");
                 var call = CallResource.Create(to,
                                                from,
-                                               url: new Uri("http://demo.twilio.com/docs/voice.xml"));
+                                               url: new Uri("http://ocharambe.localtunnel.me/twilioresponse/recall/" + notification.NotificationId));
 
             }
-            //TODO create xmls for phone calls
-            */
-            this.SendTextMessage(notification);
         }
 
 

@@ -4,6 +4,11 @@ using Dapper;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
+
+	/**
+	 * Establishes all SQL squery methods for the named model.
+	 * Handles all dapper interaction and attribute mapping.
+	 */
 	public static class DatabasePrescriptionService {
 
 		#region Enable/Disable Operations
@@ -36,6 +41,22 @@ namespace PPOk_Notifications.Service {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
 				return db.Query<Prescription>(ScriptService.Scripts["prescription_getall_inactive"]).AsList();
+			}
+		}
+		public static Dictionary<Refill,Prescription> GetAllWithRefill(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Prescription), new ColumnAttributeTypeMapper<Prescription>());
+                var dict = new Dictionary<Refill, Prescription>();
+				db.Query<Refill, Prescription, Prescription>(ScriptService.Scripts["prescription_getallwithrefills"],
+					(r, p) => {
+						dict.Add(r, p);
+					    r.PrescriptionId = p.PrescriptionId;
+						return p;
+					},
+				    new { pharmacy_id = pharmacy_id },
+                    splitOn: "refill_id, prescription_id"
+                );
+			    return dict;
 			}
 		}
 		#endregion

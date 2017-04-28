@@ -6,6 +6,10 @@ using Dapper;
 
 namespace PPOk_Notifications.Service {
 
+
+	/**
+	 * Allows dapper to map attributes with different names to C# standard names.
+	 */
 	public class ColumnAttributeTypeMapper<T> : FallbackTypeMapper {
 
 		public ColumnAttributeTypeMapper()
@@ -24,11 +28,20 @@ namespace PPOk_Notifications.Service {
 				}) {}
 	}
 
+	/**
+	 * Establishes a attribute flag that can be defined above a variable 
+	 * to specify its name in the database. WILL NOT map the name when
+	 * performing an insert of that object.
+	 */
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 	public class ColumnAttribute : Attribute {
 		public string Name { get; set; }
 	}
 
+	/**
+	 * Allows Dapper to fall back to the default mapping convention so
+	 * not every variable requires a mapping attribute.
+	 */
 	public class FallbackTypeMapper : SqlMapper.ITypeMap {
 		private readonly IEnumerable<SqlMapper.ITypeMap> _mappers;
 

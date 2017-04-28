@@ -15,7 +15,7 @@ namespace PPOk_Notifications.NotificationSending
 
         private static void OnTimerElapsed(object sender)
         {
-            //NotificationSender.DoWork();
+            NotificationSender.DoWork();
         }
     }
 }

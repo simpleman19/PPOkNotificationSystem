@@ -1,0 +1,98 @@
+﻿@using System.Globalization
+@using PPOk_Notifications.Models;
+@model Tuple<Patient, bool>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="~/Content/jquery.timepicker.css" />
+
+@{
+    var textSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Text ? "selected" : "");
+    var callSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Call ? "selected" : "");
+    var emailSelected = new HtmlString(Model.Item1.ContactMethod == Patient.PrimaryContactMethod.Email ? "selected" : "");
+    var birthdayEnabled = new HtmlString(Model.Item1.SendBirthdayMessage ? "checked" : "");
+    var refillsEnabled = new HtmlString(Model.Item1.SendRefillMessage ? "checked" : "");
+    var time = Model.Item1.PreferedContactTime.ToString("hh:mmtt", CultureInfo.InvariantCulture);
+
+    MvcForm form;
+    if (Model.Item2)
+    {
+        form = Html.BeginForm("Index", "Patient");
+    }
+    else
+    {
+        form = Html.BeginForm("PharmIndex", "Patient");
+    }
+}
+
+@using (form)
+{
+    if (!Model.Item2)
+    {
+        @Html.Hidden("patientId", Model.Item1.PatientId);
+    }
+
+    string alignment = "col-xs-4 col-xs-offset-2";
+    string alignment2 = "col-xs-5";
+    <div class="container">
+        <div class="col-xs-8 col-xs-offset-2">
+            <h2>Welcome @Model.Item1.GetFullName()</h2>
+            <h3>Change your Contact Preferences Below:</h3>
+            <div style="margin-top: 20px;" class="row">
+                <div class="@alignment">
+                    <h4>Preferred Contact Method</h4>
+                </div>
+
+                <div class="@alignment2" style="margin-top: 10px;">
+                    <select name="contactMethod">
+                        <option value="text" @textSelected>Text: @Model.Item1.Phone</option>
+                        <option value="call" @callSelected>Call: @Model.Item1.Phone</option>
+                        <option value="email" @emailSelected>Email: @Model.Item1.Email</option>
+                        <option value="optout">Opt-out</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="" class="row">
+                <div class="@alignment">
+                    <h4>Preferred Notification Time</h4>
+                </div>
+
+                <div class="@alignment2" style="margin-top: 10px;">
+                    <input id="notificationTime" name="notificationTime" type="text" class="time ui-timepicker-input" autocomplete="off" value="@time"/>
+                </div>
+            </div>
+
+            <div style="" class="row">
+                <div class="@alignment">
+                    <h4>Birthday Notifications</h4>
+                </div>
+
+                <div class="@alignment2" style="margin-top: 10px;">
+                    <input type="checkbox" name="birthdayEnabled" @birthdayEnabled /> Enabled
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="@alignment">
+                    <h4>Refill Request Notifications</h4>
+                </div>
+
+                <div class="@alignment2" style="margin-top: 10px;">
+                    <input type="checkbox" name="refillsEnabled" @refillsEnabled /> Enabled
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 10px;">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" src="~/Scripts/jquery.timepicker.min.js"></script>
+<script>
+    $("#notificationTime").timepicker();
+</script>

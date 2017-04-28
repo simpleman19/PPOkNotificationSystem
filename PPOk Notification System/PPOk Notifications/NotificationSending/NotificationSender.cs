@@ -12,7 +12,7 @@ namespace PPOk_Notifications.NotificationSending
     public class NotificationSender : IRegisteredObject
     {
         private readonly string _path = HttpContext.Current.Server.MapPath("~/App_Data/lastNoficiationSent.bin");
-        private const int MinsBetweenSending = 1;
+        private const int MinsBetweenSending = 2;
 
         private readonly object _lock = new object();
         private bool _shuttingDown;
@@ -50,7 +50,7 @@ namespace PPOk_Notifications.NotificationSending
             n.PatientId = p.PatientId;
             System.Diagnostics.Debug.WriteLine(n.PatientId);
             n.NotificationId = DatabaseNotificationService.Insert(n);
-            var pat = DatabasePatientService.GetById(n.PatientId);
+            var pat = Patient.PatientDict[n.PatientId];
             var twilio = new TwilioApi(pat.getPharmacy());
             SendNotification(n, twilio);
             return true;
@@ -60,19 +60,21 @@ namespace PPOk_Notifications.NotificationSending
         {
             foreach (var n in notifications)
             {
-                var pat = DatabasePatientService.GetById(n.PatientId);
-
-                var twilio = new TwilioApi(pat.getPharmacy());
+                var twilio = new TwilioApi(Patient.PatientDict[n.PatientId].getPharmacy());
                 SendNotification(n, twilio);
             }
         }
 
         public static void SendNotification(Notification notification)
         {
-            var pat = DatabasePatientService.GetById(notification.PatientId);
-
-            var twilio = new TwilioApi(pat.getPharmacy());
+            var twilio = new TwilioApi(Patient.PatientDict[notification.PatientId].getPharmacy());
             SendNotification(notification, twilio);
+        }
+
+        public static void SendNotification(Patient p, String message)
+        {
+            var twilio = new TwilioApi(p.getPharmacy());
+            twilio.SendTextMessage(p, message);
         }
 
         private void PrepareForSending()
@@ -80,7 +82,7 @@ namespace PPOk_Notifications.NotificationSending
             var notifications = getNotifications();
             foreach (var n in notifications)
             {
-                var pat = DatabasePatientService.GetById(n.PatientId);
+                var pat = Patient.PatientDict[n.PatientId];
 
                 var twilio = new TwilioApi(pat.getPharmacy());
                 SendNotification(n, twilio);
@@ -90,23 +92,22 @@ namespace PPOk_Notifications.NotificationSending
         private static void SendNotification(Notification n, TwilioApi twilio)
         {
             System.Diagnostics.Debug.WriteLine("Sending Notification: " + n.NotificationId);
-            var p = DatabasePatientService.GetById(n.PatientId);
+            var p = Patient.PatientDict[n.PatientId];
 
             if (n.Type == Notification.NotificationType.Recall)
             {
                 twilio.MakeRecallPhoneCall(n);
+                Notification.MarkSent(n);
             }
-            else
+            else if (((n.Type == Notification.NotificationType.Refill || n.Type == Notification.NotificationType.Ready) && p.SendRefillMessage) || (n.Type == Notification.NotificationType.Birthday && p.SendBirthdayMessage))
             {
-
-                // TODO Get template from pharmacy
-                switch(p.ContactMethod)
+                switch (p.ContactMethod)
                 {
                     case Patient.PrimaryContactMethod.Call:
-                        twilio.SendTextMessage(n);
+                        twilio.MakePhoneCall(n);
                         break;
                     case Patient.PrimaryContactMethod.Email:
-
+                        EmailService.SendNotification(n);
                         break;
                     case Patient.PrimaryContactMethod.Text:
                         twilio.SendTextMessage(n);
@@ -117,15 +118,26 @@ namespace PPOk_Notifications.NotificationSending
                     default:
                         break;
                 }
-                // TODO Call Twilio api using patient prefered contact method
-                // Mark as sent
+                Notification.MarkSent(n);
             }
-            Notification.MarkSent(n);
+
         }
 
         private List<Notification> getNotifications()
         {
-            var list = DatabaseNotificationService.GetAllActive();
+            var tempList = DatabaseNotificationService.GetDateRange(DateTime.Now.AddYears(-100), DateTime.Now);
+            List<Notification> list = new List<Notification>();
+            if (tempList == null)
+            {
+                tempList = new List<Notification>();
+            }
+            foreach (var n in tempList)
+            {
+                if (!n.Sent && n.ScheduledTime.Date <= DateTime.Now.Date && Patient.PatientDict[n.PatientId].PreferedContactTime.TimeOfDay <= DateTime.Now.TimeOfDay && Patient.PatientDict[n.PatientId].PharmacyId == 1)
+                {
+                    list.Add(n);
+                }
+            }
             // TODO add birthdays and get not sent but before current datetime
             return list;
         }

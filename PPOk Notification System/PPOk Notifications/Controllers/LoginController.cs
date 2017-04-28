@@ -5,10 +5,8 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
     public class LoginController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Index()
         {
             if (Session[Login.UserIdSession] != null)
@@ -21,26 +19,25 @@ namespace PPOk_Notifications.Controllers
                 }
             }
 
-            return View();
+            return View("Index");
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult Index(string email, string password)
         {
             var login = Login.GetLogin(email);
             if (login == null)
             {
-                return View(false);
+                return View("Index", false);
             }
 
             if (!login.CheckPassword(password))
             {
-                return View(false);
+                return View("Index", false);
             }
 
             Session[Login.UserIdSession] = login.UserId;
-            return RedirectToProperPage(login.UserId) ?? View(false);
+            return RedirectToProperPage(login.UserId) ?? View("Index", false);
         }
 
         private ActionResult RedirectToProperPage(long userId)
@@ -52,81 +49,89 @@ namespace PPOk_Notifications.Controllers
             }
             if (user.Type == Models.User.UserType.Pharmacist)
             {
+                Session["pharm_id"] = DatabasePharmacistService.GetByUserId(user.UserId).PharmacyId;
                 return Redirect("/Pharmacy/RefillListView");
             }
             return null;
         }
 
+        [Authenticate(Group.Pharmacist, Group.PharmacyAdmin, Group.PPOkAdmin)]
         public ActionResult Logout()
         {
             Session.Clear();
-            return RedirectToAction("Index");
+            return Index();
         }
 
-        public ActionResult Success()
+        public ActionResult ResetResult(ResetResults? results)
         {
-            return View();
-        }
-
-        public ActionResult ResetResult()
-        {
-            return View();
+            return View("ResetResult", results);
         }
 
         public ActionResult ResetRequest()
         {
-            return View();
+            return View("ResetRequest");
         }
 
         [HttpPost]
         public ActionResult ResetRequest(string email)
         {
-            // TODO: Send email with reset token instead
-            return RedirectToAction("Reset", "Login", new { email = email});
-        }
-
-        public ActionResult Reset(string email)
-        {
-            // TODO add reset token (which is sent to them in the email link)
-            if (email == null)
+            var user = DatabaseUserService.GetByEmail(email);
+            if (user == null)
             {
-                return RedirectToAction("Index");
+                return Index();
             }
 
-            return View((object)email);
+            EmailService.SendReset(user);
+            return ResetRequestSent();
+        }
+
+        public ActionResult ResetRequestSent()
+        {
+            return View("ResetRequestSent");
         }
 
         [HttpPost]
-        public ActionResult Reset(string email, string password, string confirm_password)
+        public ActionResult Reset(string email, string password, string confirm_password, string otpCode)
         {
-            // TODO add reset token (which is sent to them in the email link)
+            var otp = DatabaseOtpService.GetByCode(otpCode);
+            if (otp == null || !otp.IsActive())
+            {
+                return Index();
+            }
+            DatabaseOtpService.Disable(otp.Id);
+
             var user = Login.GetLogin(email);
 
             if (user == null)
             {
-                return RedirectToAction("ResetResult", ResetResults.UserNotFound);
+                return Index();
             }
 
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirm_password))
             {
-                return RedirectToAction("ResetResult", ResetResults.PasswordNotSet);
+                return ResetResult(ResetResults.PasswordNotSet);
             }
 
             if (password != confirm_password)
             {
-                return RedirectToAction("ResetResult", ResetResults.PasswordsDontMatch);
+                return ResetResult(ResetResults.PasswordsDontMatch);
             }
 
             user.SetPassword(password);
 
-            return RedirectToAction("ResetResult");
+            return ResetResult(null);
         }
 
         public enum ResetResults
         {
-            UserNotFound,
             PasswordNotSet,
             PasswordsDontMatch
+        }
+
+        public class ResetData
+        {
+            public string Email { get; set; }
+            public string OTP { get; set; }
         }
     }
 }

@@ -24,15 +24,52 @@ namespace PPOk_Notifications.Models
 		[Column(Name = "preference_time")]
 		public DateTime PreferedContactTime { get; set; }
 
-		public bool SendBirthdayMessage { get; set; }
+        [Column(Name = "send_birthday_message")]
+        public bool SendBirthdayMessage { get; set; }
 
-		public bool SendRefillMessage { get; set; }
+        [Column(Name = "send_refill_message")]
+        public bool SendRefillMessage { get; set; }
 
-		[Column(Name = "object_active")]
-		public bool object_active { get; set; }
+        [Column(Name = "object_active")]
+        public bool object_active { get; set; }
 
         [Column(Name = "preference_contact")]
         public PrimaryContactMethod ContactMethod { get; set; }
+
+        public static Dictionary<long, Patient> _PatientDict;
+
+        public static Dictionary<long, Patient> PatientDict
+        {
+            get
+            {
+                if (_PatientDict == null || PatientDictInvalid)
+                {
+                    System.Diagnostics.Debug.WriteLine("Reloading Patient Cache");
+                    _PatientDict = new Dictionary<long, Patient>();
+                    List<Patient> patients = DatabasePatientService.GetAll();
+                    foreach (Patient p in patients)
+                    {
+                        p.LoadUserData();
+                        _PatientDict.Add(p.PatientId, p);
+                        PatientDictInvalid = false;
+                    }
+                }
+                return _PatientDict;
+            }
+        }
+        public static bool _PatientDictInvalid;
+
+        public static bool PatientDictInvalid
+        {
+            get
+            {
+                return _PatientDictInvalid;
+            }
+            set
+            {
+                _PatientDictInvalid = value;
+            }
+        }
 
         public Patient()
         {
@@ -68,15 +105,6 @@ namespace PPOk_Notifications.Models
 	        return p;
         }
 
-        public Patient LoadUserData()
-        {
-            var user = DatabaseUserService.GetById(UserId);
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            Email = user.Email;
-            Phone = user.Phone;
-            return this;
-        }
     }
 
 }

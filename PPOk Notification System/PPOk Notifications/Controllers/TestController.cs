@@ -6,10 +6,22 @@ using PPOk_Notifications.Service;
 
 namespace PPOk_Notifications.Controllers
 {
+	/**
+	 * Debugging purposes only, this inserts random data, resets the entire system
+	 * and can cause serious damage to a system in use.
+	 */
     public class TestController : Controller {
+
         // GET: Debug
         public ActionResult Index() {
             return View();
+        }
+
+        public string MakePhoneCall()
+        {
+            TwilioApi twilio = new TwilioApi(DatabasePharmacyService.GetById(1));
+            twilio.MakePhoneCall(new Notification());
+            return "Calling";
         }
 
         public string AddFakeLogin(long pid) {
@@ -17,7 +29,7 @@ namespace PPOk_Notifications.Controllers
                 FirstName = "Pharma",
                 LastName = "cist",
                 Phone = "+19999999993",
-                Email = "test@test.com",
+                Email = "pharm@test.com",
                 PharmacyId = pid,
                 UserId = 1,
                 IsAdmin = true,
@@ -51,7 +63,7 @@ namespace PPOk_Notifications.Controllers
 
             DatabaseLoginService.Insert(login2);
 
-            return "sucess <br/> Pharm: username: test@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
+            return "sucess <br/> Pharm: username: pharm@test.com password: harambe <br/> Admin: username: admin@test.com password: harambe";
         }
 
         public string AddFakePresRefillNotif(long pid) {
@@ -64,22 +76,26 @@ namespace PPOk_Notifications.Controllers
 		        PrescriptionDaysSupply = 30,
 		        PrescriptionUpc = "123456789"
 	        };
-	        pres.PrecriptionId = DatabasePrescriptionService.Insert(pres);
+	        pres.PrescriptionId = DatabasePrescriptionService.Insert(pres);
             var refill = new Refill(pres);
+            refill.RefillIt = false;
             refill.RefillId = DatabaseRefillService.Insert(refill);
             return "Sucesss";
         }
 
         public string AddFakePatient(long pid) {
-	        var pat = new Patient {
-		        ContactMethod = Patient.PrimaryContactMethod.Text,
-		        FirstName = "John",
-		        LastName = "Doe",
-		        PersonCode = "1",
-		        DateOfBirth = System.DateTime.Now,
-		        Phone = "+14054179251",
-		        PharmacyId = pid,
-		        PreferedContactTime = System.DateTime.Now
+            var pat = new Patient {
+                ContactMethod = Patient.PrimaryContactMethod.Text,
+                FirstName = "John",
+                LastName = "Doe",
+                PersonCode = "1",
+                DateOfBirth = System.DateTime.Now,
+                Phone = "+18065703539",
+                PharmacyId = pid,
+                PreferedContactTime = System.DateTime.Now,
+                SendRefillMessage = true,
+                SendBirthdayMessage = true
+
 	        };
 	        var id = DatabaseUserService.Insert(pat);
             pat.UserId = id;
@@ -88,11 +104,13 @@ namespace PPOk_Notifications.Controllers
             return "success";
         }
 
+		//Resets the entire databse
         public string Reset() {
             var result = DatabaseService.Rebuild();
 	        return result ? "Success" : "Failure";
         }
 
+		//Prints out a text list of all the SQL scripts loaded by the system
         public string SqlScripts() {
             var debug = ScriptService.Scripts.Keys.Aggregate("", (current, key) => current + (key + ": <br/>" + ScriptService.Scripts[key] + "<br/><br/>"));
 	        if (ScriptService.Scripts.Count == 0) {
@@ -101,6 +119,7 @@ namespace PPOk_Notifications.Controllers
             return debug;
         }
 
+		//Inserts default information for testing
         public string InsertFake() {
             var output = "";
             var pharmID = Pharmacy.FakeDataFill();
@@ -109,6 +128,7 @@ namespace PPOk_Notifications.Controllers
             return output;
         }
 
+		//Resets the database and inserts default data
         public string ResetAndInsert() {
             var output = "";
             output += "\n" + this.Reset();
@@ -116,10 +136,12 @@ namespace PPOk_Notifications.Controllers
             return output;
         }
 
+		//Prints a random OTP string without creating the object
 		public string GetRandomOTP() {
 			return OTPService.RandomString(64);
 		}
 
+		//Sends test emails with working callbacks to the email specified
 	    public string SendTestEmail() {
 
 			var u = new User();
@@ -151,10 +173,10 @@ namespace PPOk_Notifications.Controllers
 		    pr.PrescriptionNumber = 1;
 		    pr.PrescriptionUpc = "ABC123";
 			pr.PrescriptionDateFilled = DateTime.Now;
-		    pr.PrecriptionId = DatabasePrescriptionService.Insert(pr);
+		    pr.PrescriptionId = DatabasePrescriptionService.Insert(pr);
 
 		    r.RefillIt = false;
-		    r.PrescriptionId = pr.PrecriptionId;
+		    r.PrescriptionId = pr.PrescriptionId;
 		    r.Refilled = false;
 			r.RefillDate = DateTime.Now;
 		    r.RefillId = DatabaseRefillService.Insert(r);

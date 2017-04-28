@@ -7,7 +7,11 @@
 <h2>List of Patients</h2>
 
 <p>
-    @Html.ActionLink("Add Patient", "AddPatient")
+    Enabled Patients will show in Green and Disabled in Red
+</p>
+
+<p>
+    @Html.ActionLink("Add Patient", "AddorEditPatient")
 </p>
 
 <table class="table" id="patient_list">
@@ -40,7 +44,8 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            string style = item.Enabled ? "" : "background-color:#ffb3b3";
+            <tr style="@style">
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
@@ -54,18 +59,18 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    @item.DateOfBirth.ToShortDateString()
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PreferedContactTime)
+                    @item.PreferedContactTime.ToShortTimeString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ContactMethod)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditPatient", new { id = item.PatientId }) |
+                    @Html.ActionLink("Edit", "AddorEditPatient", new { id = item.PatientId }) |
                     @Html.ActionLink("Delete", "DeletePatient", new { id = item.PatientId }) |
-                    @Html.ActionLink("Cycle Contact Method", "CycleMethod", new { id = item.PatientId })
+                    @Html.ActionLink("Notification Preferences", "PharmIndex", "Patient", new { patientId = item.PatientId }, null)
                 </td>
             </tr>
         }
@@ -77,7 +82,6 @@
     $(document).ready(function () {
         pharmacy_table = $('#patient_list').DataTable({
             "dom": '<"pull-left"f><"pull-right"l>tip',
-            "paging": false,
             language: {
                 searchPlaceholder: "Search Patients"
             }

@@ -31,5 +31,16 @@ namespace PPOk_Notifications.Models
         {
             return LastName + ", " + FirstName;
         }
-    }
+
+	    public User LoadUserData() {
+		    var user = DatabaseUserService.GetById(UserId);
+		    LastName = user.LastName;
+		    FirstName = user.FirstName;
+		    Phone = user.Phone;
+		    Email = user.Email;
+		    Type = user.Type;
+		    Enabled = user.Enabled;
+		    return this;
+	    }
+	}
 }

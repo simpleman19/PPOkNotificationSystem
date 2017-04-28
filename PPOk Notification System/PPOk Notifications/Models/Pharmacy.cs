@@ -93,7 +93,7 @@ namespace PPOk_Notifications.Models
 	        var pharmacy = new Pharmacy {
 		        PharmacyAddress = "Some Pharmacy\nSome Address\nSome City, OK 73008",
 		        PharmacyName = "Fake Pharmacy",
-		        PharmacyPhone = "555-5555"
+		        PharmacyPhone = "+18065703539"
 	        };
 
 	        pharmacy.PharmacyId = DatabasePharmacyService.Insert(pharmacy);

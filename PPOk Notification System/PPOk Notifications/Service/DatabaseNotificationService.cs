@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
+
+	/**
+	 * Establishes all SQL squery methods for the named model.
+	 * Handles all dapper interaction and attribute mapping.
+	 */
 	public static class DatabaseNotificationService {
 
 		#region Enable/Disable Operations
@@ -26,10 +32,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall"]).AsList();
 			}
 		}
+		public static List<Notification> GetAll(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
 		public static List<Notification> GetAllActive() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_active"]).AsList();
+			}
+		}
+		public static List<Notification> GetAllActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
 		public static List<Notification> GetAllInactive() {
@@ -38,10 +56,22 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_inactive"]).AsList();
 			}
 		}
+		public static List<Notification> GetAllInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
 		public static List<Notification> GetToday() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_today"]).AsList();
+			}
+		}
+		public static List<Notification> GetToday(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_today"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
 		public static List<Notification> GetFutureDate() {
@@ -50,10 +80,54 @@ namespace PPOk_Notifications.Service {
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_date"]).AsList();
 			}
 		}
+		public static List<Notification> GetFutureDate(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_date"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
+		public static List<Notification> GetDateRange(DateTime BeginDate, DateTime EndDate) {
+            try
+            {
+                using (var db = DatabaseService.Connection)
+                {
+                    Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+                    return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_date"], new { BeginDate = BeginDate, EndDate = EndDate }).AsList();
+                }
+            } catch(Exception e)
+            {
+                return null;
+            }
+
+		}
+		public static List<Notification> GetDateRange(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_range_date"], new { pharmacy_id = pharmacy_id, BeginDate = BeginDate, EndDate = EndDate }).AsList();
+			}
+		}
 		public static List<Notification> GetFutureTime() {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
 				return db.Query<Notification>(ScriptService.Scripts["notification_getall_future_time"]).AsList();
+			}
+		}
+		public static List<Notification> GetFutureTime(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_future_time"], new { pharmacy_id = pharmacy_id}).AsList();
+			}
+		}
+		public static List<Notification> GetTimeRange(DateTime BeginDate, DateTime EndDate) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getall_range_time"], new { BeginDate = BeginDate , EndDate = EndDate }).AsList();
+			}
+		}
+		public static List<Notification> GetTimeRange(long pharmacy_id, DateTime BeginDate, DateTime EndDate) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Notification), new ColumnAttributeTypeMapper<Notification>());
+				return db.Query<Notification>(ScriptService.Scripts["notification_getallbypharmacyid_range_time"], new { pharmacy_id = pharmacy_id, BeginDate = BeginDate, EndDate = EndDate }).AsList();
 			}
 		}
 		#endregion

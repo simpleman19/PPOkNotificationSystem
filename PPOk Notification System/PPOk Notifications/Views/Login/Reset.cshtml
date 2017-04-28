@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model PPOk_Notifications.Controllers.LoginController.ResetData
 
 @{
     ViewBag.Title = "Reset Password";
@@ -7,9 +7,11 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-4 col-xs-offset-4" style="text-align:center;">
-            <h2 style="margin-bottom:20px; margin-top:40px;">Reset Password for @Model</h2>
-            @using (Html.BeginForm())
+            <h2 style="margin-bottom:20px; margin-top:40px;">Reset Password for @Model.Email</h2>
+            @using (Html.BeginForm("Reset", "Login"))
             {
+                @Html.Hidden("otpCode", Model.OTP)
+                @Html.Hidden("email", Model.Email)
                 <div class="inner-addon left-addon" style="min-width:100%;">
                     <i class="glyphicon glyphicon-lock"></i>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" style="min-width:100%;"/>

@@ -57,6 +57,8 @@ CREATE TABLE [PPOK].[dbo].[patient]
 	[patient_dob] date NOT NULL,
 	[preference_contact] int NOT NULL, 
 	[preference_time] datetime NOT NULL, 
+	[send_refill_message] bit NOT NULL,
+	[send_birthday_message] bit NOT NULL,
 	[object_active] bit NOT NULL
 )
 GO

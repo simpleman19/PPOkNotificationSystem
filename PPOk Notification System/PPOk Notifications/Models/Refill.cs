@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using PPOk_Notifications.Service;
 using PPOk_Notifications.NotificationSending;
-
 
 namespace PPOk_Notifications.Models
 {
@@ -32,11 +30,10 @@ namespace PPOk_Notifications.Models
 
         public Refill(Prescription prescription)
         {
-            PrescriptionId = prescription.PrecriptionId;
+            PrescriptionId = prescription.PrescriptionId;
             Refilled = false;
             RefillIt = false;
             var notification = Notification.CreateNotification(prescription.PrescriptionDateFilled.AddDays(prescription.PrescriptionDaysSupply - 2), prescription.PatientId, Notification.NotificationType.Refill);
-
             DatabaseNotificationService.Insert(notification);
         }
         

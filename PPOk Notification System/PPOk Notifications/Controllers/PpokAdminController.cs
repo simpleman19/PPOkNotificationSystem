@@ -4,17 +4,12 @@ using System.Web.Mvc;
 using PPOk_Notifications.Filters;
 using PPOk_Notifications.Models;
 
+
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
+    [Authenticate(Group.PPOkAdmin)]
     public class PpokAdminController : Controller
     {
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         // returned view for seeing a list of pharmacies
         // can add to list
         // can select edit/view/delete from list
@@ -27,8 +22,6 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult AddorEditPharmacy(long id = 0)
         {
-            // TODO     No way to add or edit pharmacy's admin
-
             var pharmacy = DatabasePharmacyService.GetById(id);
 
             if (pharmacy == null)

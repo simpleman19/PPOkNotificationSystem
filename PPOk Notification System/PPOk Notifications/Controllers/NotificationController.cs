@@ -7,7 +7,7 @@ using PPOk_Notifications.Filters;
 
 namespace PPOk_Notifications.Controllers
 {
-    [Authenticate]
+    [Authenticate(Group.Pharmacist, Group.PharmacyAdmin)]
     public class NotificationController : Controller
     {
         // GET: Notification
@@ -29,21 +29,32 @@ namespace PPOk_Notifications.Controllers
 
         public ActionResult NotificationList()
         {
-            List<Notification> notifications = DatabaseNotificationService.GetAllActive();
-            if (notifications.Count == 0)
-            {
-                Notification n = null;
-                Random rand = new Random();
-                for (int i = 0; i < 15; i++)
-                {
-                    n = Notification.GetTestNotification(rand);
-                    DatabaseNotificationService.Insert(n);
-                    notifications.Add(n);
-                }
-                notifications = DatabaseNotificationService.GetAllActive();
-            }
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], DateTime.Now, @DateTime.Now.AddDays(7));
+            ViewBag.date1 = @DateTime.Now.ToShortDateString();
+            ViewBag.date2 = @DateTime.Now.AddDays(7).ToShortDateString();
             return View(notifications);
         }
+
+        [HttpPost]
+        public ActionResult GetNotifications(string datePicker1, string datePicker2)
+        {
+            var date1 = DateTime.Parse(datePicker1);
+            var date2 = DateTime.Parse(datePicker2);
+            ViewBag.date1 = date1.ToShortDateString();
+            ViewBag.date2 = date2.ToShortDateString();
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], date1, date2);
+            return View("NotificationList", notifications);
+        }
+
+        [HttpGet]
+        public ActionResult GetNotifications()
+        {
+            List<Notification> notifications = DatabaseNotificationService.GetDateRange((long)Session["pharm_id"], DateTime.Now, @DateTime.Now.AddDays(7));
+            ViewBag.date1 = @DateTime.Now.ToShortDateString();
+            ViewBag.date2 = @DateTime.Now.AddDays(7).ToShortDateString();
+            return View(notifications);
+        }
+
 
         public ActionResult DeleteNotification(long id)
         {

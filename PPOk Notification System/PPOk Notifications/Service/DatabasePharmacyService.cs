@@ -4,6 +4,11 @@ using Dapper;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
+
+	/**
+	 * Establishes all SQL squery methods for the named model.
+	 * Handles all dapper interaction and attribute mapping.
+	 */
 	public static class DatabasePharmacyService {
 
 		#region Enable/Disable Operations

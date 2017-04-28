@@ -4,6 +4,11 @@ using Dapper;
 using PPOk_Notifications.Models;
 
 namespace PPOk_Notifications.Service {
+
+	/**
+	 * Establishes all SQL squery methods for the named model.
+	 * Handles all dapper interaction and attribute mapping.
+	 */
 	public static class DatabasePharmacistService {
 
 		#region Enable/Disable Operations
@@ -36,6 +41,27 @@ namespace PPOk_Notifications.Service {
 			using (var db = DatabaseService.Connection) {
 				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
 				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getall_inactive"]).AsList();
+			}
+		}
+		#endregion
+
+		#region Get by all by pharmacy id
+		public static List<Pharmacist> GetAllByPharmacyId(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getallbypharmacyid"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
+		public static List<Pharmacist> GetAllByPharmacyIdActive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getallbypharmacyid_active"], new { pharmacy_id = pharmacy_id }).AsList();
+			}
+		}
+		public static List<Pharmacist> GetAllByPharmacyIdInactive(long pharmacy_id) {
+			using (var db = DatabaseService.Connection) {
+				Dapper.SqlMapper.SetTypeMap(typeof(Pharmacist), new ColumnAttributeTypeMapper<Pharmacist>());
+				return db.Query<Pharmacist>(ScriptService.Scripts["pharmacist_getallbypharmacyid_inactive"], new { pharmacy_id = pharmacy_id }).AsList();
 			}
 		}
 		#endregion
